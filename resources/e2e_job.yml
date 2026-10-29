@@ -1,0 +1,48 @@
+# End-to-end job: raw data -> Lakeflow -> UC governance -> ML -> routes -> Lakebase -> Genie.
+# Every task runs on serverless; notebooks install their own libs with %pip. Notebook paths are owned by the agent noted beside each task.
+resources:
+  jobs:
+    snb_cash_ops_e2e:
+      name: snb_cash_ops_e2e
+      parameters:
+        - name: catalog
+          default: ${var.catalog}
+        - name: schema
+          default: ${var.schema}
+      tasks:
+        - task_key: generate_data            # owner: data
+          notebook_task:
+            notebook_path: ../data/01_generate_data.py
+        - task_key: lakeflow_pipeline        # owner: data
+          depends_on: [{task_key: generate_data}]
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.snb_cash_ops_pipeline.id}
+            full_refresh: true
+        - task_key: governance               # owner: data
+          depends_on: [{task_key: lakeflow_pipeline}]
+          notebook_task:
+            notebook_path: ../governance/01_apply_governance.py
+        - task_key: train_register           # owner: ml
+          depends_on: [{task_key: lakeflow_pipeline}]
+          notebook_task:
+            notebook_path: ../ml/01_train_register.py
+        - task_key: deploy_endpoint          # owner: ml
+          depends_on: [{task_key: train_register}]
+          notebook_task:
+            notebook_path: ../ml/02_deploy_endpoint.py
+        - task_key: score_orders             # owner: ml
+          depends_on: [{task_key: deploy_endpoint}]
+          notebook_task:
+            notebook_path: ../ml/03_score_orders.py
+        - task_key: optimize_routes          # owner: ml
+          depends_on: [{task_key: score_orders}]
+          notebook_task:
+            notebook_path: ../ml/04_optimize_routes.py
+        - task_key: lakebase_sync            # owner: lakebase
+          depends_on: [{task_key: optimize_routes}]
+          notebook_task:
+            notebook_path: ../lakebase/01_setup_lakebase.py
+        - task_key: genie_space              # owner: genie
+          depends_on: [{task_key: optimize_routes}]
+          notebook_task:
+            notebook_path: ../genie/01_deploy_genie.py

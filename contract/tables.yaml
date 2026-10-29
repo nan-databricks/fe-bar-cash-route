@@ -1,0 +1,107 @@
+# Table contract (frozen). All tables live in stable_classic_nan_fe_vm_catalog.snb_cash_ops
+# unless noted. Column types are Spark SQL types. Owner = agent that creates/writes it.
+
+catalog: stable_classic_nan_fe_vm_catalog
+schema: snb_cash_ops
+raw_volume: /Volumes/stable_classic_nan_fe_vm_catalog/snb_cash_ops/raw
+
+# ---------------------------------------------------------------- RAW (CSV in volume)
+raw_files:                      # owner: data. One sub-folder per entity, CSV with header.
+  depots/: [depot_id, depot_name, district, lat, lng, vault_capacity_thb]
+  vehicles/: [vehicle_id, depot_id, vehicle_type, cash_capacity_thb, cost_per_km_thb, crew_size, custodian_name, custodian_phone]
+  branches/: [branch_id, branch_name, district, depot_id, lat, lng, vault_capacity_thb, min_cash_thb, open_min, close_min]
+  machines/: [machine_id, machine_type, site_name, district, depot_id, lat, lng, cassette_capacity_thb, min_cash_thb]
+  calendar/: [cal_date, dow, is_weekend, is_holiday, holiday_name, is_payday]
+  machine_daily/: [machine_id, txn_date, withdrawals_thb, deposits_thb, replenished_thb, closing_cash_thb, cash_out_flag]
+  branch_daily/: [branch_id, txn_date, inflow_thb, outflow_thb, delivered_thb, collected_thb, closing_vault_thb]
+  cit_trips/: [trip_id, service_date, depot_id, vehicle_id, stops, km, duration_min, cost_thb]   # historical BASELINE (fixed-cycle) plan
+
+# ---------------------------------------------------------------- BRONZE (SDP streaming tables, owner: data)
+bronze:
+  bronze_depots: raw columns + _ingested_at TIMESTAMP, _source_file STRING
+  bronze_vehicles: same pattern
+  bronze_branches: same pattern
+  bronze_machines: same pattern
+  bronze_calendar: same pattern
+  bronze_machine_daily: same pattern
+  bronze_branch_daily: same pattern
+  bronze_cit_trips: same pattern
+
+# ---------------------------------------------------------------- SILVER (SDP, typed + expectations, owner: data)
+silver:
+  silver_depots:      {depot_id: STRING, depot_name: STRING, district: STRING, lat: DOUBLE, lng: DOUBLE, vault_capacity_thb: DOUBLE}
+  silver_vehicles:    {vehicle_id: STRING, depot_id: STRING, vehicle_type: STRING, cash_capacity_thb: DOUBLE, cost_per_km_thb: DOUBLE, crew_size: INT, custodian_name: STRING, custodian_phone: STRING}   # custodian_* masked (PII)
+  silver_branches:    {branch_id: STRING, branch_name: STRING, district: STRING, depot_id: STRING, lat: DOUBLE, lng: DOUBLE, vault_capacity_thb: DOUBLE, min_cash_thb: DOUBLE, open_min: INT, close_min: INT}
+  silver_machines:    {machine_id: STRING, machine_type: STRING, site_name: STRING, district: STRING, depot_id: STRING, lat: DOUBLE, lng: DOUBLE, cassette_capacity_thb: DOUBLE, min_cash_thb: DOUBLE}
+  silver_calendar:    {cal_date: DATE, dow: INT, is_weekend: BOOLEAN, is_holiday: BOOLEAN, holiday_name: STRING, is_payday: BOOLEAN}
+  silver_machine_daily: {machine_id: STRING, txn_date: DATE, withdrawals_thb: DOUBLE, deposits_thb: DOUBLE, replenished_thb: DOUBLE, closing_cash_thb: DOUBLE, cash_out_flag: BOOLEAN}
+  silver_branch_daily:  {branch_id: STRING, txn_date: DATE, inflow_thb: DOUBLE, outflow_thb: DOUBLE, delivered_thb: DOUBLE, collected_thb: DOUBLE, closing_vault_thb: DOUBLE}
+  silver_cit_trips:   {trip_id: STRING, service_date: DATE, depot_id: STRING, vehicle_id: STRING, stops: INT, km: DOUBLE, duration_min: DOUBLE, cost_thb: DOUBLE}   # row filter by depot
+
+# ---------------------------------------------------------------- GOLD from pipeline (SDP materialized views, owner: data)
+gold_pipeline:
+  gold_cash_nodes:          # one row per servable node (branch or machine)
+    {node_id: STRING, node_type: STRING,   # BRANCH | ATM | RCM
+     node_name: STRING, district: STRING, depot_id: STRING, lat: DOUBLE, lng: DOUBLE,
+     capacity_thb: DOUBLE, min_cash_thb: DOUBLE, open_min: INT, close_min: INT}
+  gold_node_daily:          # unified daily cash flow per node; net_outflow = cash leaving the node (withdrawals - deposits, or outflow - inflow)
+    {node_id: STRING, node_type: STRING, depot_id: STRING, txn_date: DATE,
+     net_outflow_thb: DOUBLE, closing_cash_thb: DOUBLE, cash_out_flag: BOOLEAN}
+  gold_demand_features:     # model training/scoring features
+    {node_id: STRING, node_type: STRING, txn_date: DATE, dow: INT, dom: INT, is_weekend: BOOLEAN, is_holiday: BOOLEAN, is_payday: BOOLEAN,
+     lag_1: DOUBLE, lag_7: DOUBLE, lag_14: DOUBLE, roll7_mean: DOUBLE, roll28_mean: DOUBLE,
+     net_outflow_thb: DOUBLE}   # label
+  gold_node_status:         # latest snapshot per node at as_of_date = 2026-09-30
+    {node_id: STRING, node_type: STRING, node_name: STRING, district: STRING, depot_id: STRING, lat: DOUBLE, lng: DOUBLE,
+     capacity_thb: DOUBLE, min_cash_thb: DOUBLE, current_cash_thb: DOUBLE, avg_daily_outflow_28d: DOUBLE, as_of_date: DATE}
+  gold_baseline_daily:      # historical fixed-cycle plan KPIs per day
+    {service_date: DATE, depot_id: STRING, vehicles_used: INT, stops: INT, km: DOUBLE, duration_min: DOUBLE, cost_thb: DOUBLE}
+
+# ---------------------------------------------------------------- GOLD from ML (owner: ml)
+gold_ml:
+  gold_demand_forecast:
+    {node_id: STRING, node_type: STRING, forecast_date: DATE, horizon_day: INT,   # 1..7 from 2026-10-01
+     pred_net_outflow_thb: DOUBLE, pred_p80_thb: DOUBLE, model_name: STRING, model_version: STRING, scored_at: TIMESTAMP}
+  gold_model_metrics:
+    {model_version: STRING, metric: STRING, value: DOUBLE, segment: STRING, logged_at: TIMESTAMP}   # e.g. MAPE/WAPE by node_type
+  gold_replenishment_orders:  # nodes needing a visit on service_date
+    {service_date: DATE, node_id: STRING, node_type: STRING, node_name: STRING, depot_id: STRING, lat: DOUBLE, lng: DOUBLE,
+     action: STRING,            # DELIVER | PICKUP
+     amount_thb: DOUBLE, current_cash_thb: DOUBLE, days_to_cashout: DOUBLE,
+     priority: STRING,          # CRITICAL | HIGH | NORMAL
+     tw_start_min: INT, tw_end_min: INT, service_min: INT}
+  gold_routes:
+    {service_date: DATE, plan_type: STRING,   # OPTIMIZED | BASELINE
+     route_id: STRING, depot_id: STRING, vehicle_id: STRING, stops: INT, km: DOUBLE, duration_min: DOUBLE,
+     cash_delivered_thb: DOUBLE, cash_collected_thb: DOUBLE, cost_thb: DOUBLE, start_min: INT, end_min: INT}
+  gold_route_stops:
+    {service_date: DATE, plan_type: STRING, route_id: STRING, vehicle_id: STRING, depot_id: STRING, stop_seq: INT,
+     node_id: STRING, node_type: STRING, node_name: STRING, action: STRING, amount_thb: DOUBLE,
+     eta_min: INT, lat: DOUBLE, lng: DOUBLE, cum_km: DOUBLE}
+     # Primary key for Lakebase sync: (service_date, plan_type, route_id, stop_seq). Delta CDF must be enabled.
+  gold_route_summary:
+    {service_date: DATE, plan_type: STRING, routes: INT, vehicles_used: INT, stops: INT, km: DOUBLE, duration_hr: DOUBLE,
+     cost_thb: DOUBLE, idle_cash_thb: DOUBLE, cashout_risk_nodes: INT, sla_pct: DOUBLE}
+
+# ---------------------------------------------------------------- LAKEBASE (owner: lakebase)
+lakebase:
+  project: snb-cash-ops
+  synced_tables:                # UC synced tables (read-only in Postgres), created from gold
+    snb_cash_ops.lb_route_stops: {source: gold_route_stops, primary_key: [service_date, plan_type, route_id, stop_seq], mode: SNAPSHOT}
+    snb_cash_ops.lb_node_status: {source: gold_node_status, primary_key: [node_id], mode: SNAPSHOT}
+  postgres_tables:
+    public.dispatch_overrides:  # written by the app
+      {override_id: BIGSERIAL PK, service_date: DATE, route_id: TEXT, node_id: TEXT,
+       action: TEXT,            # SKIP | ADD | RESEQUENCE | EMERGENCY
+       reason: TEXT, created_by: TEXT, created_at: TIMESTAMPTZ default now()}
+
+# ---------------------------------------------------------------- APP API (owner: app). Mock fixtures must match.
+app_api:
+  GET /api/health: {status, catalog, schema, lakebase: bool, endpoint: str}
+  GET /api/nodes: gold_node_status rows (+ forecast next-day from gold_demand_forecast)
+  GET /api/routes?plan_type=OPTIMIZED|BASELINE: gold_routes + gold_route_stops nested as stops[]
+  GET /api/summary: gold_route_summary rows
+  GET /api/orders: gold_replenishment_orders rows
+  POST /api/forecast: {node_id} -> calls serving endpoint snb-cash-forecast, returns 7-day forecast
+  GET/POST /api/overrides: read/write Lakebase public.dispatch_overrides
+  POST /api/genie/ask: {question, conversation_id?} -> Genie space SNB Cash Ops Assistant

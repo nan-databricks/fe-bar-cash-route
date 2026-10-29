@@ -1,0 +1,21 @@
+bundle:
+  name: snb_cash_route
+
+include:
+  - resources/*.yml
+
+variables:
+  catalog:
+    default: stable_classic_nan_fe_vm_catalog
+  schema:
+    default: snb_cash_ops
+  warehouse_id:
+    default: 23189fee7d892fb8
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      profile: nan-demo
+      host: https://fevm-stable-classic-nan-fe-vm.cloud.databricks.com

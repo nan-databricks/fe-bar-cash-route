@@ -1,0 +1,10 @@
+.databricks/
+.venv/
+__pycache__/
+node_modules/
+*.pyc
+.DS_Store
+app/frontend/node_modules/
+mlruns/
+mlflow.db
+.env
