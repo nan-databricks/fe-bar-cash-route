@@ -1,0 +1,12 @@
+# SNB Cash Logistics — defaults for local runs. Environment variables (app.yaml) override.
+catalog: "stable_classic_nan_fe_vm_catalog"
+schema: "snb_cash_ops"
+warehouse_id: "23189fee7d892fb8"      # Serverless Starter Warehouse (nan-demo)
+serving_endpoint: "snb-cash-forecast"
+genie_space_id: ""                    # filled by the Genie agent / integrator
+plan_date: "2026-10-01"
+use_mock: false                       # true = never touch UC / Lakebase / serving / Genie
+lakebase_endpoint: ""                 # projects/snb-cash-ops/branches/<branch>/endpoints/<endpoint>
+
+# Env overrides: CATALOG, SCHEMA, WAREHOUSE_ID (or DATABRICKS_WAREHOUSE_ID), SERVING_ENDPOINT,
+# GENIE_SPACE_ID, PLAN_DATE, USE_MOCK, LAKEBASE_ENDPOINT, PGHOST, PGDATABASE, PGUSER, PGPORT, PGSSLMODE

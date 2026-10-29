@@ -1,0 +1,15 @@
+Databricks App: snb-cash-route (profile nan-demo)
+URL: https://snb-cash-route-7474652587886975.aws.databricksapps.com
+service_principal_client_id (application id): 4a12356e-6529-4f7b-b072-a5cbf47e909d
+service_principal_id: 78922207941250
+service_principal_name: app-6acplc snb-cash-route
+
+App resources: sql-warehouse 23189fee7d892fb8 (CAN_USE), serving-endpoint snb-cash-forecast (CAN_QUERY)
+UC grants applied (2026-10-29): USE CATALOG on stable_classic_nan_fe_vm_catalog;
+  USE SCHEMA, SELECT on stable_classic_nan_fe_vm_catalog.snb_cash_ops
+
+TODO for other agents:
+  - Lakebase: grant this SP a Postgres role on project snb-cash-ops (databricks_postgres) with
+    SELECT/INSERT on public.dispatch_overrides (+ USAGE on sequence), then attach the postgres
+    resource to the app and set LAKEBASE_ENDPOINT in app/app.yaml.
+  - Genie: grant this SP CAN_RUN on space "SNB Cash Ops Assistant"; set GENIE_SPACE_ID in app/app.yaml.

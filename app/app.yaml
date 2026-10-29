@@ -1,0 +1,27 @@
+command:
+  - "uvicorn"
+  - "app:app"
+  - "--host"
+  - "0.0.0.0"
+  - "--port"
+  - "8000"
+
+env:
+  - name: CATALOG
+    value: "stable_classic_nan_fe_vm_catalog"
+  - name: SCHEMA
+    value: "snb_cash_ops"
+  - name: WAREHOUSE_ID
+    valueFrom: "sql-warehouse"
+  - name: SERVING_ENDPOINT
+    valueFrom: "serving-endpoint"
+  - name: PLAN_DATE
+    value: "2026-10-01"
+  # Filled by the Genie agent / integrator once the "SNB Cash Ops Assistant" space exists.
+  - name: GENIE_SPACE_ID
+    value: ""
+  # Lakebase Autoscaling: attach the `snb-cash-ops` postgres resource to the app so PGHOST /
+  # PGDATABASE / PGUSER / PGPORT / PGSSLMODE are injected, and set the endpoint path below
+  # (projects/snb-cash-ops/branches/<branch>/endpoints/<endpoint>) for credential generation.
+  - name: LAKEBASE_ENDPOINT
+    value: ""
