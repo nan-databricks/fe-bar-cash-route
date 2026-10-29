@@ -1,0 +1,16 @@
+project_id=snb-cash-ops
+uid=2dcdd1b3-4b4f-4201-aba1-62bf27f56923
+display_name=SNB Cash Ops
+pg_version=17
+branch=projects/snb-cash-ops/branches/production
+LAKEBASE_ENDPOINT=projects/snb-cash-ops/branches/production/endpoints/primary
+PGHOST=ep-rapid-thunder-d1691ize.database.us-west-2.cloud.databricks.com
+database=databricks_postgres
+endpoint_state=ACTIVE
+synced=lb_node_status (679 rows, SNAPSHOT, ONLINE)
+pending_sync=lb_route_stops (gold_route_stops missing)
+writable=public.dispatch_overrides (BIGSERIAL PK, action CHECK SKIP|ADD|RESEQUENCE|EMERGENCY)
+app_sp_granted=4a12356e-6529-4f7b-b072-a5cbf47e909d
+app_sp_numeric=78922207941250
+app_sp_name=app-6acplc snb-cash-route
+notebook=lakebase/01_setup_lakebase.py
