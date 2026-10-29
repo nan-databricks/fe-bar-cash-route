@@ -1,0 +1,35 @@
+ml/04_optimize_routes.py — OR-Tools CVRP-TW vs fixed 5-day-cycle baseline (service_date 2026-10-01)
+Run URL: https://fevm-stable-classic-nan-fe-vm.cloud.databricks.com/?o=7474652587886975#job/128730393290279/run/978402296647620
+Generated via SQL Statements API, warehouse 23189fee7d892fb8
+
+SQL> select * from stable_classic_nan_fe_vm_catalog.snb_cash_ops.gold_route_summary order by plan_type
+service_date | plan_type | routes | vehicles_used | stops | km     | duration_hr | cost_thb | idle_cash_thb | cashout_risk_nodes | sla_pct
+-------------+-----------+--------+---------------+-------+--------+-------------+----------+---------------+--------------------+--------
+2026-10-01   | BASELINE  | 11     | 11            | 135   | 1710.7 | 92.1        | 75400.0  | 1.561318917E9 | 64                 | 14.7   
+2026-10-01   | OPTIMIZED | 13     | 13            | 97    | 1323.2 | 61.5        | 69550.0  | 1.518299776E9 | 0                  | 100.0  
+
+SQL> select b.cost_thb base_cost, o.cost_thb opt_cost, round(100*(b.cost_thb-o.cost_thb)/b.cost_thb,1) cost_saving_pct, round(100*(b.km-o.km)/b.km,1) km_saving_pct, round(100*(b.duration_hr-o.duration_hr)/b.duration_hr,1) crew_hours_saving_pct, round(100*(b.idle_cash_thb-o.idle_cash_thb)/b.idle_cash_thb,1) idle_cash_saving_pct, b.cashout_risk_nodes base_risk, o.cashout_risk_nodes opt_risk, b.sla_pct base_sla, o.sla_pct opt_sla from stable_classic_nan_fe_vm_catalog.snb_cash_ops.gold_route_summary b join stable_classic_nan_fe_vm_catalog.snb_cash_ops.gold_route_summary o on b.plan_type='BASELINE' and o.plan_type='OPTIMIZED'
+base_cost | opt_cost | cost_saving_pct | km_saving_pct | crew_hours_saving_pct | idle_cash_saving_pct | base_risk | opt_risk | base_sla | opt_sla
+----------+----------+-----------------+---------------+-----------------------+----------------------+-----------+----------+----------+--------
+75400.0   | 69550.0  | 7.8             | 22.7          | 33.2                  | 2.8                  | 64        | 0        | 14.7     | 100.0  
+
+SQL> select plan_type, depot_id, count(*) routes, sum(stops) stops, round(sum(km),1) km, round(sum(cost_thb),0) cost_thb from stable_classic_nan_fe_vm_catalog.snb_cash_ops.gold_routes group by all order by 1,2
+plan_type | depot_id  | routes | stops | km    | cost_thb
+----------+-----------+--------+-------+-------+---------
+BASELINE  | DEP-KKN-C | 5      | 65    | 704.4 | 32224.0 
+BASELINE  | DEP-KKN-N | 3      | 33    | 535.6 | 22498.0 
+BASELINE  | DEP-KKN-S | 3      | 37    | 470.7 | 20679.0 
+OPTIMIZED | DEP-KKN-C | 8      | 52    | 677.9 | 38982.0 
+OPTIMIZED | DEP-KKN-N | 2      | 19    | 314.2 | 13797.0 
+OPTIMIZED | DEP-KKN-S | 3      | 26    | 331.1 | 16770.0 
+
+SQL> select plan_type, count(*) n, count(distinct service_date, plan_type, route_id, stop_seq) distinct_pk from stable_classic_nan_fe_vm_catalog.snb_cash_ops.gold_route_stops group by 1
+plan_type | n   | distinct_pk
+----------+-----+------------
+BASELINE  | 135 | 135        
+OPTIMIZED | 97  | 97         
+
+SQL> show tblproperties stable_classic_nan_fe_vm_catalog.snb_cash_ops.gold_route_stops ('delta.enableChangeDataFeed')
+key                        | value
+---------------------------+------
+delta.enableChangeDataFeed | true 

@@ -1,0 +1,16 @@
+ml/01_train_register.py — global LightGBM (L1 point + quantile 0.8)
+Run URL: https://fevm-stable-classic-nan-fe-vm.cloud.databricks.com/?o=7474652587886975#job/820682231365913/run/175323168234483
+Generated via SQL Statements API, warehouse 23189fee7d892fb8
+
+MLflow experiment: /Users/nan.chulpaibul@databricks.com/snb_cash_forecast
+MLflow run id: 215093ef384d47129e8ae9bdaf812b1d
+UC model: stable_classic_nan_fe_vm_catalog.snb_cash_ops.cash_demand_forecast version 1, alias champion
+Validation window: 2026-08-01..2026-09-30 (train < 2026-08-01). Naive = lag_7 (fallback roll28_mean)
+
+SQL> select segment, max(case when metric='WAPE_model' then round(value,4) end) wape_model, max(case when metric='WAPE_naive' then round(value,4) end) wape_naive, max(case when metric='MAPE_model' then round(value,4) end) mape_model, max(case when metric='MAPE_naive' then round(value,4) end) mape_naive, max(case when metric='P80_coverage' then round(value,4) end) p80_coverage from stable_classic_nan_fe_vm_catalog.snb_cash_ops.gold_model_metrics group by segment order by case segment when 'ALL' then 0 else 1 end, segment
+segment | wape_model | wape_naive | mape_model | mape_naive | p80_coverage
+--------+------------+------------+------------+------------+-------------
+ALL     | 0.2481     | 0.3868     | 0.3118     | 0.4595     | 0.8066      
+ATM     | 0.1326     | 0.2496     | 0.1349     | 0.2542     | None        
+BRANCH  | 0.44       | 0.6167     | 0.7645     | 0.9805     | None        
+RCM     | 0.2684     | 0.4055     | 0.3016     | 0.4537     | None        
