@@ -1,0 +1,144 @@
+SNB Cash Ops Assistant — live Genie benchmark pack
+space_id: 01f1d39a6e5c1bee90888b41e5e55e66
+url: https://fevm-stable-classic-nan-fe-vm.cloud.databricks.com/genie/rooms/01f1d39a6e5c1bee90888b41e5e55e66
+
+========================================================================
+Q1. Which nodes run out of cash in the next 3 days if we do nothing?
+conversation_id: 01f1d39a7b0d1e64911acb8e1c6dea47
+message_id: 01f1d39a7b1c1f93ace7b0c8f99e25b0
+status: COMPLETED
+SQL:
+SELECT
+  `s`.`as_of_date`,
+  `s`.`node_id`,
+  `s`.`node_type`,
+  `s`.`node_name`,
+  `s`.`district`,
+  `s`.`depot_id`,
+  `s`.`current_cash_thb`,
+  `s`.`avg_daily_outflow_28d`,
+  try_divide(`s`.`current_cash_thb`,NULLIF(`s`.`avg_daily_outflow_28d`, 0)) AS `days_to_cashout`
+FROM `stable_classic_nan_fe_vm_catalog`.`snb_cash_ops`.`gold_node_status` AS `s`
+WHERE `s`.`avg_daily_outflow_28d` > 0
+  AND try_divide(`s`.`current_cash_thb`,`s`.`avg_daily_outflow_28d`) <= 3
+  AND `s`.`node_id` IS NOT NULL
+ORDER BY `days_to_cashout` ASC, `s`.`node_id` ASC
+LIMIT 25
+
+ANSWER:
+You want to see which cash nodes are projected to run out of cash within the next 3 days if no action is taken, based on their current cash and average daily outflow.
+
+As of **2026-09-30** at the **per-node** level, **25 nodes** are projected to run out of cash within the next **3 days** if no action is taken; in the visible results, all are at **1.19 days or less**, led by the most urgent cases below. Examples include:
+- **Mueang Khon Kaen Retail Point 078** (ATM, **DEP-KKN-N**) — about **0.36 days** of cash left
+- **Phon Retail Point 153** (ATM, **DEP-KKN-S**) — about **0.42 days**
+- **Nam Phong Retail Point 327** (ATM, **DEP-KKN-C**) — about **0.42 days**
+- **Mueang Khon Kaen Retail Point 008** (ATM, **DEP-KKN-C**) — about **0.52 days**
+- **Nam Phong Retail Point 009** (ATM, **DEP-KKN-C**) — about **0.55 days**
+
+Across these 25 at-risk nodes, the shortest runway is in **Mueang Khon Kaen Retail Point 078**, and the list is dominated by **ATMs** with only **2 RCMs** shown.
+
+========================================================================
+Q2. How much idle cash is sitting in each depot as of 2026-09-30?
+conversation_id: 01f1d39a8bc013c4a53e85835867072c
+message_id: 01f1d39a8bcd10b5878ae2b1cec9ddf5
+status: COMPLETED
+SQL:
+SELECT
+  `depot_id`,
+  COUNT(*) AS `nodes`,
+  SUM(`current_cash_thb`) AS `idle_cash_thb`
+FROM `stable_classic_nan_fe_vm_catalog`.`snb_cash_ops`.`gold_node_status`
+WHERE `as_of_date` = DATE '2026-09-30'
+  AND `depot_id` IS NOT NULL
+GROUP BY `depot_id`
+ORDER BY `depot_id`
+
+ANSWER:
+You want to see the total amount of idle cash held at each depot as of September 30, 2026, along with the number of nodes at each depot.
+
+As of **2026-09-30** at the **depot** level, idle cash totals are **THB 975.0 million** for **DEP-KKN-C**, **THB 554.1 million** for **DEP-KKN-N**, and **THB 716.9 million** for **DEP-KKN-S**. Across the **3 depots** shown, **DEP-KKN-C** holds the most idle cash and **DEP-KKN-N** the least.
+
+========================================================================
+Q3. How many vans did the fixed-cycle plan use on 2026-09-30?
+conversation_id: 01f1d39a95f31a80b35b625c852d27d7
+message_id: 01f1d39a95fe19d2a1b1166e34629646
+status: COMPLETED
+SQL:
+SELECT SUM(`vehicles_used`) AS `vans_used`
+FROM `stable_classic_nan_fe_vm_catalog`.`snb_cash_ops`.`gold_baseline_daily`
+WHERE `service_date` = DATE '2026-09-30'
+  AND `vehicles_used` IS NOT NULL
+
+ANSWER:
+You want to know the total number of vans used in the fixed-cycle plan on September 30, 2026.
+
+On **2026-09-30** at the **per day** level, the fixed-cycle plan used **28 vans**.
+
+========================================================================
+Q4. Which districts have the highest cash-out risk?
+conversation_id: 01f1d39aa28c1a04a88e77ac972bb295
+message_id: 01f1d39aa29614ce8d8080a68519567b
+status: COMPLETED
+SQL:
+WITH district_risk AS (
+  SELECT
+    `gold_cash_nodes`.`district` AS `district`,
+    COUNT(*) AS `at_risk_nodes`,
+    SUM(`gold_node_status`.`current_cash_thb`) AS `cash_thb`
+  FROM `stable_classic_nan_fe_vm_catalog`.`snb_cash_ops`.`gold_node_status` AS `gold_node_status`
+  JOIN `stable_classic_nan_fe_vm_catalog`.`snb_cash_ops`.`gold_cash_nodes` AS `gold_cash_nodes`
+    ON `gold_node_status`.`node_id` = `gold_cash_nodes`.`node_id`
+  WHERE `gold_cash_nodes`.`district` IS NOT NULL
+    AND `gold_node_status`.`avg_daily_outflow_28d` > 0
+    AND try_divide(`gold_node_status`.`current_cash_thb`,`gold_node_status`.`avg_daily_outflow_28d`) <= 3
+  GROUP BY `gold_cash_nodes`.`district`
+)
+SELECT
+  `district`,
+  `at_risk_nodes`,
+  `cash_thb`,
+  RANK() OVER (ORDER BY `at_risk_nodes` DESC) AS `risk_rank`
+FROM district_risk
+ORDER BY `risk_rank`, `district`
+
+ANSWER:
+You're looking for a ranked list of districts showing which ones have the highest risk of cash running out soon. The query counts how many nodes in each district are at risk of cash-out within 3 days and sums the current cash held at those nodes.
+
+As of **2026-09-30** at the **district** level, **Phon** has the highest cash-out risk with **11** at-risk nodes (about **THB 1,038,000** current cash across those nodes). Examples include:
+- **Phon** — **11** at-risk nodes, about **THB 1,038,000**
+- **Ban Haet** — **9** at-risk nodes, about **THB 1,749,000**
+- **Mueang Khon Kaen** — **9** at-risk nodes, about **THB 1,005,000**
+- **Ban Phai** — **7** at-risk nodes, about **THB 776,000**
+- **Mancha Khiri** — **7** at-risk nodes, about **THB 889,000**
+Across the **7 districts** returned, the risk count ranges from **6 to 11** at-risk nodes, with **Ban Haet** carrying the highest cash balance among the higher-risk districts shown.
+
+Would you prefer to see districts ranked by cash-out risk using a different threshold, such as 1 day or 5 days of cash left?
+
+========================================================================
+Q5. What is CIT cost of optimized vs baseline for 2026-10-01?
+conversation_id: 01f1d39aaf261a52af93aa652100d507
+message_id: 01f1d39aaf2f11119f2cc1b11e46d29d
+status: COMPLETED
+SQL:
+(no SQL attachment)
+
+ANSWER:
+The ML route summary table for optimized vs baseline on 2026-10-01 is not available in this space, so I can’t fetch an optimized-vs-baseline CIT comparison. I can only use historical baseline CIT data here, and there is no baseline row for the plan date 2026-10-01 in the available tables.
+
+========================================================================
+Q6. Show forecast WAPE by node type
+conversation_id: 01f1d39ab57b12699d05327ca6a8541c
+message_id: 01f1d39ab5831aacb083e47a4001d09d
+status: COMPLETED
+SQL:
+WITH `wape_metrics` AS ( SELECT `segment` AS `node_type`, `model_version`, `logged_at`, `value` AS `wape`, ROW_NUMBER() OVER ( PARTITION BY `segment` ORDER BY `logged_at` DESC NULLS LAST, `model_version` DESC ) AS `rn` FROM `stable_classic_nan_fe_vm_catalog`.`snb_cash_ops`.`gold_model_metrics` WHERE `segment` IS NOT NULL AND `value` IS NOT NULL AND LOWER(TRIM(`metric`)) LIKE '%wape%' ) SELECT `node_type`, `model_version`, `logged_at`, `wape` FROM `wape_metrics` WHERE `rn` = 1 ORDER BY `node_type`
+
+ANSWER:
+You want to see the most recent forecast WAPE (Weighted Absolute Percentage Error) values for each node type.
+
+As of **2026-10-29** at the **node type** level, the latest forecast WAPE from model version **1** is available for **4** node types. 
+- **ATM:** **0.133**
+- **ALL:** **0.248**
+- **RCM:** **0.268**
+- **BRANCH:** **0.440**
+Among these 4 node types, **ATM** has the lowest forecast error and **BRANCH** has the highest.

@@ -1,0 +1,20 @@
+Genie table poll — profile nan-demo, catalog.schema stable_classic_nan_fe_vm_catalog.snb_cash_ops
+space_id: 01f1d39a6e5c1bee90888b41e5e55e66
+poll_note: SHOW TABLES after space create.
+
+Pipeline gold (in space):
+  gold_cash_nodes
+  gold_node_daily
+  gold_demand_features
+  gold_node_status
+  gold_baseline_daily
+
+ML gold:
+  gold_model_metrics          PRESENT (in space)
+  gold_demand_forecast        MISSING — route/forecast questions after ML job
+  gold_replenishment_orders   MISSING
+  gold_routes                 MISSING
+  gold_route_stops            MISSING
+  gold_route_summary          MISSING
+
+Also in schema (not in space): bronze_*, silver_*, lb_node_status
