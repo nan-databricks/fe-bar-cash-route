@@ -1,7 +1,7 @@
 Lakebase project: snb-cash-ops
 Profile: nan-demo
 Workspace: https://fevm-stable-classic-nan-fe-vm.cloud.databricks.com
-Captured: 2026-10-29T13:19:00Z
+Captured: 2026-10-29T13:24:20Z
 
 LAKEBASE_ENDPOINT=projects/snb-cash-ops/branches/production/endpoints/primary
 PGHOST=ep-rapid-thunder-d1691ize.database.us-west-2.cloud.databricks.com
@@ -18,12 +18,14 @@ sslmode=require
 lb_node_status_rows=679
 gold_node_status_rows=679
 
-# pending: gold_route_stops not in UC as of this capture
-#   (gold_demand_forecast + gold_replenishment_orders exist; optimizer table still missing)
-#   re-run lakebase/01_setup_lakebase.py after ML writes gold_route_stops
-#   intended: snb_cash_ops.lb_route_stops from gold_route_stops
-#             PK (service_date, plan_type, route_id, stop_seq) SNAPSHOT + CDF
-lb_route_stops_rows=PENDING_SOURCE
+#   UC: stable_classic_nan_fe_vm_catalog.snb_cash_ops.lb_route_stops
+#   PG: snb_cash_ops.lb_route_stops
+#   source: gold_route_stops  PK: (service_date, plan_type, route_id, stop_seq)
+#   mode: SNAPSHOT  CDF: delta.enableChangeDataFeed=true (already on from ML)
+#   state: SYNCED_TABLE_ONLINE_NO_PENDING_UPDATE
+#   pipeline_id: 955b8ea7-f997-4631-984b-510be63e8760
+lb_route_stops_rows=232
+gold_route_stops_rows=232
 
 # Writable
 public.dispatch_overrides_rows=0
@@ -38,8 +40,7 @@ public.dispatch_overrides_rows=0
 #   SELECT,INSERT,UPDATE,DELETE on public.dispatch_overrides
 #   USAGE,SELECT on public.dispatch_overrides_override_id_seq
 #   SELECT on snb_cash_ops.lb_node_status
+#   SELECT on snb_cash_ops.lb_route_stops
 # Fallback USER nan.chulpaibul@databricks.com also granted (role nan-chulpaibul, DATABRICKS_SUPERUSER)
 
-# Blockers
-#   1. gold_route_stops missing → lb_route_stops sync pending
-#   2. App must set LAKEBASE_ENDPOINT + PGHOST in app.yaml (this file)
+# Blockers: none for Lakebase sync
