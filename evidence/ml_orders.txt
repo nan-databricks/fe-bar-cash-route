@@ -1,32 +1,20 @@
-ml/03_score_orders.py — 7-day forecast + replenishment orders for 2026-10-01
-Run URL: https://fevm-stable-classic-nan-fe-vm.cloud.databricks.com/?o=7474652587886975#job/528319664106500/run/240031472917110
-Generated via SQL Statements API, warehouse 23189fee7d892fb8
+gold_demand_forecast: 4753 rows (679 nodes × 7 days)  model_version=1
+gold_replenishment_orders service_date=2026-10-01
+score job: https://fevm-stable-classic-nan-fe-vm.cloud.databricks.com/?o=7474652587886975#job/730403885830206/run/350327387493202
 
-SQL> select count(*) forecast_rows, count(distinct node_id) nodes, min(forecast_date) first_day, max(forecast_date) last_day, max(model_version) model_version from stable_classic_nan_fe_vm_catalog.snb_cash_ops.gold_demand_forecast
-forecast_rows | nodes | first_day  | last_day   | model_version
---------------+-------+------------+------------+--------------
-4753          | 679   | 2026-10-01 | 2026-10-07 | 1            
+TOTAL_ORDERS=97  DELIVER=79  PICKUP=18
+CRITICAL=75  HIGH=0  NORMAL=22
 
-SQL> select action, priority, count(*) orders, round(sum(amount_thb)/1e6,2) amount_mthb from stable_classic_nan_fe_vm_catalog.snb_cash_ops.gold_replenishment_orders group by all order by 1,2
-action  | priority | orders | amount_mthb
---------+----------+--------+------------
-DELIVER | CRITICAL | 75     | 106.56     
-DELIVER | NORMAL   | 4      | 2.03       
-PICKUP  | NORMAL   | 18     | 1.66       
+by depot / action / priority (count, amount THB millions)
+DEP-KKN-C  DELIVER CRITICAL  41  64.25
+DEP-KKN-C  DELIVER NORMAL     1   0.53
+DEP-KKN-C  PICKUP  NORMAL    10   0.79
+DEP-KKN-N  DELIVER CRITICAL  15  17.47
+DEP-KKN-N  PICKUP  NORMAL     4   0.43
+DEP-KKN-S  DELIVER CRITICAL  19  24.84
+DEP-KKN-S  DELIVER NORMAL     3   1.50
+DEP-KKN-S  PICKUP  NORMAL     4   0.44
 
-SQL> select depot_id, action, priority, count(*) orders, round(sum(amount_thb)/1e6,2) amount_mthb from stable_classic_nan_fe_vm_catalog.snb_cash_ops.gold_replenishment_orders group by all order by 1,2,3
-depot_id  | action  | priority | orders | amount_mthb
-----------+---------+----------+--------+------------
-DEP-KKN-C | DELIVER | CRITICAL | 41     | 64.25      
-DEP-KKN-C | DELIVER | NORMAL   | 1      | 0.53       
-DEP-KKN-C | PICKUP  | NORMAL   | 10     | 0.79       
-DEP-KKN-N | DELIVER | CRITICAL | 15     | 17.47      
-DEP-KKN-N | PICKUP  | NORMAL   | 4      | 0.43       
-DEP-KKN-S | DELIVER | CRITICAL | 19     | 24.84      
-DEP-KKN-S | DELIVER | NORMAL   | 3      | 1.5        
-DEP-KKN-S | PICKUP  | NORMAL   | 4      | 0.44       
-
-SQL> select count(*) total_orders from stable_classic_nan_fe_vm_catalog.snb_cash_ops.gold_replenishment_orders
-total_orders
-------------
-97          
+Rules: DELIVER if days_to_cashout < 2.5 (cover 5d P80 up to capacity);
+PICKUP RCM/BRANCH above 85% capacity; windows branches open..close, machines 480-1080;
+service 25/15 min.

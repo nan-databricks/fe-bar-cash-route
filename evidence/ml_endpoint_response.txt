@@ -1,73 +1,15 @@
-Model Serving endpoint evidence — ml/02_deploy_endpoint.py
-Run URL: https://fevm-stable-classic-nan-fe-vm.cloud.databricks.com/?o=7474652587886975#job/978562541382937/run/1125385220145120
-Endpoint: snb-cash-forecast
-Upstream training run: https://fevm-stable-classic-nan-fe-vm.cloud.databricks.com/?o=7474652587886975#job/820682231365913/run/175323168234483
-State: READY
-Served entity: stable_classic_nan_fe_vm_catalog.snb_cash_ops.cash_demand_forecast version 1 (alias champion), workload Small, scale_to_zero=true
-Invocation URL: https://fevm-stable-classic-nan-fe-vm.cloud.databricks.com/serving-endpoints/snb-cash-forecast/invocations
+endpoint: snb-cash-forecast
+state.ready: READY
+config_update: NOT_UPDATING
+served_entity: stable_classic_nan_fe_vm_catalog.snb_cash_ops.cash_demand_forecast v1
+workload: Small, scale_to_zero_enabled=true
+deploy job: https://fevm-stable-classic-nan-fe-vm.cloud.databricks.com/?o=7474652587886975#job/978562541382937/run/1125385220145120
 
-Sample request (features of SNB-A0001, SNB-A0002, SNB-A0003 on 2026-09-30):
-{
-  "dataframe_records": [
-    {
-      "node_type": "ATM",
-      "dow": 3,
-      "dom": 30,
-      "is_weekend": false,
-      "is_holiday": false,
-      "is_payday": true,
-      "lag_1": 145342.37,
-      "lag_7": 60214.79,
-      "lag_14": 103543.09000000001,
-      "roll7_mean": 104072.52857142859,
-      "roll28_mean": 85819.96321428572
-    },
-    {
-      "node_type": "ATM",
-      "dow": 3,
-      "dom": 30,
-      "is_weekend": false,
-      "is_holiday": false,
-      "is_payday": true,
-      "lag_1": 116570.52,
-      "lag_7": 94848.14,
-      "lag_14": 98526.53,
-      "roll7_mean": 114405.9242857143,
-      "roll28_mean": 97706.76178571428
-    },
-    {
-      "node_type": "ATM",
-      "dow": 3,
-      "dom": 30,
-      "is_weekend": false,
-      "is_holiday": false,
-      "is_payday": true,
-      "lag_1": 72839.76,
-      "lag_7": 64279.73,
-      "lag_14": 79718.03,
-      "roll7_mean": 74034.94285714286,
-      "roll28_mean": 63092.82892857143
-    }
-  ]
-}
+SAMPLE_REQUEST_JSON
+{"dataframe_records":[{"node_type":"ATM","dow":3,"dom":30,"is_weekend":false,"is_holiday":false,"is_payday":true,"lag_1":145342.37,"lag_7":60214.79,"lag_14":103543.09,"roll7_mean":104072.53,"roll28_mean":85819.96}]}
 
-Sample response:
-{
-  "predictions": [
-    {
-      "pred_net_outflow_thb": 103952.00792582966,
-      "pred_p80_thb": 121271.0939201537
-    },
-    {
-      "pred_net_outflow_thb": 117451.83822460058,
-      "pred_p80_thb": 135155.7744970226
-    },
-    {
-      "pred_net_outflow_thb": 77698.63500035579,
-      "pred_p80_thb": 88700.20694341259
-    }
-  ],
-  "served-model-name": "cash-demand-forecast"
-}
+SAMPLE_RESPONSE_JSON
+{"predictions":[{"pred_net_outflow_thb":103952.00792582966,"pred_p80_thb":121271.0939201537}]}
 
-Actual net_outflow_thb on 2026-09-30: {'SNB-A0001': 130133.48000000001, 'SNB-A0002': 80903.14, 'SNB-A0003': 70971.34}
+CLI: databricks serving-endpoints query snb-cash-forecast --json '<request>' -p nan-demo
+Helper body for the App agent: ml/endpoint_query_example.json

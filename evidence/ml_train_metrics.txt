@@ -1,16 +1,28 @@
-ml/01_train_register.py — global LightGBM (L1 point + quantile 0.8)
-Run URL: https://fevm-stable-classic-nan-fe-vm.cloud.databricks.com/?o=7474652587886975#job/820682231365913/run/175323168234483
-Generated via SQL Statements API, warehouse 23189fee7d892fb8
-
+SNB cash_demand_forecast — validation 2026-08-01 .. 2026-09-30
+UC model: stable_classic_nan_fe_vm_catalog.snb_cash_ops.cash_demand_forecast v1 alias=champion
 MLflow experiment: /Users/nan.chulpaibul@databricks.com/snb_cash_forecast
 MLflow run id: 215093ef384d47129e8ae9bdaf812b1d
-UC model: stable_classic_nan_fe_vm_catalog.snb_cash_ops.cash_demand_forecast version 1, alias champion
-Validation window: 2026-08-01..2026-09-30 (train < 2026-08-01). Naive = lag_7 (fallback roll28_mean)
+Train job: https://fevm-stable-classic-nan-fe-vm.cloud.databricks.com/?o=7474652587886975#job/820682231365913/run/175323168234483
 
-SQL> select segment, max(case when metric='WAPE_model' then round(value,4) end) wape_model, max(case when metric='WAPE_naive' then round(value,4) end) wape_naive, max(case when metric='MAPE_model' then round(value,4) end) mape_model, max(case when metric='MAPE_naive' then round(value,4) end) mape_naive, max(case when metric='P80_coverage' then round(value,4) end) p80_coverage from stable_classic_nan_fe_vm_catalog.snb_cash_ops.gold_model_metrics group by segment order by case segment when 'ALL' then 0 else 1 end, segment
-segment | wape_model | wape_naive | mape_model | mape_naive | p80_coverage
---------+------------+------------+------------+------------+-------------
-ALL     | 0.2481     | 0.3868     | 0.3118     | 0.4595     | 0.8066      
-ATM     | 0.1326     | 0.2496     | 0.1349     | 0.2542     | None        
-BRANCH  | 0.44       | 0.6167     | 0.7645     | 0.9805     | None        
-RCM     | 0.2684     | 0.4055     | 0.3016     | 0.4537     | None        
+gold_model_metrics (SQL warehouse 23189fee7d892fb8)
+
+segment  metric         value   model_version
+ALL      WAPE_model     0.2481  1
+ALL      WAPE_naive     0.3868  1
+ALL      MAPE_model     0.3118  1
+ALL      MAPE_naive     0.4595  1
+ALL      P80_coverage   0.8066  1
+ATM      WAPE_model     0.1326  1
+ATM      WAPE_naive     0.2496  1
+ATM      MAPE_model     0.1349  1
+ATM      MAPE_naive     0.2542  1
+BRANCH   WAPE_model     0.4400  1
+BRANCH   WAPE_naive     0.6167  1
+BRANCH   MAPE_model     0.7645  1
+BRANCH   MAPE_naive     0.9805  1
+RCM      WAPE_model     0.2684  1
+RCM      WAPE_naive     0.4055  1
+RCM      MAPE_model     0.3016  1
+RCM      MAPE_naive     0.4537  1
+
+WAPE lift vs naive (ALL): 0.2481 vs 0.3868  (−35.9% relative)
