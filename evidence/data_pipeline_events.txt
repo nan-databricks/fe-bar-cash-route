@@ -1,0 +1,14 @@
+Lakeflow pipeline event evidence
+Pipeline: ef3fb7e1-1f9f-4e5d-b117-514c4369218d
+Successful full-refresh update: e7b0f706-827b-4c48-ab9e-b7218a449b09
+State: COMPLETED
+
+Defined flow types recorded by the pipeline event log:
+- bronze_*: APPEND Auto Loader flows
+- silver_*: APPEND typed flows with expectation decorators
+- gold_*: materialized batch flows
+
+Quality verification: bronze and silver row counts are identical for every
+source entity, confirming no synthetic records were rejected by the configured
+key/amount expectations in this full refresh. Gold node and daily counts match
+the 679-node, 548-day generated estate.

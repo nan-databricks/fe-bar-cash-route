@@ -1,0 +1,11 @@
+Lakeflow scratch pipeline
+Name: snb_cash_ops_pipeline_scratch
+Pipeline ID: ef3fb7e1-1f9f-4e5d-b117-514c4369218d
+Final successful update: e7b0f706-827b-4c48-ab9e-b7218a449b09
+Mode: serverless, Photon, CURRENT channel, full refresh
+Target: stable_classic_nan_fe_vm_catalog.snb_cash_ops
+
+The first source-analysis update exposed a gold_cash_nodes node_type alias
+issue. It was corrected, then the automatic full-refresh retry completed.
+Final table counts confirm all bronze, silver, and gold pipeline tables
+populated successfully.

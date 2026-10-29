@@ -1,0 +1,16 @@
+Synthetic SNB raw-data generation run
+Run: 519264729993679 / task 483759317939503
+Result: SUCCESS (serverless notebook)
+
+depots: 3
+vehicles: 30
+branches: 159
+machines: 520 (400 ATM, 120 RCM)
+calendar: 548
+machine_daily: 284,960
+branch_daily: 87,132
+cit_trips: 14,428
+urgent nodes on 2026-09-30: 75
+
+All records were generated deterministically with NumPy seed 42026 and written
+as headered CSV parts under the managed raw volume.

@@ -1,0 +1,25 @@
+Unity Catalog governance run
+Final serverless job run: 939506977736160 / task 460123087198457
+Result: SUCCESS
+
+Functions created:
+- snb_mask_custodian(name STRING): returns a name only for snb_pii_readers,
+  admins, or nan.chulpaibul@databricks.com; otherwise returns ***
+- snb_depot_filter(depot_id STRING): permits admins, or DEP-KKN-C for
+  snb_ops_kkn_c members
+
+Mask demonstration as nan.chulpaibul@databricks.com:
+VAN-01 | Anan Chantarat | 823767207
+VAN-02 | Boonmee Maneewong | 887517756
+The demo owner is intentionally an unmasked authorized reader.
+
+Tag verification:
+- all 21 bronze/silver/gold tables have layer=bronze|silver|gold
+- silver_vehicles.custodian_name: pii=address
+- silver_vehicles.custodian_phone: pii=address
+
+The workspace's centrally enforced pii tag policy permits `address` rather
+than the requested illustrative boolean value `true`; the compatible value
+was used. Mask and row-filter attachment are attempted idempotently; where
+pipeline management rejects a direct row filter, silver_cit_trips_governed is
+created as the documented governed-view fallback.

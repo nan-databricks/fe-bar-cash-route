@@ -1,0 +1,12 @@
+resources:
+  pipelines:
+    snb_cash_ops_pipeline:
+      name: snb_cash_ops_pipeline
+      catalog: ${var.catalog}
+      schema: ${var.schema}
+      serverless: true
+      photon: true
+      channel: CURRENT
+      libraries:
+        - file:
+            path: ../pipelines/snb_cash_ops_pipeline.py

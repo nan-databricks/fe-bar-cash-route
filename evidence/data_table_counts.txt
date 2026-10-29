@@ -1,0 +1,32 @@
+SQL warehouse: 23189fee7d892fb8
+Statement: 01f1d382-d57f-19cf-8c18-4f42d60988cd
+Status: SUCCEEDED
+
+bronze_branch_daily       87,132
+bronze_branches              159
+bronze_calendar               548
+bronze_cit_trips           14,428
+bronze_depots                   3
+bronze_machine_daily      284,960
+bronze_machines                520
+bronze_vehicles                 30
+
+silver_branch_daily       87,132
+silver_branches              159
+silver_calendar               548
+silver_cit_trips           14,428
+silver_depots                   3
+silver_machine_daily      284,960
+silver_machines                520
+silver_vehicles                 30
+
+gold_baseline_daily         1,644
+gold_cash_nodes                679
+gold_demand_features       372,092
+gold_node_daily            372,092
+gold_node_status               679
+
+Node visit threshold:
+SELECT count(*) FROM gold_node_status
+WHERE current_cash_thb < min_cash_thb + 1.5 * avg_daily_outflow_28d;
+Result: 75
