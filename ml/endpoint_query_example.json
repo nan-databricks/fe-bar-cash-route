@@ -1,0 +1,17 @@
+{
+  "dataframe_records": [
+    {
+      "node_type": "ATM",
+      "dow": 3,
+      "dom": 1,
+      "is_weekend": false,
+      "is_holiday": false,
+      "is_payday": false,
+      "lag_1": 185000.0,
+      "lag_7": 192000.0,
+      "lag_14": 178000.0,
+      "roll7_mean": 190000.0,
+      "roll28_mean": 181000.0
+    }
+  ]
+}
