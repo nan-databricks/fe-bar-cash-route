@@ -8,3 +8,4 @@ app/frontend/node_modules/
 mlruns/
 mlflow.db
 .env
+deck/.build/
