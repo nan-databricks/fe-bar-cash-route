@@ -10,15 +10,15 @@ This build replaces the calendar with **demand**: forecast every node's cash nee
 
 | Buyer KPI | Fixed 5-day cycle | Forecast + optimizer | Change |
 |---|---|---|---|
-| CIT cost per day (THB) | {{KPI_COST_PER_DAY_BASELINE}} | {{KPI_COST_PER_DAY_OPT}} | −{{KPI_COST_SAVING_PCT}}% |
-| Vans dispatched | {{KPI_VANS_BASELINE}} | {{KPI_VANS_OPT}} | |
-| Route km | | | −{{KPI_KM_SAVING_PCT}}% |
-| Cash-out risk nodes | {{KPI_CASHOUT_RISK_BASELINE}} | {{KPI_CASHOUT_RISK_OPT}} | |
-| Idle cash released (THB) | | {{KPI_IDLE_CASH_REDUCTION_THB}} | |
-| Time-window SLA | | {{KPI_SLA_OPT}}% | |
-| Forecast WAPE (lower is better) | naive {{KPI_WAPE_NAIVE}} | model {{KPI_WAPE_MODEL}} | |
+| CIT cost per day (THB) | 75,400 | 69,550 | −8% |
+| Vans dispatched | 11 | 13 | |
+| Route km | | | −23% |
+| Cash-out risk nodes | 64 | 0 | |
+| Idle cash released (THB) | | 43M | |
+| Time-window SLA | | 100% | |
+| Forecast WAPE (lower is better) | naive 39% | model 25% | |
 
-**Indicative annual CIT saving: THB {{KPI_ANNUAL_SAVING_THB}}.** The numbers come from `gold_route_summary` and `gold_model_metrics` and are logged in `evidence/`.
+**Indicative annual CIT saving: THB 1.5M.** The numbers come from `gold_route_summary` and `gold_model_metrics` and are logged in `evidence/`.
 
 ## Architecture
 

@@ -16,6 +16,10 @@ style: |
   section.lead h1, section.lead h2, section.lead strong { color: #F2A900; border: none; }
   section.lead .small { color: #d6e4ea; }
   footer { font-size: 12px; color: #5A6B73; }
+  img[alt="diagram"] { width: 100%; max-height: 430px; display: block; margin: 4px auto; }
+  section.dense { font-size: 20px; padding-top: 32px; }
+  section.dense table { font-size: 16px; }
+  section.dense th, section.dense td { padding: 4px 10px; }
 footer: "Siam Northeast Bank is fictional · all data synthetic · demo results only"
 ---
 
@@ -23,10 +27,10 @@ footer: "Siam Northeast Bank is fictional · all data synthetic · demo results 
 
 ![w:120](../brand/snb-logo.svg)
 
-# Fewer vans, no empty ATMs
+# Zero empty ATMs, shorter routes
 ## Forecast-driven cash-in-transit routing for Siam Northeast Bank
 
-**−{{KPI_COST_SAVING_PCT}}% CIT cost per day · cash-out risk {{KPI_CASHOUT_RISK_BASELINE}} → {{KPI_CASHOUT_RISK_OPT}} nodes · THB {{KPI_ANNUAL_SAVING_THB}} a year**
+**−8% CIT cost per day · cash-out risk 64 → 0 nodes · THB 1.5M a year**
 
 Khon Kaen, Northeast Thailand · 159 branches · 520 machines · 3 cash centres · 30 vans
 
@@ -34,21 +38,21 @@ Khon Kaen, Northeast Thailand · 159 branches · 520 machines · 3 cash centres 
 
 ---
 
+<!-- _class: dense -->
+
 ## The outcome, in the buyer's KPIs
 
-Fixed 5-day cycle vs demand-driven plan for the same estate on **1 Oct 2026** (synthetic plan day).
+**Indicative annual CIT saving: THB 1.5M**, before idle-cash carry cost or avoided cash-outs. Fixed 5-day cycle vs demand-driven plan, same estate, **1 Oct 2026** (synthetic plan day).
 
 | Buyer KPI | Fixed 5-day cycle | Forecast + optimizer | Change |
 |---|---:|---:|---:|
-| **CIT cost per day (THB)** | {{KPI_COST_PER_DAY_BASELINE}} | {{KPI_COST_PER_DAY_OPT}} | **−{{KPI_COST_SAVING_PCT}}%** |
-| **Vans dispatched** | {{KPI_VANS_BASELINE}} | {{KPI_VANS_OPT}} | fewer crews on the road |
-| **Route km** | | | **−{{KPI_KM_SAVING_PCT}}%** |
-| **Cash-out risk nodes** | {{KPI_CASHOUT_RISK_BASELINE}} | {{KPI_CASHOUT_RISK_OPT}} | visited before they run dry |
-| **Idle cash released (THB)** | | {{KPI_IDLE_CASH_REDUCTION_THB}} | float freed from cassettes and vaults |
-| **Time-window SLA** | | {{KPI_SLA_OPT}}% | visits inside opening hours |
-| **Forecast error (WAPE)** | naive {{KPI_WAPE_NAIVE}} | model {{KPI_WAPE_MODEL}} | a better demand signal |
-
-**Indicative annual CIT saving: THB {{KPI_ANNUAL_SAVING_THB}}**, before counting idle-cash carry cost or avoided cash-outs.
+| **CIT cost / day (THB)** | 75,400 | 69,550 | **−8%** |
+| **Vans dispatched** | 11 | 13 | +2 crews to hit SLA |
+| **Route km** | | | **−23%** |
+| **Cash-out risk nodes** | 64 | 0 | visited in time |
+| **Idle cash released (THB)** | | 43M | float freed |
+| **Time-window SLA** | | 100% | inside opening hours |
+| **Forecast WAPE** | naive 39% | model 25% | better signal |
 
 ---
 
@@ -124,7 +128,7 @@ Each stage writes the next stage's input. One **Databricks Asset Bundle**; one j
 **Forecast**
 - **One global LightGBM** across 679 nodes: calendar, payday, holiday, lag and rolling features
 - Point forecast **plus a P80 quantile**: replenish for a busy day, not an average day
-- Time-based holdout (Aug–Sep 2026): **WAPE {{KPI_WAPE_MODEL}} vs {{KPI_WAPE_NAIVE}} naive**
+- Time-based holdout (Aug–Sep 2026): **WAPE 25% vs 39% naive**
 - **MLflow** tracking → **UC** model `cash_demand_forecast@champion` → **Model Serving** `snb-cash-forecast`
 
 **Optimize**
@@ -158,7 +162,7 @@ A dispatcher's override lands in Postgres with a reason, not in a chat screensho
 4. **Override**: skip a healthy stop with a reason; the row lands in Lakebase
 5. **Genie**: *"Which ATMs are at cash-out risk tomorrow, and which van covers them?"*
 6. **Under the hood**: pipeline graph and expectations → UC lineage, mask, row filter → MLflow run and endpoint
-7. **Close**: THB {{KPI_ANNUAL_SAVING_THB}} a year and the pilot ask
+7. **Close**: THB 1.5M a year and the pilot ask
 
 ---
 
@@ -182,10 +186,10 @@ Full rationale: `docs/decisions.md`.
 
 | Lever | Basis | Value |
 |---|---|---|
-| **CIT operating cost** | (baseline − optimized) cost per day × 365 | **THB {{KPI_ANNUAL_SAVING_THB}} a year** |
-| **Idle cash** | Float reduction across 679 nodes | THB {{KPI_IDLE_CASH_REDUCTION_THB}} released, plus carry cost avoided |
-| **Cash-out risk** | Risk nodes {{KPI_CASHOUT_RISK_BASELINE}} → {{KPI_CASHOUT_RISK_OPT}} per plan day | Fee income and complaints protected |
-| **Fleet** | Vans {{KPI_VANS_BASELINE}} → {{KPI_VANS_OPT}} per day | Redeploy crews or defer fleet growth |
+| **CIT operating cost** | (baseline − optimized) cost per day × 365 | **THB 1.5M a year** |
+| **Idle cash** | Float reduction across 679 nodes | THB 43M released, plus carry cost avoided |
+| **Cash-out risk** | Risk nodes 64 → 0 per plan day | Fee income and complaints protected |
+| **Fleet** | Vans 11 → 13 per day | Two extra vans so SLA goes 15% → 100% |
 
 Cost model: distance cost plus THB 2,500 per van-day; road km = straight-line × 1.3. These are synthetic assumptions, validated on real SNB data in the pilot before any commitment.
 

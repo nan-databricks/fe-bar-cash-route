@@ -1,20 +1,6 @@
-gold_demand_forecast: 4753 rows (679 nodes × 7 days)  model_version=1
-gold_replenishment_orders service_date=2026-10-01
-score job: https://fevm-stable-classic-nan-fe-vm.cloud.databricks.com/?o=7474652587886975#job/730403885830206/run/350327387493202
-
-TOTAL_ORDERS=97  DELIVER=79  PICKUP=18
-CRITICAL=75  HIGH=0  NORMAL=22
-
-by depot / action / priority (count, amount THB millions)
-DEP-KKN-C  DELIVER CRITICAL  41  64.25
-DEP-KKN-C  DELIVER NORMAL     1   0.53
-DEP-KKN-C  PICKUP  NORMAL    10   0.79
-DEP-KKN-N  DELIVER CRITICAL  15  17.47
-DEP-KKN-N  PICKUP  NORMAL     4   0.43
-DEP-KKN-S  DELIVER CRITICAL  19  24.84
-DEP-KKN-S  DELIVER NORMAL     3   1.50
-DEP-KKN-S  PICKUP  NORMAL     4   0.44
-
-Rules: DELIVER if days_to_cashout < 2.5 (cover 5d P80 up to capacity);
-PICKUP RCM/BRANCH above 85% capacity; windows branches open..close, machines 480-1080;
-service 25/15 min.
+gold_replenishment_orders 2026-10-01
+['75', 'DELIVER', 'CRITICAL']
+['4', 'DELIVER', 'NORMAL']
+['18', 'PICKUP', 'NORMAL']
+TOTAL 97
+CRITICAL DELIVER 75, pickup 18, extra deliver 4

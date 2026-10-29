@@ -17,11 +17,7 @@ env:
     valueFrom: "serving-endpoint"
   - name: PLAN_DATE
     value: "2026-10-01"
-  # Filled by the Genie agent / integrator once the "SNB Cash Ops Assistant" space exists.
   - name: GENIE_SPACE_ID
-    value: ""
-  # Lakebase Autoscaling: attach the `snb-cash-ops` postgres resource to the app so PGHOST /
-  # PGDATABASE / PGUSER / PGPORT / PGSSLMODE are injected, and set the endpoint path below
-  # (projects/snb-cash-ops/branches/<branch>/endpoints/<endpoint>) for credential generation.
+    value: "01f1d39a6e5c1bee90888b41e5e55e66"
   - name: LAKEBASE_ENDPOINT
-    value: ""
+    value: "projects/snb-cash-ops/branches/production/endpoints/primary"

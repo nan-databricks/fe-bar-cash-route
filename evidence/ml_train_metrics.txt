@@ -1,28 +1,19 @@
-SNB cash_demand_forecast — validation 2026-08-01 .. 2026-09-30
-UC model: stable_classic_nan_fe_vm_catalog.snb_cash_ops.cash_demand_forecast v1 alias=champion
-MLflow experiment: /Users/nan.chulpaibul@databricks.com/snb_cash_forecast
-MLflow run id: 215093ef384d47129e8ae9bdaf812b1d
-Train job: https://fevm-stable-classic-nan-fe-vm.cloud.databricks.com/?o=7474652587886975#job/820682231365913/run/175323168234483
-
-gold_model_metrics (SQL warehouse 23189fee7d892fb8)
-
-segment  metric         value   model_version
-ALL      WAPE_model     0.2481  1
-ALL      WAPE_naive     0.3868  1
-ALL      MAPE_model     0.3118  1
-ALL      MAPE_naive     0.4595  1
-ALL      P80_coverage   0.8066  1
-ATM      WAPE_model     0.1326  1
-ATM      WAPE_naive     0.2496  1
-ATM      MAPE_model     0.1349  1
-ATM      MAPE_naive     0.2542  1
-BRANCH   WAPE_model     0.4400  1
-BRANCH   WAPE_naive     0.6167  1
-BRANCH   MAPE_model     0.7645  1
-BRANCH   MAPE_naive     0.9805  1
-RCM      WAPE_model     0.2684  1
-RCM      WAPE_naive     0.4055  1
-RCM      MAPE_model     0.3016  1
-RCM      MAPE_naive     0.4537  1
-
-WAPE lift vs naive (ALL): 0.2481 vs 0.3868  (−35.9% relative)
+gold_model_metrics
+metric	segment	v
+MAPE_model	ALL	0.3118
+MAPE_model	ATM	0.1349
+MAPE_model	BRANCH	0.7645
+MAPE_model	RCM	0.3016
+MAPE_naive	ALL	0.4595
+MAPE_naive	ATM	0.2542
+MAPE_naive	BRANCH	0.9805
+MAPE_naive	RCM	0.4537
+P80_coverage	ALL	0.8066
+WAPE_model	ALL	0.2481
+WAPE_model	ATM	0.1326
+WAPE_model	BRANCH	0.44
+WAPE_model	RCM	0.2684
+WAPE_naive	ALL	0.3868
+WAPE_naive	ATM	0.2496
+WAPE_naive	BRANCH	0.6167
+WAPE_naive	RCM	0.4055

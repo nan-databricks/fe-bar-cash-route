@@ -1,21 +1,38 @@
-gold_route_summary service_date=2026-10-01
-optimize job: https://fevm-stable-classic-nan-fe-vm.cloud.databricks.com/?o=7474652587886975#job/698294083001222/run/282265575083682
-gold_route_stops CDF: delta.enableChangeDataFeed=true  PK (service_date, plan_type, route_id, stop_seq)
+## summary
+service_date	plan_type	routes	vehicles_used	stops	km	duration_hr	cost_thb	idle_cash_thb	cashout_risk_nodes	sla_pct
+2026-10-01	BASELINE	11	11	135	1710.7	92.1	75400.0	1.561318917E9	64	14.7
+2026-10-01	OPTIMIZED	13	13	97	1323.2	61.5	69550.0	1.518299776E9	0	100.0
 
-SQL:
-select * from stable_classic_nan_fe_vm_catalog.snb_cash_ops.gold_route_summary order by plan_type
+## routes
+plan_type	routes	stops	km	cost
+BASELINE	11	135	1710.73	75400.25000000001
+OPTIMIZED	13	97	1323.2	69549.93000000001
 
-plan_type  routes  vans  stops   km     duration_hr  cost_thb  idle_cash_thb  cashout_risk_nodes  sla_pct
-BASELINE      11    11    135  1710.7        92.1     75400    1,561,318,917                 64     14.7
-OPTIMIZED     13    13     97  1323.2        61.5     69550    1,518,299,776                  0    100.0
+## metrics
+metric	segment	value
+MAPE_model	ALL	0.3118
+MAPE_model	ATM	0.1349
+MAPE_model	BRANCH	0.7645
+MAPE_model	RCM	0.3016
+MAPE_naive	ALL	0.4595
+MAPE_naive	ATM	0.2542
+MAPE_naive	BRANCH	0.9805
+MAPE_naive	RCM	0.4537
+WAPE_model	ALL	0.2481
+WAPE_model	ATM	0.1326
+WAPE_model	BRANCH	0.44
+WAPE_model	RCM	0.2684
+WAPE_naive	ALL	0.3868
+WAPE_naive	ATM	0.2496
+WAPE_naive	BRANCH	0.6167
+WAPE_naive	RCM	0.4055
 
-% savings vs BASELINE
-cost/day THB  (75400-69550)/75400 = 7.8%
-km            (1710.7-1323.2)/1710.7 = 22.6%
-idle cash     1.561B -> 1.518B (−2.8%)
-cash-out risk 64 -> 0
-SLA (CRITICAL/HIGH in window) 14.7% -> 100.0%
+## orders
+action	priority	n
+DELIVER	CRITICAL	75
+DELIVER	NORMAL	4
+PICKUP	NORMAL	18
 
-Cost model: vehicles.cost_per_km_thb × km + THB 2,500 crew per van-day.
-OPTIMIZED: OR-Tools CVRP-TW, 40 km/h, haversine×1.3, GUIDED_LOCAL_SEARCH 25s/depot.
-BASELINE: 5-day cycle (doy % 5) nearest-neighbour; gold_baseline_daily has no 2026-10-01 row (history ends 2026-09-30).
+## stops
+n
+232

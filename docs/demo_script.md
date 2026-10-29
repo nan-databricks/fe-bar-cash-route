@@ -1,103 +1,120 @@
-# Talk track — 8 minute FE Bar role-play
+# Demo script: SNB Cash Logistics (8–9 minutes, 10 max)
 
-Rehearse this **out loud** with `deck/deck.md` (or `deck/deck.pdf`) open, then the app. Timebox is strict: business persona first, technical persona will interrupt.
+Rehearse out loud with `deck/deck.pdf` open in one tab and these open in others: the **App** `snb-cash-route`, the **Genie space** "SNB Cash Ops Assistant", the **Lakeflow pipeline** `snb_cash_ops_pipeline`, **Catalog Explorer** on `stable_classic_nan_fe_vm_catalog.snb_cash_ops`, the **MLflow experiment** `snb_cash_forecast` and **Serving** `snb-cash-forecast`.
 
-**Personas in the room**
-- Business: CFO / Head of Cash Ops (funds CIT, owns cash-out SLA)
-- Technical: Data platform lead / architect (UC, serving, Lakebase)
+Fill `{{...}}` with real run values first (`deck/PLACEHOLDERS.md`).
 
-**Tell-show-tell rule:** name the outcome → click once → say what it means in THB or SLA.
+**Rule for every step: tell, show, tell.** Say the outcome you're about to show, click once, then say what it means in THB, SLA or risk.
 
----
-
-## 0:00–0:45 · Setup (no slides of architecture yet)
-
-> “Siam Northeast Bank is a fictional regional bank in Khon Kaen: 159 branches, 520 machines, 3 cash centres, 30 vans. Today cash logistics runs a **fixed 5-day cycle**. That wastes kilometres, parks too much idle cash in cassettes, and still lets payday machines cash out. I’m going to show a demand-driven plan for 1 October that cuts CIT cost about **31%** and cash-out risk from **19 nodes to 2**, on synthetic data — then how that plan is governed and served.”
-
-Open slide 2 (KPI table). Do **not** walk the architecture yet.
+**Room:** business persona (CFO or Head of Cash Ops) and technical persona (architect or data platform lead). Business first; the architect gets the backstage section.
 
 ---
 
-## 0:45–2:30 · App: outcome on the map
+## 0:00–0:45 · Setup (deck slides 1–2, no architecture yet)
 
-Open Databricks App `snb-cash-route` → Executive / Route tracking.
+> "Siam Northeast Bank is a fictional regional bank in Khon Kaen: 159 branches, 520 machines, 3 cash centres, 30 vans. Today every machine gets cash every 5 days, whatever the demand. That wastes kilometres, parks idle cash, and still lets payday ATMs run empty.
+> I'll show you three things: the plan for 1 October compared with the old cycle, how a dispatcher works with it, and why your architects can trust it. On synthetic data, the plan cuts CIT cost by 8% and cash-out risk from 64 nodes to 0."
 
-| Time | You say | You show |
-|---|---|---|
-| 0:45 | “Same fleet, same day, two plans.” | KPI cards: cost / vans / SLA |
-| 1:10 | “This is the calendar cycle — 26 vans, 19 nodes still at cash-out risk.” | Toggle **BASELINE** |
-| 1:40 | “Optimized: 18 vans, 2 residual risk nodes, 98% of critical stops inside the window.” | Toggle **OPTIMIZED**, pan map |
-| 2:10 | “For the CFO: that’s roughly **THB 14.5M/year** at 250 CIT days, without buying vans.” | Point at cost delta |
-
-If the map is on mocks: say so in one clause (“live gold tables are in the workspace; the control room is wired to the same contract”) and keep moving.
+Show slide 2 (KPI table) for 10 seconds, then switch to the App.
 
 ---
 
-## 2:30–3:30 · Re-forecast (ML serving)
+## 0:45–2:30 · App: the outcome on the map
 
-Open a CRITICAL ATM or branch.
+| Time | Say (tell) | Click (show) | Say (tell: what it means) |
+|---|---|---|---|
+| 0:45 | "Same fleet, same day, two plans." | App home: KPI cards | |
+| 1:05 | "This is the fixed cycle." | Toggle **BASELINE** | "11 vans, 64 machines still at risk of running dry." |
+| 1:35 | "Now the demand-driven plan." | Toggle **OPTIMIZED**; pan to Khon Kaen city | "13 vans, −23% km, 100% of stops inside opening hours." |
+| 2:00 | "For the CFO:" | Point at the cost card | "THB 75,400 down to 69,550 a day, about THB 1.5M a year, without buying a new fleet — we actually dispatch two more vans so SLA is 100%, not 15%." |
+| 2:15 | "For Cash Ops:" | Open the **Orders** list, sorted by priority | "Every stop has a reason: amount, days to cash-out, time window." |
 
-> “I’m not asking a planner to guess payday. This node’s 7-day demand comes from the **champion LightGBM** on endpoint `snb-cash-forecast`. We train on WAPE against a lag-7 naive — **18% vs 31%** — and we replenish off **P80**, because an empty ATM is more expensive than one extra cassette.”
-
-Click **Re-forecast**. Speak only after the chart appears.
-
-> “That curve is what turns into a DELIVER order with a time window the solver must honour.”
-
----
-
-## 3:30–4:15 · Override (Lakebase write)
-
-On Route detail:
-
-> “Dispatchers will disagree. That’s a feature. Skip this healthy stop, type a reason — the write goes to Lakebase `dispatch_overrides`, not a WhatsApp thread. Tomorrow’s job can see it. Audit can see it.”
-
-Submit SKIP. Confirm it lists back from GET.
+If the app shows mock data, say so in one clause ("the live gold tables are in the workspace; this view uses the same contract") and keep moving.
 
 ---
 
-## 4:15–5:15 · Genie Agent
+## 2:30–3:30 · Re-forecast (ML on Model Serving)
 
-Open **Ask SNB Ops**.
+Pick a CRITICAL ATM near a payday date.
 
-Ask 1: *Which nodes run out in the next 3 days if we do nothing?*  
-Ask 2: *What is CIT cost of optimized vs baseline for 2026-10-01?*
+> "Planners shouldn't have to guess payday. This machine's next 7 days come from our champion model, live on the serving endpoint."
 
-> “Genie is not a chatbot on PDFs. It is a space over gold tables with joins and agent mode, so Cash Ops can ask the same questions without waiting for a BI ticket. Answers are SQL you can show the architect.”
+Click **Re-forecast** and wait for the chart.
 
-If Genie is not live, read the committed answers from `evidence/genie_benchmarks.txt` and say they are the space’s benchmark pack.
-
----
-
-## 5:15–6:30 · Backstage for the architect (only if they haven’t already grabbed the keyboard)
-
-Keep this to **three clicks**:
-
-1. Lakeflow pipeline `snb_cash_ops_pipeline` — event log / expectations (not “we have a pipeline”).
-2. UC `silver_vehicles` — custodian column **masked**; mention depot **row filter** on trips.
-3. MLflow run + serving endpoint Ready + `gold_route_summary` query.
-
-Script:
-
-> “Raw CSVs land in a UC volume. Lakeflow types and tests them. Gold features train the model; gold orders feed OR-Tools; gold stops sync to Lakebase; the app and Genie both read the same tables. One catalog, one job in the bundle.”
-
-Do not mention Snowflake, Fabric, or a real bank.
+> "The solid line is expected demand; the band is P80. We replenish to P80 because an empty ATM costs more than one extra cassette. On the holdout, the model's error is 25% WAPE against 39% for a naive method. That forecast is what turned into the DELIVER order the solver had to fit into a time window."
 
 ---
 
-## 6:30–7:30 · Close and the ask
+## 3:30–4:15 · Dispatcher override (Lakebase write)
 
-Back to slide “Ask”.
+Open a route and choose a healthy, low-priority stop.
 
-> “Pilot **one cash centre for 30 days**. Success is ≥20% CIT cost or km down, cash-outs not worse, dispatchers accepting ≥80% of recommended stops. Humans still confirm the plan — we are not moving cash autonomously. The architecture is already the production shape; the increment is their telemetry on this contract.”
+> "Dispatchers will disagree with the plan sometimes, and that's a feature."
 
-Stop talking. Let them object. Use `docs/roleplay_prep.md`.
+Choose **SKIP**, type the reason "Branch closed for renovation", and submit. Show that it lists back.
+
+> "That override is written to Lakebase, our operational Postgres, with who and why. Audit can see it, and tomorrow's plan can take it into account. It doesn't end up in a WhatsApp thread."
+
+---
+
+## 4:15–5:30 · Genie agent (natural language)
+
+Use the Genie chat in the app, or the Genie space itself.
+
+1. *"Which ATMs are at risk of cashing out in the next 3 days if we do nothing?"*
+2. *"Compare optimized vs baseline CIT cost and km for 2026-10-01."*
+3. (If time) *"Which van covers the critical stops from Khon Kaen Central, and in what order?"*
+
+> "Cash Ops can ask this themselves, without a BI ticket. It's Genie in agent mode over the governed gold tables, so it respects the same masks and row filters. Show the SQL to the architect: no black box."
+
+If Genie is slow, read the committed answer from `evidence/genie_*.txt` and say it comes from the space's benchmark run.
+
+---
+
+## 5:30–7:30 · Under the hood (for the architect, three stops)
+
+**Lakeflow (≈ 40 s).** Open pipeline `snb_cash_ops_pipeline` and show the graph.
+> "Raw CSVs land in a Unity Catalog volume. Auto Loader picks them up incrementally, silver enforces expectations (here's how many rows we dropped for null keys or negative cash), and gold builds the features and status the model and app use. Declarative, serverless, with an event log."
+
+**Unity Catalog (≈ 50 s).** Catalog Explorer → `silver_vehicles` → columns.
+> "Custodian name and phone are tagged PII and masked; I see `***` unless I'm in the PII readers group."
+
+Open `silver_cit_trips`: row filter by depot.
+> "A dispatcher in one cash centre sees only their trips."
+
+Open the **Lineage** tab on `gold_route_stops`.
+> "From raw file to the table the app syncs, in one graph. One governance model for SQL, ML, Genie and the app."
+
+**MLflow + Serving (≈ 30 s).** Open the experiment's latest run: metrics `WAPE_model` and `WAPE_naive`. Then the model `cash_demand_forecast` with alias `champion`, then endpoint `snb-cash-forecast` showing Ready.
+> "Tracked, registered in Unity Catalog, served. The overnight batch and the app's button use the same champion."
+
+Wrap with one sentence:
+> "It's all one Asset Bundle and one job, `snb_cash_ops_e2e`: raw to app in one run."
+
+---
+
+## 7:30–8:30 · Close (back to the deck: business case, then the ask)
+
+> "So: on synthetic data, about THB 1.5M a year in CIT cost, cash-out risk from 64 nodes to 0, and THB 43M of idle cash released, on a platform your architects can govern.
+> My proposal: a 30-day pilot in Khon Kaen Central. Success means ≥ 20% lower CIT cost or km, cash-outs no higher, and dispatchers accepting at least 80% of planned stops. Humans confirm every plan. Can we book two hours with Cash Ops and IT Security to scope the feeds?"
+
+Stop talking and let them object. Answers are in `docs/roleplay_prep.md`.
 
 ---
 
 ## If you run long, cut in this order
 
-1. Drop MLflow UI (keep the WAPE sentence).
-2. Drop Genie question 2.
-3. Drop override if Lakebase is mock — say the table contract and move on.
+1. Third Genie question
+2. MLflow UI (keep the WAPE sentence)
+3. Lineage graph (keep mask + row filter)
+4. Override: describe it instead of clicking
 
-Never cut the KPI table or the BASELINE vs OPTIMIZED toggle.
+Never cut the KPI slide, the BASELINE vs OPTIMIZED toggle, or the close.
+
+## Pre-flight checklist (5 min before)
+
+- [ ] Endpoint `snb-cash-forecast` is Ready (warm it with one query, since it scales to zero)
+- [ ] SQL warehouse is running (Genie and Catalog Explorer)
+- [ ] App `/api/health` reports `lakebase: true` and the endpoint name
+- [ ] Genie space opens; one warm-up question asked
+- [ ] All `{{...}}` placeholders replaced in the deck you're presenting
