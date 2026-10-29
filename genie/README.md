@@ -13,12 +13,11 @@ The app reads it through `GENIE_SPACE_ID` (or `genie_space_id` in `app/config.ya
 
 Pipeline gold (always): `gold_cash_nodes`, `gold_node_daily`, `gold_demand_features`, `gold_node_status`, `gold_baseline_daily`.
 
-ML gold (added when present): `gold_model_metrics` (present now), `gold_demand_forecast`, `gold_replenishment_orders`,
-`gold_routes`, `gold_route_stops`, `gold_route_summary`.
+ML gold (added when present): `gold_demand_forecast`, `gold_replenishment_orders`, `gold_model_metrics` (all
+attached at the last deploy), plus `gold_routes`, `gold_route_stops`, `gold_route_summary` (not yet written by ML).
 
-At the last deploy, the forecast, orders and route tables did not exist yet. Until they do, the space answers cash-out
-risk from `gold_node_status` (current cash / 28-day average outflow), and for optimized-vs-baseline questions it says
-the route job has not landed rather than inventing numbers. **Re-run `01_deploy_genie.py` after `optimize_routes`** (the
+Until the route tables exist, optimized-vs-baseline and optimized van questions get a clear "route job has not landed"
+answer with the 2026-09-30 fixed-cycle baseline as fallback, never an invented optimized cost. **Re-run `01_deploy_genie.py` after `optimize_routes`** (the
 e2e job does this: `genie_space` depends on `optimize_routes`) to attach the route tables, their joins and the route
 example SQL.
 

@@ -61,7 +61,8 @@ instructions: |
     If gold_route_summary is missing, say the ML route job has not landed yet and fall back to gold_baseline_daily
     for the historical cycle only — do not invent an optimized cost.
   - Van / vehicle counts for the optimized day: gold_route_summary.vehicles_used or COUNT(DISTINCT vehicle_id) on gold_routes.
-  - Forecast quality: gold_model_metrics (WAPE/MAPE by segment).
+  - Forecast quality: gold_model_metrics. metric values are WAPE_model, WAPE_naive, MAPE_model, MAPE_naive,
+    P80_coverage; segment is ATM | BRANCH | RCM | ALL. "WAPE" means WAPE_model; compare against WAPE_naive (lag-7 naive).
   - Do not query bronze or silver tables. Gold only.
 
   ## Agent mode / skills
@@ -175,6 +176,18 @@ examples:
         AND s.current_cash_thb / s.avg_daily_outflow_28d <= 3
       GROUP BY n.district
       ORDER BY at_risk_nodes DESC
+
+  - question: "Show forecast WAPE by node type"
+    usage: "Model vs lag-7 naive WAPE per segment from gold_model_metrics."
+    sql: |
+      SELECT
+        segment AS node_type,
+        MAX(CASE WHEN metric = 'WAPE_model' THEN value END) AS wape_model,
+        MAX(CASE WHEN metric = 'WAPE_naive' THEN value END) AS wape_naive
+      FROM {S}.gold_model_metrics
+      WHERE metric IN ('WAPE_model', 'WAPE_naive')
+      GROUP BY segment
+      ORDER BY segment
 
 sql_snippets:
   measures:
