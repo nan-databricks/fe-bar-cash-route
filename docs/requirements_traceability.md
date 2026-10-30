@@ -8,7 +8,7 @@ Status key: **Done** = in the repo and verifiable now · **Pending integrator** 
 
 | # | Requirement | Where it is satisfied | Status |
 |---|---|---|---|
-| B1 | Working prototype solving a **customer problem in a specific industry** (not internal, not generic) | Banking CIT replenishment and routing for fictional SNB: `README.md`, `deck/deck.md` slides 2–4, `docs/submission_form_answers.md` | Done |
+| B1 | Working prototype solving a **customer problem in a specific industry** (not internal, not generic) | Banking CIT replenishment and routing for fictional SNB: `README.md`, `deck/slides.html` / `deck/deck.pdf` slides 2–4, `docs/submission_form_answers.md` | Done |
 | B2 | **End-to-end data journey from a raw dataset** (synthetic or public) | `data/01_generate_data.py` → CSVs in `/Volumes/.../snb_cash_ops/raw`; `evidence/data_generate_run.txt` | Done (data generated) |
 | B3 | **Lakeflow**: ingest the raw data | `pipelines/snb_cash_ops_pipeline.py` (Auto Loader, bronze/silver/gold, expectations), `resources/pipeline.yml`; `evidence/data_pipeline_events.txt`, `evidence/data_table_counts.txt` (bronze/silver/gold row counts) | Done on the Wave-1 scratch pipeline; **Pending integrator**: re-run as the bundle pipeline inside `snb_cash_ops_e2e` |
 | B4 | **Unity Catalog**: govern it | `governance/01_apply_governance.py` (tags, `snb_mask_custodian`, `snb_depot_filter`, grants), `governance/README.md`; evidence expected at `evidence/data_governance*.txt` | Pending integrator (evidence file not yet committed) |
@@ -28,12 +28,12 @@ Status key: **Done** = in the repo and verifiable now · **Pending integrator** 
 | # | Requirement | Where it is satisfied | Status |
 |---|---|---|---|
 | D1 | Deck for the business audience, attached as PDF, .txt or .md | `deck/deck.md` (Marp source), `deck/deck.pdf`, `deck/build_pdf.sh` | Done (PDF built with placeholders); **Pending integrator**: fill KPIs and rebuild |
-| D2 | **Lead with the business outcome** | Slide 1 headline is the outcome; slide 2 is the KPI table, before any architecture (slide 5) | Done |
-| D3 | **Quantify impact in the buyer's KPIs** | Slides 1, 2 and 11: filled from `evidence/ml_route_summary.txt` and `evidence/ml_train_metrics.txt` (cost −8%, km −23%, cash-out 64→0, SLA 100%, WAPE 25% vs 39%) | Done |
-| D4 | Frame value for **executive sponsor and domain owner** | Slide 4 "Who owns the decision" (CFO/COO vs Head of Cash Ops); slide 13 pilot ask | Done |
-| D5 | Short **decisions and trade-offs** section | Deck slide 10; `docs/decisions.md`; README section | Done |
+| D2 | **Lead with the business outcome** | Slide 1 headline is the outcome; slide 4 is the KPI table, before any architecture (slide 7) (`deck/slides.html` / `deck/deck.pdf` order) | Done |
+| D3 | **Quantify impact in the buyer's KPIs** | Slides 1, 4 and 10 (`deck/slides.html` / `deck/deck.pdf`): filled from `evidence/ml_route_summary.txt` and `evidence/ml_train_metrics.txt` (cost −8%, km −23%, cash-out 64→0, SLA 100%, WAPE 25% vs 39%) | Done |
+| D4 | Frame value for **executive sponsor and domain owner** | Slide 3 "Who owns the decision" (CFO/COO vs Head of Cash Ops); slide 11 pilot ask (`deck/slides.html` / `deck/deck.pdf`) | Done |
+| D5 | Short **decisions and trade-offs** section | Deck slide 12 (appendix, `deck/slides.html` / `deck/deck.pdf`); `docs/decisions.md`; README section | Done |
 | D6 | Document **AI tools, prompts and patterns** used | README "AI tools and workflow"; form answer on AI tools | Done (Nan to personalise the wording) |
-| D7 | Avoid "narrative skips business value and jumps to architecture" | Architecture first appears on slide 5, after outcome, problem and value | Done |
+| D7 | Avoid "narrative skips business value and jumps to architecture" | Architecture first appears on slide 7 (`deck/slides.html` / `deck/deck.pdf`), after problem, value and outcome | Done |
 
 ## Part 1: Submission form (Build tab)
 
