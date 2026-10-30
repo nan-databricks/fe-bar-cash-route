@@ -20,7 +20,7 @@ Status key: **Done** = in the repo and verifiable now · **Pending integrator** 
 | B10 | Submission includes **code, notebooks, app, dashboards** | `data/`, `pipelines/`, `governance/`, `ml/`, `lakebase/`, `genie/`, `app/` | Pending integrator (Lakebase and Genie code to land) |
 | B11 | **Evidence the build ran, readable as text** (cell outputs, run logs, query results, model output) | `evidence/` (4 data files so far); README "Evidence that it ran" table maps each stage to its file | Pending integrator: ML, governance, Lakebase, Genie, app and e2e evidence still missing |
 | B12 | Screenshots and recordings **don't count** on their own; source alone won't pass | All evidence is `.txt`; no screenshot-only claims in docs | Done (policy), contingent on B11 |
-| B13 | **GitHub repo link required**, readable by the validator (public, or connected EMU) | `{{GITHUB_URL}}` in README, deck, form answers | Pending integrator: no git remote configured yet |
+| B13 | **GitHub repo link required**, readable by the validator (public, or connected EMU) | https://github.com/nan-databricks/fe-bar-cash-route (public) | Done |
 | B14 | **Never include real customer data**; scrub anything identifying a customer | Synthetic generator (seed 42026); fictional SNB; disclaimers in README, every deck slide footer, form answers | **At risk**: `app/frontend/src/App.tsx` (and earlier `app/app.py`, `app/frontend/src/data/branches.ts`) contained real-bank names and codes inherited from an earlier app template. The app owner must scrub them, and a repo-wide search for real bank names must return nothing before submission |
 
 ## Part 1: Presentation deck
@@ -45,7 +45,7 @@ Status key: **Done** = in the repo and verifiable now · **Pending integrator** 
 | F4 | How the solution addresses it *(required)* | same | Done |
 | F5 | AI tools, workflow, decisions and trade-offs | same | Done (Nan to personalise) |
 | F6 | Business outcomes and impact | same | Pending integrator (KPI placeholders) |
-| F7 | GitHub repo link *(required)* | same, `{{GITHUB_URL}}` | Pending integrator |
+| F7 | GitHub repo link *(required)* | https://github.com/nan-databricks/fe-bar-cash-route | Done |
 | F8 | Presentation deck *(required)* | `deck/deck.pdf` | Pending integrator (rebuild after KPI fill) |
 | F9 | Local repo folder *(required)* | `/Users/nan.chulpaibul/Documents/demo/Q42026/fe-bar-cash-route` | Done (path given); content complete once B5–B11 land |
 | F10 | Conversation ID (optional) | session ID drafted | Nan to confirm |
