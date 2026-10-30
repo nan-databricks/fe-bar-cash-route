@@ -89,7 +89,7 @@ Open the **Lineage** tab on `gold_route_stops`.
 > "Tracked, registered in Unity Catalog, served. The overnight batch and the app's button use the same champion."
 
 Wrap with one sentence:
-> "It's all one Asset Bundle and one job, `snb_cash_ops_e2e`: raw to app in one run."
+> "It's all defined as code in one Asset Bundle: pipeline, job `snb_cash_ops_e2e` and app."
 
 ---
 
