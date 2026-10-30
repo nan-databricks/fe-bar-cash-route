@@ -4,7 +4,7 @@
 > 1. "Say:" is the words to speak. Read it out loud twice before the session, then talk, don't recite.
 > 2. **Click:** is the one action to take. Say the line before it, then click, then pause.
 > 3. Every section is tell, show, tell, and the closing tell names Alex or Shreya and ties to what they told you.
-> 4. Slide numbers match `deck/slides.html`. In the app, keep Slide 8 (screenshot) ready as a backup.
+> 4. Slide numbers match `deck/slides.html`. In the app, keep Slide 5 (screenshot) ready as a backup.
 > 5. Business words for Alex. Technical terms only in section 6, for Shreya.
 
 **Who's in the room:** **Alex Morgan** (business persona): executive sponsor over Cash Operations at Siam Northeast Bank. Cares about CIT cost, idle cash, cash-out incidents, customer trust, and a low-risk decision. **Shreya** (technical persona): technical lead, platform and data architect. Cares about governance, security and PII, integration with existing systems, reliability, operability, scale, and lock-in.
@@ -13,14 +13,14 @@
 
 | Time | What happens | Where |
 |---|---|---|
-| 0–2 | Setup: greet, agenda and time check, one discovery check each, restate the problem | Section 1 · Slides 1–3 |
+| 0–2 | Setup: greet, agenda and time check, one discovery check each, restate the problem | Section 1 · Slides 1–4 |
 | 2–12 | Demo: business view for Alex, then the handoff to Shreya | Sections 2–6 · App and workspace |
 | 12–25 | Q&A: let them drive | `docs/roleplay_personas.md`, plus "If they ask…" below |
-| 25–30 | Close: value for each of them, pilot ask, next step with owners | Section 7 · Slides 12 and 14 |
+| 25–30 | Close: value for each of them, pilot ask, next step with owners | Section 7 · Slides 10 and 11 |
 
 ---
 
-## 1. Set the stage (0:00–2:00) · Slides 1–3
+## 1. Set the stage (0:00–2:00) · Slides 1–4
 
 *Slide 1 on screen. Look at the people, not the slide.*
 
@@ -32,13 +32,15 @@ Before I show anything, two quick checks. Alex, is cash-out on payday still the 
 
 *Listen. Adapt:* Great, I'll spend a bit more time on that. *Then actually do it: more time in section 2 or 3 for Alex's pain, more in section 6 for Shreya's.*
 
-*Slide 3.*
+*Slide 2.*
 
 Say: So let me play back what I've heard. Siam Northeast Bank runs 159 branches and 520 cash machines across Khon Kaen. That's 400 ATMs and 120 cash recyclers, fed from 3 cash centres by 30 armoured vans. And every one of them gets cash every five days, whatever the demand.
 
-Alex, for you that means three things. Vans stop at machines that are still full. Payday ATMs run dry before the next visit, and that's customer trust on the line. And cash sits idle in cassettes and vaults, just in case. Shreya, for you, it means planning lives in yesterday's spreadsheets, outside anything you can govern.
+*Slide 3.*
 
-*Slide 2.*
+Say: Alex, Shreya, you each care about different parts of this, so I'll show both. Alex, for you that calendar means three things. Vans stop at machines that are still full. Payday ATMs run dry before the next visit, and that's customer trust on the line. And cash sits idle in cassettes and vaults, just in case. Shreya, for you, it means planning lives in yesterday's spreadsheets, outside anything you can govern.
+
+*Slide 4.*
 
 Say: Here's where we'll end up. Same machines, same day, a plan driven by demand instead of the calendar. Cash-in-transit cost drops from seventy-five thousand four hundred baht a day to sixty-nine thousand five hundred fifty. That's eight percent, or about one and a half million baht a year. Route kilometres fall twenty-three percent. And machines at risk of running empty go from sixty-four to zero.
 
@@ -48,7 +50,7 @@ One honest point up front: the new plan sends thirteen vans, not eleven. I'll ex
 
 ---
 
-## 2. Tomorrow's plan vs today's cycle (2:00–3:45) · App (backup: Slide 8)
+## 2. Tomorrow's plan vs today's cycle (2:00–3:45) · App (backup: Slide 5)
 
 Say: Alex, this one's for you. Let's look at what tomorrow costs and what it risks.
 
@@ -70,7 +72,7 @@ Alex, you said cost and cash-outs matter most. That's about one and a half milli
 
 ---
 
-## 3. Re-forecast a machine (3:45–4:45) · App (backup: Slide 8)
+## 3. Re-forecast a machine (3:45–4:45) · App (backup: Slide 5)
 
 Say: Alex, you mentioned payday. That's exactly where the fixed cycle breaks. So let me show you how the plan knows a machine's about to run out.
 
@@ -86,7 +88,7 @@ Alex, here's why that protects customer trust. The model's error is twenty-five 
 
 ---
 
-## 4. Dispatchers stay in control (4:45–5:30) · App (backup: Slide 8)
+## 4. Dispatchers stay in control (4:45–5:30) · App (backup: Slide 5)
 
 Say: No plan survives the morning untouched. Your dispatchers know things the data doesn't. So let me show you how they push back.
 
@@ -100,13 +102,13 @@ Alex, that's what makes this a low-risk decision. Your people still make the cal
 
 ---
 
-## 5. Ask in plain language (5:30–6:45) · App (backup: Slide 9)
+## 5. Ask in plain language (5:30–6:45) · App (backup: Slide 6)
 
 Say: Your team shouldn't need to raise a ticket just to ask a question. So let me ask the one that keeps Cash Ops up at night.
 
 **Click:** Ask SNB Ops, then type: *Which nodes run out of cash in the next 3 days if we do nothing?*
 
-*It usually answers in about 12 seconds. If it goes past about 20: "While that's thinking, here's the answer from our test run," then read it from Slide 9 or `evidence/genie_benchmarks.txt`. Read the headline answer and open the SQL. Don't walk through the table's days-to-cashout column, and ignore any stray \*\* symbols in the text.*
+*It usually answers in about 12 seconds. If it goes past about 20: "While that's thinking, here's the answer from our test run," then read it from Slide 6 or `evidence/genie_benchmarks.txt`. Read the headline answer and open the SQL. Don't walk through the table's days-to-cashout column, and ignore any stray \*\* symbols in the text.*
 
 Say: There's the answer, in plain words. Seventy-nine machines and branches will run out within three days, and every one is flagged critical for a delivery. And here's the query it ran, so it's not a black box.
 
@@ -122,7 +124,7 @@ Say: That's the business view. Shreya, how does it actually work?
 
 ---
 
-## 6. Under the hood, for Shreya (6:45–9:30) · Workspace tabs (backup: Slides 5–6)
+## 6. Under the hood, for Shreya (6:45–9:30) · Workspace tabs (backup: Slides 7–9)
 
 Say: Shreya, I know you'll want to see what's under the hood. You'd be the one running this, so let me show why it's one governed platform, not five tools taped together. Three stops: the pipeline, the governance, and the model.
 
@@ -150,9 +152,9 @@ Shreya, that's governance, security and operability in one place. One security m
 
 ---
 
-## 7. Close and next step (25:00–30:00) · Slides 12 and 14
+## 7. Close and next step (25:00–30:00) · Slides 10 and 11
 
-*Slide 12.*
+*Slide 10.*
 
 Say: Let me bring it back to what you both told me matters.
 
@@ -160,7 +162,7 @@ Alex, for you: about one and a half million baht a year in CIT cost, forty-three
 
 Shreya, for you: one governed, secure platform your team can run, built from open formats and defined as code.
 
-*Slide 14.*
+*Slide 11.*
 
 Say: Now, this is synthetic data, so I don't want you to take it on trust. Here's what I'd propose. A thirty-day pilot in Khon Kaen Central, measured against today's cycle on the same machines. We'd call it a win if three things are true. CIT cost or kilometres fall by at least twenty percent. Cash-outs are no higher than today. And your dispatchers accept at least eighty percent of the recommended stops. It runs alongside today's process, humans confirm every plan, and the fixed cycle stays as the fallback. So the risk stays small.
 
@@ -174,7 +176,7 @@ What would you need to see to say yes to the pilot?
 
 ## Reading the room
 
-- **Alex pushes on cost or ROI mid-demo:** answer in one line, then keep moving. "About one and a half million baht a year in CIT cost on this data. I'll walk through the full business case at the end." Then do it on Slide 12.
+- **Alex pushes on cost or ROI mid-demo:** answer in one line, then keep moving. "About one and a half million baht a year in CIT cost on this data. I'll walk through the full business case at the end." Then do it on Slide 10.
 - **Shreya interrupts with deep tech:** answer in one or two sentences, then park it. "Short answer: yes, it's governed in Unity Catalog. Let me show you in a couple of minutes, and we can go deeper in Q&A." Watch the clock; the demo ends by minute 12.
 - **Either of them goes quiet or looks disengaged:** ask them a question. Alex: "How does this compare with how payday runs today?" Shreya: "Is this close to how your team would want to operate it?"
 - **Running behind:** use the cut list below. Protect Q&A time and the close.
@@ -183,9 +185,9 @@ What would you need to see to say yes to the pilot?
 
 ## Recovery lines
 
-- **Genie slow:** "While that's thinking, here's the answer from our test run." Read from Slide 9.
+- **Genie slow:** "While that's thinking, here's the answer from our test run." Read from Slide 6.
 - **Endpoint cold start (30–60 s; warm it before the session):** "It scales to zero when idle, so the first call wakes it up. In production we keep it warm before the morning plan." Keep narrating the payday problem.
-- **App won't load:** "Let me show you the same screen from this morning's run." Go to Slide 8 for sections 2–4, Slide 9 for section 5. Keep the same words.
+- **App won't load:** "Let me show you the same screen from this morning's run." Go to Slide 5 for sections 2–4, Slide 6 for section 5. Keep the same words.
 - **"Why do most routes say Delayed?"** "That status panel is simulated live tracking for the demo. The plan itself meets every time window. That's the SLA card."
 - **"Why are some days-to-cashout negative?"** (only if asked) "Negative means that machine is already below its safety level today. It's overdue, which is exactly why it's critical."
 

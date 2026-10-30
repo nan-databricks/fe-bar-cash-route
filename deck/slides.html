@@ -114,6 +114,33 @@
   .step .num { width: 46px; height: 46px; border-radius: 50%; background: var(--navy); color: var(--amber); font-weight: 800; font-size: 20px; display: flex; align-items: center; justify-content: center; }
   .step h4 { margin: 2px 0 2px; font-size: 18px; color: var(--navy); }
   .step p { font-size: 15px; color: #34464F; margin: 0; }
+
+  /* presentation mode (screen only; print layout is untouched) */
+  .pres-ui { display: none; }
+  @media screen {
+    html.present, body.present { background: #000; height: 100%; overflow: hidden; }
+    body.present > .slide { display: none; position: fixed; left: 50%; top: 50%; margin: 0; box-shadow: none;
+      transform: translate(-50%, -50%) scale(var(--pres-scale, 1)); transform-origin: center center; cursor: pointer; }
+    body.present > .slide.active { display: block; }
+    body.present.idle-cursor, body.present.idle-cursor * { cursor: none !important; }
+    body.present .pres-ui { display: block; }
+    body.present .pres-nav { display: flex; }
+    .pres-counter { position: fixed; right: 16px; bottom: 12px; z-index: 10; font: 600 13px "Helvetica Neue", Arial, sans-serif;
+      color: #fff; background: rgba(0,0,0,.55); padding: 4px 10px; border-radius: 12px; opacity: 0; transition: opacity .4s; pointer-events: none; }
+    .pres-counter.show { opacity: .85; }
+    .pres-nav { position: fixed; top: 0; bottom: 0; width: 72px; z-index: 9; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity .25s; }
+    .pres-nav:hover { opacity: 1; }
+    .pres-nav.prev { left: 0; } .pres-nav.next { right: 0; }
+    .pres-nav button { width: 40px; height: 40px; border-radius: 50%; border: 0; background: rgba(255,255,255,.18); color: #fff; font-size: 20px; cursor: pointer; }
+    .pres-nav button:hover { background: rgba(255,255,255,.35); }
+    .pres-overview { position: fixed; inset: 0; z-index: 20; background: rgba(0,0,0,.92); overflow: auto; padding: 32px;
+      display: grid; grid-template-columns: repeat(auto-fill, 256px); gap: 20px; justify-content: center; align-content: start; }
+    .pres-thumb { width: 256px; height: 144px; position: relative; overflow: hidden; cursor: pointer; outline: 2px solid transparent; border-radius: 4px; }
+    .pres-thumb:hover, .pres-thumb.current { outline-color: var(--amber); }
+    .pres-thumb .slide { position: absolute; left: 0; top: 0; margin: 0; transform: scale(.2); transform-origin: 0 0; pointer-events: none; box-shadow: none; }
+    .pres-thumb span { position: absolute; left: 6px; bottom: 4px; font: 700 12px Arial, sans-serif; color: #fff; background: rgba(0,0,0,.6); padding: 1px 6px; border-radius: 8px; }
+  }
+  @media print { .pres-ui, .pres-overview { display: none !important; } }
 </style>
 </head>
 <body>
@@ -138,26 +165,7 @@
   <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">Siam Northeast Bank is fictional · all data synthetic · demo results only</span><span>FE Bar build · Oct 2026</span></div>
 </section>
 
-<!-- 2. Outcome -->
-<section class="slide">
-  <div class="bar"></div>
-  <div class="pad">
-    <div class="eyebrow">The outcome, in the buyer's KPIs</div>
-    <h2>Same estate, same day: <span class="hl">lower cost, zero cash-outs</span></h2>
-    <div class="grid g3" style="margin-bottom:18px;">
-      <div class="kpi"><div class="label">CIT cost / day</div><div class="big">฿69.6K <small>vs ฿75.4K</small></div><div class="delta">▼ 8% · ≈ THB 1.5M a year</div></div>
-      <div class="kpi"><div class="label">Route distance</div><div class="big">1,323 <small>km vs 1,711</small></div><div class="delta">▼ 23% · 30 fewer crew-hours</div></div>
-      <div class="kpi"><div class="label">Cash-out risk nodes</div><div class="big">0 <small>vs 64</small></div><div class="delta">Every at-risk machine visited in time</div></div>
-      <div class="kpi"><div class="label">Time-window SLA</div><div class="big">100% <small>vs 14.7%</small></div><div class="delta">Inside bank opening hours</div></div>
-      <div class="kpi"><div class="label">Idle cash released</div><div class="big">฿43M</div><div class="delta">Non-earning float freed</div></div>
-      <div class="kpi"><div class="label">Forecast error (WAPE)</div><div class="big">25% <small>vs 39% naive</small></div><div class="delta">Better signal → smaller safety stock</div></div>
-    </div>
-    <div class="quote"><b>Honest trade-off:</b> the plan dispatches <b>13 vans instead of 11</b>. Two extra crews is what it takes to reach SLA and zero cash-outs; total cost still falls because 38 needless stops disappear.</div>
-  </div>
-  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>Plan day 1 Oct 2026 · fixed 5-day cycle vs forecast + optimizer · synthetic data · 2</span></div>
-</section>
-
-<!-- 3. Problem -->
+<!-- 2. Problem -->
 <section class="slide">
   <div class="bar"></div>
   <div class="pad">
@@ -172,10 +180,10 @@
     </div>
     <div class="quote" style="margin-top:22px;">Cash Ops plans from yesterday's spreadsheets and cannot answer: <b>"Which machines run dry by Friday, and which van should go?"</b></div>
   </div>
-  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>3</span></div>
+  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>2</span></div>
 </section>
 
-<!-- 4. Stakeholders -->
+<!-- 3. Stakeholders -->
 <section class="slide">
   <div class="bar"></div>
   <div class="pad">
@@ -205,10 +213,83 @@
       </div>
     </div>
   </div>
-  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>4</span></div>
+  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>3</span></div>
 </section>
 
-<!-- 5. Architecture -->
+<!-- 4. Outcome -->
+<section class="slide">
+  <div class="bar"></div>
+  <div class="pad">
+    <div class="eyebrow">The outcome, in the buyer's KPIs</div>
+    <h2>Same estate, same day: <span class="hl">lower cost, zero cash-outs</span></h2>
+    <div class="grid g3" style="margin-bottom:18px;">
+      <div class="kpi"><div class="label">CIT cost / day</div><div class="big">฿69.6K <small>vs ฿75.4K</small></div><div class="delta">▼ 8% · ≈ THB 1.5M a year</div></div>
+      <div class="kpi"><div class="label">Route distance</div><div class="big">1,323 <small>km vs 1,711</small></div><div class="delta">▼ 23% · 30 fewer crew-hours</div></div>
+      <div class="kpi"><div class="label">Cash-out risk nodes</div><div class="big">0 <small>vs 64</small></div><div class="delta">Every at-risk machine visited in time</div></div>
+      <div class="kpi"><div class="label">Time-window SLA</div><div class="big">100% <small>vs 14.7%</small></div><div class="delta">Inside bank opening hours</div></div>
+      <div class="kpi"><div class="label">Idle cash released</div><div class="big">฿43M</div><div class="delta">Non-earning float freed</div></div>
+      <div class="kpi"><div class="label">Forecast error (WAPE)</div><div class="big">25% <small>vs 39% naive</small></div><div class="delta">Better signal → smaller safety stock</div></div>
+    </div>
+    <div class="quote"><b>Honest trade-off:</b> the plan dispatches <b>13 vans instead of 11</b>. Two extra crews is what it takes to reach SLA and zero cash-outs; total cost still falls because 38 needless stops disappear.</div>
+  </div>
+  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>Plan day 1 Oct 2026 · fixed 5-day cycle vs forecast + optimizer · synthetic data · 4</span></div>
+</section>
+
+<!-- 5. App screenshot -->
+<section class="slide" style="background:var(--bg)">
+  <div class="bar"></div>
+  <div class="pad" style="padding-top:42px;">
+    <div class="eyebrow">In the dispatcher's hands</div>
+    <h2 style="margin-bottom:16px;">The control room: Databricks App <span class="hl">snb-cash-route</span></h2>
+    <div class="grid" style="grid-template-columns: 1.75fr 1fr; gap:24px; align-items:start;">
+      <div class="shot">
+        <div class="chrome"><i></i><i></i><i></i><span>snb-cash-route · Route Tracking · Optimized (CVRP-TW) · live from Unity Catalog</span></div>
+        <div style="height:470px; overflow:hidden;"><img src="img/app_routes.png" alt="SNB app route tracking" style="width:100%;"></div>
+      </div>
+      <div>
+        <div class="step"><div class="num">1</div><div><h4>KPI cards vs baseline</h4><p>Cost, km, vans, idle cash, cash-out risk, SLA, crew hours from <code>gold_route_summary</code>.</p></div></div>
+        <div class="step"><div class="num">2</div><div><h4>Route map</h4><p>Toggle fixed cycle vs optimized; click a route to see its stops.</p></div></div>
+        <div class="step"><div class="num">3</div><div><h4>Re-forecast</h4><p>Calls the serving endpoint for a 7-day P80 on any machine.</p></div></div>
+        <div class="step"><div class="num">4</div><div><h4>Override with a reason</h4><p>Skip, add, resequence or emergency; written to Lakebase.</p></div></div>
+        <div class="step"><div class="num">5</div><div><h4>Ask SNB Ops</h4><p>Embedded Genie chat over the same governed tables.</p></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>Screenshot: live app on synthetic data, plan day 1 Oct 2026 · 5</span></div>
+</section>
+
+<!-- 6. Lakebase + Genie -->
+<section class="slide">
+  <div class="bar"></div>
+  <div class="pad">
+    <div class="eyebrow">Lakebase + Genie</div>
+    <h2>Operational reads, audited writes, plain-language answers</h2>
+    <div class="grid g2" style="gap:24px;">
+      <div>
+        <div class="card" style="margin-bottom:16px;">
+          <span class="tag">Lakebase Autoscaling · project snb-cash-ops</span>
+          <ul>
+            <li><b>UC synced tables</b> <code>lb_node_status</code> (679 rows) and <code>lb_route_stops</code> (232 rows) give the App millisecond reads</li>
+            <li>Writable Postgres table <code>dispatch_overrides</code>: SKIP / ADD / RESEQUENCE / EMERGENCY, with reason and author</li>
+            <li>App service principal has least-privilege access to warehouse, endpoint, Lakebase and Genie</li>
+          </ul>
+        </div>
+        <div class="quote">A dispatcher's override lands in Postgres with a reason, <b>not in a chat screenshot</b>.</div>
+      </div>
+      <div>
+        <div class="chat">
+          <div style="font-size:12px; letter-spacing:.1em; color:#8DA3AF; font-weight:700; margin-bottom:10px;">GENIE · SNB CASH OPS ASSISTANT (AGENT MODE)</div>
+          <div class="q">Which nodes run out of cash in the next 3 days if we do nothing?</div>
+          <div class="a">On <b>2026-10-01</b>, <b>79 nodes</b> are flagged to run out of cash within 3 days, all marked <b>CRITICAL</b> for a <b>DELIVER</b> action.<br><span style="color:#8DA3AF; font-size:13px;">Generated SQL over <code>gold_replenishment_orders</code> · masks and row filters still apply</span></div>
+        </div>
+        <p class="note" style="margin-top:12px;">Six benchmark questions with generated SQL and answers are committed in <code>evidence/genie_benchmarks.txt</code>.</p>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>6</span></div>
+</section>
+
+<!-- 7. Architecture -->
 <section class="slide">
   <div class="bar"></div>
   <div class="pad">
@@ -237,10 +318,10 @@
       <div class="card" style="padding:14px 18px;"><p style="margin:0"><b>Serverless everywhere</b>: pipeline, jobs, SQL warehouse, model serving (scale to zero), Lakebase Autoscaling.</p></div>
     </div>
   </div>
-  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>5</span></div>
+  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>7</span></div>
 </section>
 
-<!-- 6. Lakeflow + UC -->
+<!-- 8. Lakeflow + UC -->
 <section class="slide">
   <div class="bar"></div>
   <div class="pad">
@@ -268,10 +349,10 @@
     </div>
     <div class="quote" style="margin-top:22px;"><b>Why Databricks:</b> quality rules, security and lineage are declared once and enforced for SQL, ML, Genie and the App alike. No copies, no second security model.</div>
   </div>
-  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>6</span></div>
+  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>8</span></div>
 </section>
 
-<!-- 7. ML + Optimization -->
+<!-- 9. ML + Optimization -->
 <section class="slide">
   <div class="bar"></div>
   <div class="pad">
@@ -306,104 +387,10 @@
       </div>
     </div>
   </div>
-  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>7</span></div>
-</section>
-
-<!-- 8. App screenshot -->
-<section class="slide" style="background:var(--bg)">
-  <div class="bar"></div>
-  <div class="pad" style="padding-top:42px;">
-    <div class="eyebrow">In the dispatcher's hands</div>
-    <h2 style="margin-bottom:16px;">The control room: Databricks App <span class="hl">snb-cash-route</span></h2>
-    <div class="grid" style="grid-template-columns: 1.75fr 1fr; gap:24px; align-items:start;">
-      <div class="shot">
-        <div class="chrome"><i></i><i></i><i></i><span>snb-cash-route · Route Tracking · Optimized (CVRP-TW) · live from Unity Catalog</span></div>
-        <div style="height:470px; overflow:hidden;"><img src="img/app_routes.png" alt="SNB app route tracking" style="width:100%;"></div>
-      </div>
-      <div>
-        <div class="step"><div class="num">1</div><div><h4>KPI cards vs baseline</h4><p>Cost, km, vans, idle cash, cash-out risk, SLA, crew hours from <code>gold_route_summary</code>.</p></div></div>
-        <div class="step"><div class="num">2</div><div><h4>Route map</h4><p>Toggle fixed cycle vs optimized; click a route to see its stops.</p></div></div>
-        <div class="step"><div class="num">3</div><div><h4>Re-forecast</h4><p>Calls the serving endpoint for a 7-day P80 on any machine.</p></div></div>
-        <div class="step"><div class="num">4</div><div><h4>Override with a reason</h4><p>Skip, add, resequence or emergency; written to Lakebase.</p></div></div>
-        <div class="step"><div class="num">5</div><div><h4>Ask SNB Ops</h4><p>Embedded Genie chat over the same governed tables.</p></div></div>
-      </div>
-    </div>
-  </div>
-  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>Screenshot: live app on synthetic data, plan day 1 Oct 2026 · 8</span></div>
-</section>
-
-<!-- 9. Lakebase + Genie -->
-<section class="slide">
-  <div class="bar"></div>
-  <div class="pad">
-    <div class="eyebrow">Lakebase + Genie</div>
-    <h2>Operational reads, audited writes, plain-language answers</h2>
-    <div class="grid g2" style="gap:24px;">
-      <div>
-        <div class="card" style="margin-bottom:16px;">
-          <span class="tag">Lakebase Autoscaling · project snb-cash-ops</span>
-          <ul>
-            <li><b>UC synced tables</b> <code>lb_node_status</code> (679 rows) and <code>lb_route_stops</code> (232 rows) give the App millisecond reads</li>
-            <li>Writable Postgres table <code>dispatch_overrides</code>: SKIP / ADD / RESEQUENCE / EMERGENCY, with reason and author</li>
-            <li>App service principal has least-privilege access to warehouse, endpoint, Lakebase and Genie</li>
-          </ul>
-        </div>
-        <div class="quote">A dispatcher's override lands in Postgres with a reason, <b>not in a chat screenshot</b>.</div>
-      </div>
-      <div>
-        <div class="chat">
-          <div style="font-size:12px; letter-spacing:.1em; color:#8DA3AF; font-weight:700; margin-bottom:10px;">GENIE · SNB CASH OPS ASSISTANT (AGENT MODE)</div>
-          <div class="q">Which nodes run out of cash in the next 3 days if we do nothing?</div>
-          <div class="a">On <b>2026-10-01</b>, <b>79 nodes</b> are flagged to run out of cash within 3 days, all marked <b>CRITICAL</b> for a <b>DELIVER</b> action.<br><span style="color:#8DA3AF; font-size:13px;">Generated SQL over <code>gold_replenishment_orders</code> · masks and row filters still apply</span></div>
-        </div>
-        <p class="note" style="margin-top:12px;">Six benchmark questions with generated SQL and answers are committed in <code>evidence/genie_benchmarks.txt</code>.</p>
-      </div>
-    </div>
-  </div>
   <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>9</span></div>
 </section>
 
-<!-- 10. Demo flow -->
-<section class="slide">
-  <div class="bar"></div>
-  <div class="pad">
-    <div class="eyebrow">Demo flow · 7–10 minutes</div>
-    <h2>Outcome first, then under the hood</h2>
-    <div class="grid" style="grid-template-columns: 1fr 1fr; gap:10px 40px;">
-      <div class="step"><div class="num">1</div><div><h4>Outcome</h4><p>App KPI cards: cost per day, km, vans, cash-out risk, SLA.</p></div></div>
-      <div class="step"><div class="num">5</div><div><h4>Genie</h4><p>"Which ATMs are at cash-out risk tomorrow, and which van covers them?"</p></div></div>
-      <div class="step"><div class="num">2</div><div><h4>Map</h4><p>Toggle BASELINE vs OPTIMIZED for 1 Oct 2026.</p></div></div>
-      <div class="step"><div class="num">6</div><div><h4>Under the hood</h4><p>Pipeline graph and expectations → UC lineage, mask, row filter → MLflow run and endpoint.</p></div></div>
-      <div class="step"><div class="num">3</div><div><h4>Re-forecast</h4><p>A payday ATM: the serving endpoint returns a 7-day P80.</p></div></div>
-      <div class="step"><div class="num">7</div><div><h4>Close</h4><p>THB 1.5M a year and the pilot ask.</p></div></div>
-      <div class="step"><div class="num">4</div><div><h4>Override</h4><p>Skip a healthy stop with a reason; the row lands in Lakebase.</p></div></div>
-    </div>
-  </div>
-  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>10</span></div>
-</section>
-
-<!-- 11. Decisions -->
-<section class="slide">
-  <div class="bar"></div>
-  <div class="pad">
-    <div class="eyebrow">Decisions and trade-offs</div>
-    <h2>What we chose, and what it costs</h2>
-    <table>
-      <tr><th style="width:31%">Decision</th><th style="width:39%">Why</th><th>Trade-off</th></tr>
-      <tr><td><b>Declarative pipeline, not notebooks</b></td><td>Expectations, lineage, incremental by default</td><td>Less ad-hoc flexibility</td></tr>
-      <tr><td><b>One global LightGBM, not 679 models</b></td><td>Shares signal, handles new ATMs, one endpoint</td><td>Less per-node tuning</td></tr>
-      <tr><td><b>P80 quantile for replenishment</b></td><td>A cash-out costs more than a little extra cash</td><td>Some extra float carried</td></tr>
-      <tr><td><b>OR-Tools, 25 s per depot</b></td><td>Open source, explainable, fast</td><td>Not provably optimal</td></tr>
-      <tr><td><b>Lakebase synced tables for the App</b></td><td>Fast reads plus writable overrides</td><td>Snapshot freshness, not streaming</td></tr>
-      <tr><td><b>Genie agent mode, not a custom agent</b></td><td>Governed by UC, no prompt plumbing, fast to value</td><td>Less custom tool control</td></tr>
-      <tr><td><b>Serverless everywhere</b></td><td>No cluster ops, scale to zero for a once-a-day plan</td><td>Cold starts</td></tr>
-    </table>
-    <p class="note" style="margin-top:12px;">Full rationale in <code>docs/decisions.md</code>.</p>
-  </div>
-  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>11</span></div>
-</section>
-
-<!-- 12. Business case -->
+<!-- 10. Business case -->
 <section class="slide">
   <div class="bar"></div>
   <div class="pad">
@@ -421,27 +408,10 @@
       <div class="card" style="padding:16px 20px;"><h3>Time to value</h3><p style="margin:0">The stack deploys from one bundle; a one-cash-centre pilot needs about 2 weeks of feed setup, then 30 CIT days of measurement.</p></div>
     </div>
   </div>
-  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>12</span></div>
+  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>10</span></div>
 </section>
 
-<!-- 13. Path to production -->
-<section class="slide">
-  <div class="bar"></div>
-  <div class="pad">
-    <div class="eyebrow">Path to production</div>
-    <h2>Pilot one cash centre, then scale and harden</h2>
-    <div class="chev">
-      <div class="now"><div class="ph">Phase 1 · 30 CIT days</div><h3>Pilot</h3><p>Khon Kaen Central cash centre; real ATM switch, vault and CIT feeds under the same silver contract.</p><div class="exit">Exit: forecast beats current planner; ≥ 80% of planned stops accepted</div></div>
-      <div><div class="ph">Phase 2</div><h3>Scale</h3><p>All 3 cash centres; nightly plan plus a mid-morning re-forecast on payday.</p><div class="exit">Exit: cost per day and cash-out KPIs tracked weekly</div></div>
-      <div><div class="ph">Phase 3</div><h3>Harden</h3><p>IdP groups for row filters, maker-checker on overrides, CI/CD for the bundle, model monitoring, road-network travel times.</p><div class="exit">Exit: Risk and Security sign-off; PDPA review</div></div>
-      <div><div class="ph">Phase 4</div><h3>Extend</h3><p>Denomination mix, vault planning, CIT vendor SLAs, other regions.</p><div class="exit">Exit: region-by-region rollout</div></div>
-    </div>
-    <div class="quote" style="margin-top:22px;"><b>Humans confirm every plan;</b> nothing moves cash autonomously. Core banking, CIT vendors and radio dispatch stay in place.</div>
-  </div>
-  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>13</span></div>
-</section>
-
-<!-- 14. The ask -->
+<!-- 11. The ask -->
 <section class="slide dark">
   <div class="pad" style="justify-content:center; padding-left:90px;">
     <div class="eyebrow">The ask</div>
@@ -455,8 +425,159 @@
     <p style="font-size:19px; margin-top:28px;"><b>Next step:</b> a 2-hour working session with Cash Ops and IT Security to scope the pilot data feeds.</p>
     <p class="note" style="color:#9FB6C2; margin-top:16px;">Repo: https://github.com/nan-databricks/fe-bar-cash-route</p>
   </div>
-  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">Siam Northeast Bank is fictional · all data synthetic · every result is a synthetic-data demo result</span><span>14</span></div>
+  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">Siam Northeast Bank is fictional · all data synthetic · every result is a synthetic-data demo result</span><span>11</span></div>
 </section>
+
+<!-- 12. Decisions -->
+<section class="slide">
+  <div class="bar"></div>
+  <div class="pad">
+    <div class="eyebrow">Appendix · Decisions and trade-offs</div>
+    <h2>What we chose, and what it costs</h2>
+    <table>
+      <tr><th style="width:31%">Decision</th><th style="width:39%">Why</th><th>Trade-off</th></tr>
+      <tr><td><b>Declarative pipeline, not notebooks</b></td><td>Expectations, lineage, incremental by default</td><td>Less ad-hoc flexibility</td></tr>
+      <tr><td><b>One global LightGBM, not 679 models</b></td><td>Shares signal, handles new ATMs, one endpoint</td><td>Less per-node tuning</td></tr>
+      <tr><td><b>P80 quantile for replenishment</b></td><td>A cash-out costs more than a little extra cash</td><td>Some extra float carried</td></tr>
+      <tr><td><b>OR-Tools, 25 s per depot</b></td><td>Open source, explainable, fast</td><td>Not provably optimal</td></tr>
+      <tr><td><b>Lakebase synced tables for the App</b></td><td>Fast reads plus writable overrides</td><td>Snapshot freshness, not streaming</td></tr>
+      <tr><td><b>Genie agent mode, not a custom agent</b></td><td>Governed by UC, no prompt plumbing, fast to value</td><td>Less custom tool control</td></tr>
+      <tr><td><b>Serverless everywhere</b></td><td>No cluster ops, scale to zero for a once-a-day plan</td><td>Cold starts</td></tr>
+    </table>
+    <p class="note" style="margin-top:12px;">Full rationale in <code>docs/decisions.md</code>.</p>
+  </div>
+  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>12</span></div>
+</section>
+
+<!-- 13. Path to production -->
+<section class="slide">
+  <div class="bar"></div>
+  <div class="pad">
+    <div class="eyebrow">Appendix · Path to production</div>
+    <h2>Pilot one cash centre, then scale and harden</h2>
+    <div class="chev">
+      <div class="now"><div class="ph">Phase 1 · 30 CIT days</div><h3>Pilot</h3><p>Khon Kaen Central cash centre; real ATM switch, vault and CIT feeds under the same silver contract.</p><div class="exit">Exit: forecast beats current planner; ≥ 80% of planned stops accepted</div></div>
+      <div><div class="ph">Phase 2</div><h3>Scale</h3><p>All 3 cash centres; nightly plan plus a mid-morning re-forecast on payday.</p><div class="exit">Exit: cost per day and cash-out KPIs tracked weekly</div></div>
+      <div><div class="ph">Phase 3</div><h3>Harden</h3><p>IdP groups for row filters, maker-checker on overrides, CI/CD for the bundle, model monitoring, road-network travel times.</p><div class="exit">Exit: Risk and Security sign-off; PDPA review</div></div>
+      <div><div class="ph">Phase 4</div><h3>Extend</h3><p>Denomination mix, vault planning, CIT vendor SLAs, other regions.</p><div class="exit">Exit: region-by-region rollout</div></div>
+    </div>
+    <div class="quote" style="margin-top:22px;"><b>Humans confirm every plan;</b> nothing moves cash autonomously. Core banking, CIT vendors and radio dispatch stay in place.</div>
+  </div>
+  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>13</span></div>
+</section>
+
+<!-- 14. Demo flow -->
+<section class="slide">
+  <div class="bar"></div>
+  <div class="pad">
+    <div class="eyebrow">Appendix · Demo flow · 7–10 minutes</div>
+    <h2>Outcome first, then under the hood</h2>
+    <div class="grid" style="grid-template-columns: 1fr 1fr; gap:10px 40px;">
+      <div class="step"><div class="num">1</div><div><h4>Outcome</h4><p>App KPI cards: cost per day, km, vans, cash-out risk, SLA.</p></div></div>
+      <div class="step"><div class="num">5</div><div><h4>Genie</h4><p>"Which ATMs are at cash-out risk tomorrow, and which van covers them?"</p></div></div>
+      <div class="step"><div class="num">2</div><div><h4>Map</h4><p>Toggle BASELINE vs OPTIMIZED for 1 Oct 2026.</p></div></div>
+      <div class="step"><div class="num">6</div><div><h4>Under the hood</h4><p>Pipeline graph and expectations → UC lineage, mask, row filter → MLflow run and endpoint.</p></div></div>
+      <div class="step"><div class="num">3</div><div><h4>Re-forecast</h4><p>A payday ATM: the serving endpoint returns a 7-day P80.</p></div></div>
+      <div class="step"><div class="num">7</div><div><h4>Close</h4><p>THB 1.5M a year and the pilot ask.</p></div></div>
+      <div class="step"><div class="num">4</div><div><h4>Override</h4><p>Skip a healthy stop with a reason; the row lands in Lakebase.</p></div></div>
+    </div>
+  </div>
+  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>14</span></div>
+</section>
+
+<div class="pres-ui pres-counter" id="presCounter"></div>
+<div class="pres-ui pres-nav prev"><button type="button" aria-label="Previous slide" data-dir="-1">&#8249;</button></div>
+<div class="pres-ui pres-nav next"><button type="button" aria-label="Next slide" data-dir="1">&#8250;</button></div>
+
+<script>
+(function () {
+  var slides = Array.prototype.slice.call(document.querySelectorAll('body > .slide'));
+  var n = slides.length, cur = 0, overview = null;
+  var counter = document.getElementById('presCounter');
+  var counterTimer, cursorTimer;
+  document.documentElement.classList.add('present');
+  document.body.classList.add('present');
+
+  function fit() {
+    var s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+    document.body.style.setProperty('--pres-scale', s);
+  }
+  function fromHash() {
+    var k = parseInt(location.hash.slice(1), 10);
+    return isNaN(k) ? 0 : Math.max(0, Math.min(n - 1, k - 1));
+  }
+  function show(i) {
+    cur = Math.max(0, Math.min(n - 1, i));
+    slides.forEach(function (el, j) { el.classList.toggle('active', j === cur); });
+    counter.textContent = (cur + 1) + ' / ' + n;
+    if (location.hash !== '#' + (cur + 1)) history.replaceState(null, '', '#' + (cur + 1));
+    poke();
+  }
+  function poke() {
+    counter.classList.add('show');
+    clearTimeout(counterTimer);
+    counterTimer = setTimeout(function () { counter.classList.remove('show'); }, 2000);
+    document.body.classList.remove('idle-cursor');
+    clearTimeout(cursorTimer);
+    if (document.fullscreenElement) {
+      cursorTimer = setTimeout(function () { document.body.classList.add('idle-cursor'); }, 2000);
+    }
+  }
+  function openOverview() {
+    overview = document.createElement('div');
+    overview.className = 'pres-overview';
+    slides.forEach(function (el, j) {
+      var t = document.createElement('div');
+      t.className = 'pres-thumb' + (j === cur ? ' current' : '');
+      var c = el.cloneNode(true);
+      c.classList.remove('active');
+      t.appendChild(c);
+      var label = document.createElement('span');
+      label.textContent = j + 1;
+      t.appendChild(label);
+      t.addEventListener('click', function (e) { e.stopPropagation(); closeOverview(); show(j); });
+      overview.appendChild(t);
+    });
+    document.body.appendChild(overview);
+  }
+  function closeOverview() { if (overview) { overview.remove(); overview = null; } }
+  function toggleFullscreen() {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var k = e.key;
+    if (overview) {
+      if (k === 'Escape' || k === 'o' || k === 'O') { closeOverview(); e.preventDefault(); }
+      return;
+    }
+    if (['ArrowRight', 'ArrowDown', ' ', 'PageDown', 'Enter'].indexOf(k) >= 0) show(cur + 1);
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].indexOf(k) >= 0) show(cur - 1);
+    else if (k === 'Home') show(0);
+    else if (k === 'End') show(n - 1);
+    else if (k === 'f' || k === 'F') toggleFullscreen();
+    else if (k === 'o' || k === 'O') openOverview();
+    else { poke(); return; }
+    e.preventDefault();
+  });
+  document.addEventListener('click', function (e) {
+    if (overview || e.button !== 0) return;
+    if (e.target.closest('a')) return;
+    var btn = e.target.closest('.pres-nav button');
+    if (btn) { show(cur + parseInt(btn.dataset.dir, 10)); return; }
+    if (e.target.closest('.slide')) show(e.shiftKey ? cur - 1 : cur + 1);
+  });
+  document.addEventListener('mousemove', poke);
+  document.addEventListener('fullscreenchange', poke);
+  window.addEventListener('resize', fit);
+  window.addEventListener('hashchange', function () { show(fromHash()); });
+
+  fit();
+  show(fromHash());
+})();
+</script>
 
 </body>
 </html>

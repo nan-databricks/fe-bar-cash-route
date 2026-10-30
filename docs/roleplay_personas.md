@@ -13,7 +13,7 @@ Siam Northeast Bank (SNB) is fictional and every number is synthetic. Plan day i
 ### Alex Morgan (business)
 
 **1. "What's the ROI? When does it pay back?"**
-On synthetic data, CIT cost drops from 75,400 to 69,550 baht a day. That's 8%, about 1.5 million baht a year, before the 43 million baht of idle cash freed up. I won't give you a payback date until we've measured run cost on your data. That's what the pilot's first week does. *Show it: Slide 12.*
+On synthetic data, CIT cost drops from 75,400 to 69,550 baht a day. That's 8%, about 1.5 million baht a year, before the 43 million baht of idle cash freed up. I won't give you a payback date until we've measured run cost on your data. That's what the pilot's first week does. *Show it: Slide 10.*
 
 **2. "Why are you sending more vans? That's more crews."**
 Fair question. The old cycle looked cheap because it was skipping real demand. 64 machines were at risk of running dry, and only about 15% of stops hit their time window. The new plan drops 38 stops nobody needed, 135 down to 97. That pays for two extra crews, and total cost still falls. *Show it: Route Tracking, Baseline vs Optimized toggle.*
@@ -51,7 +51,7 @@ Custodian name and phone are tagged as personal data in Unity Catalog and column
 The depot row filter checks group membership. In the demo it's one group per cash centre, like `snb_ops_kkn_c`. In production those become SCIM-synced groups from your IdP, so access follows HR, not tickets. If a pipeline-managed table rejects a direct filter, we expose a governed view instead. Same rule, different attachment point.
 
 **3. "How do real feeds plug in: ATM switch, vault, CIT GPS?"**
-Today there are eight raw feeds landing in a governed volume, loaded incrementally by Auto Loader. Real switch journals and vault balances replace the synthetic files via Lakeflow Connect or file drops, under the same silver contract, so nothing downstream changes. CIT GPS isn't in the demo. It'd be a new bronze feed, mainly for actual travel times. *Show it: Slide 5.*
+Today there are eight raw feeds landing in a governed volume, loaded incrementally by Auto Loader. Real switch journals and vault balances replace the synthetic files via Lakeflow Connect or file drops, under the same silver contract, so nothing downstream changes. CIT GPS isn't in the demo. It'd be a new bronze feed, mainly for actual travel times. *Show it: Slide 7.*
 
 **4. "How fresh is the data? What's the latency?"**
 It's built for the morning plan: nightly forecast and solve, because vans load once at the cash centre. The Lakebase tables are snapshot syncs, so they're as fresh as the last job run, not streaming. Point reads are milliseconds. Continuous sync from the change feed is the production upgrade, and the pipeline can run continuously if you need intraday.
@@ -72,7 +72,7 @@ It is Postgres, version 17, so your team's skills carry over. The difference is 
 The pipeline and the end-to-end job are defined in one Asset Bundle. Each stage has run, and the evidence is in the repo. The full chain hasn't been run as one job yet, so I won't claim that. The app deploys separately today. For production I'd add dev, staging and prod targets, each run by a service principal.
 
 **10. "How locked in are we?"**
-Not much. Tables are Delta, readable as Iceberg. The model is an MLflow artefact. Lakebase is Postgres. OR-Tools is open source, and the app is React and FastAPI. Everything is code in one repo. The app's service principal has scoped grants, not admin, and we'd tighten those to gold-only in the pilot. *Show it: Slide 11.*
+Not much. Tables are Delta, readable as Iceberg. The model is an MLflow artefact. Lakebase is Postgres. OR-Tools is open source, and the app is React and FastAPI. Everything is code in one repo. The app's service principal has scoped grants, not admin, and we'd tighten those to gold-only in the pilot. *Show it: Slide 12.*
 
 ## 3. Bridge phrases
 
@@ -105,10 +105,10 @@ Not much. Tables are Delta, readable as Iceberg. The model is an MLflow artefact
 
 | Time | Segment | What happens |
 |---|---|---|
-| 0–2 | Setup and discovery | 30-second opener (Slides 1–3). One check-in: "Does that match your world?" Repeat back any pain they add, and use it later. |
-| 2–12 | Demo | Slide 2 outcome, then Route Tracking toggle, Machines re-forecast, Truck Detail override, Ask SNB Ops, then 90 seconds backstage for Shreya (pipeline, mask and row filter, model). Close each section with value for a named person. |
+| 0–2 | Setup and discovery | 30-second opener (Slides 1–4). One check-in: "Does that match your world?" Repeat back any pain they add, and use it later. |
+| 2–12 | Demo | Slide 4 outcome, then Route Tracking toggle, Machines re-forecast, Truck Detail override, Ask SNB Ops, then 90 seconds backstage for Shreya (pipeline, mask and row filter, model). Close each section with value for a named person. |
 | 12–25 | Q&A | Answer at the asker's altitude, then bridge. Use discovery questions in natural pauses. |
-| 25–30 | Close | Slide 12 recap in THB, Slide 14 pilot ask, three success criteria, book the two-hour scoping session. Ask: "What would you need to see to say yes?" |
+| 25–30 | Close | Slide 10 recap in THB, Slide 11 pilot ask, three success criteria, book the two-hour scoping session. Ask: "What would you need to see to say yes?" |
 
 **Time-management tips**
 - Watch the clock at 12:00. If the demo runs long, cut MLflow, then lineage, then describe the override instead of clicking.

@@ -38,24 +38,6 @@ Khon Kaen, Northeast Thailand · 159 branches · 520 machines · 3 cash centres 
 
 ---
 
-<!-- _class: dense -->
-
-## The outcome, in the buyer's KPIs
-
-**Indicative annual CIT saving: THB 1.5M**, before idle-cash carry cost or avoided cash-outs. Fixed 5-day cycle vs demand-driven plan, same estate, **1 Oct 2026** (synthetic plan day).
-
-| Buyer KPI | Fixed 5-day cycle | Forecast + optimizer | Change |
-|---|---:|---:|---:|
-| **CIT cost / day (THB)** | 75,400 | 69,550 | **−8%** |
-| **Vans dispatched** | 11 | 13 | +2 crews to hit SLA |
-| **Route km** | | | **−23%** |
-| **Cash-out risk nodes** | 64 | 0 | visited in time |
-| **Idle cash released (THB)** | | 43M | float freed |
-| **Time-window SLA** | | 100% | inside opening hours |
-| **Forecast WAPE** | naive 39% | model 25% | better signal |
-
----
-
 ## The problem: a calendar, not demand, decides where cash goes
 
 SNB replenishes every branch, ATM and cash-recycling machine (RCM) on a **fixed 5-day cycle**.
@@ -84,6 +66,38 @@ A spreadsheet and radio dispatch cannot jointly answer *who needs cash tomorrow*
 - A map of every route against the old cycle; **override** any stop with a reason, audited
 - Ask in plain language: *"Which ATMs in Ban Phai run out before Friday?"*
 - Re-forecast one machine on demand when an event or holiday is announced
+
+---
+
+<!-- _class: dense -->
+
+## The outcome, in the buyer's KPIs
+
+**Indicative annual CIT saving: THB 1.5M**, before idle-cash carry cost or avoided cash-outs. Fixed 5-day cycle vs demand-driven plan, same estate, **1 Oct 2026** (synthetic plan day).
+
+| Buyer KPI | Fixed 5-day cycle | Forecast + optimizer | Change |
+|---|---:|---:|---:|
+| **CIT cost / day (THB)** | 75,400 | 69,550 | **−8%** |
+| **Vans dispatched** | 11 | 13 | +2 crews to hit SLA |
+| **Route km** | | | **−23%** |
+| **Cash-out risk nodes** | 64 | 0 | visited in time |
+| **Idle cash released (THB)** | | 43M | float freed |
+| **Time-window SLA** | | 100% | inside opening hours |
+| **Forecast WAPE** | naive 39% | model 25% | better signal |
+
+---
+
+## Lakebase, Genie, App: in the dispatcher's hands
+
+| Layer | Role |
+|---|---|
+| **Lakebase Autoscaling** `snb-cash-ops` | UC **synced tables** of route stops and node status for millisecond reads; writable `dispatch_overrides` (SKIP / ADD / RESEQUENCE / EMERGENCY, reason, author) |
+| **Genie space** "SNB Cash Ops Assistant" | Agent mode over governed gold tables: *"which nodes cash out in 3 days?"*, *"cost vs baseline?"*. Masks and row filters still apply |
+| **Databricks App** `snb-cash-route` | Map of optimized vs baseline routes, KPI cards, order list, **Re-forecast** (serving), override form, embedded Genie chat |
+
+A dispatcher's override lands in Postgres with a reason, not in a chat screenshot.
+
+**Why Databricks:** operational database, analytics and AI share one identity and governance model. There's no separate app database to secure and hand-sync.
 
 ---
 
@@ -140,48 +154,6 @@ Each stage writes the next stage's input. Packaged as one **Databricks Asset Bun
 
 ---
 
-## Lakebase, Genie, App: in the dispatcher's hands
-
-| Layer | Role |
-|---|---|
-| **Lakebase Autoscaling** `snb-cash-ops` | UC **synced tables** of route stops and node status for millisecond reads; writable `dispatch_overrides` (SKIP / ADD / RESEQUENCE / EMERGENCY, reason, author) |
-| **Genie space** "SNB Cash Ops Assistant" | Agent mode over governed gold tables: *"which nodes cash out in 3 days?"*, *"cost vs baseline?"*. Masks and row filters still apply |
-| **Databricks App** `snb-cash-route` | Map of optimized vs baseline routes, KPI cards, order list, **Re-forecast** (serving), override form, embedded Genie chat |
-
-A dispatcher's override lands in Postgres with a reason, not in a chat screenshot.
-
-**Why Databricks:** operational database, analytics and AI share one identity and governance model. There's no separate app database to secure and hand-sync.
-
----
-
-## Demo flow (7–10 minutes)
-
-1. **Outcome first**: App KPI cards for cost per day, vans, km, cash-out risk and SLA
-2. **Map**: toggle BASELINE vs OPTIMIZED for 1 Oct 2026
-3. **Re-forecast** a payday ATM: the serving endpoint returns a 7-day P80
-4. **Override**: skip a healthy stop with a reason; the row lands in Lakebase
-5. **Genie**: *"Which ATMs are at cash-out risk tomorrow, and which van covers them?"*
-6. **Under the hood**: pipeline graph and expectations → UC lineage, mask, row filter → MLflow run and endpoint
-7. **Close**: THB 1.5M a year and the pilot ask
-
----
-
-## Decisions and trade-offs
-
-| Decision | Why | Trade-off |
-|---|---|---|
-| Declarative pipeline, not notebooks | Expectations, lineage, incremental by default | Less ad-hoc flexibility |
-| One global LightGBM, not 679 models | Shares signal, handles new ATMs, one endpoint | Less per-node tuning |
-| P80 quantile for replenishment | A cash-out costs more than a little extra cash | Some extra float carried |
-| OR-Tools, 25 s per depot | Open source, explainable, fast | Not provably optimal |
-| Lakebase synced tables for the App | Fast reads plus writable overrides | Snapshot freshness, not streaming |
-| Genie agent mode, not a custom agent | Governed, no prompt plumbing, fast to value | Less custom tool control |
-| Serverless everywhere | No cluster ops, scale-to-zero | Cold starts |
-
-Full rationale: `docs/decisions.md`.
-
----
-
 ## Business case (synthetic-data demo, indicative)
 
 | Lever | Basis | Value |
@@ -194,19 +166,6 @@ Full rationale: `docs/decisions.md`.
 Cost model: distance cost plus THB 2,500 per van-day; road km = straight-line × 1.3. These are synthetic assumptions, validated on real SNB data in the pilot before any commitment.
 
 **Time to value:** the stack deploys from one bundle; the pilot is one cash centre in about 6 weeks.
-
----
-
-## Path to production
-
-| Phase | Scope | Exit criteria |
-|---|---|---|
-| **Pilot (about 6 weeks: feed setup + 30 CIT days)** | Khon Kaen Central cash centre; real ATM switch, vault and CIT feeds under the same silver contract | Forecast beats current planner; dispatchers accept ≥ 80% of planned stops |
-| **Scale** | All 3 cash centres; nightly plan plus mid-morning re-forecast on payday | Cost per day and cash-out KPIs tracked weekly |
-| **Harden** | IdP groups for row filters, maker-checker on overrides, CI/CD for the bundle, model monitoring, road-network travel times | Risk and Security sign-off; PDPA review |
-| **Extend** | Denomination mix, vault planning, CIT vendor SLAs, other regions | Region-by-region rollout |
-
-Humans confirm every plan; nothing moves cash autonomously. Core banking, CIT vendors and radio stay in place.
 
 ---
 
@@ -224,3 +183,44 @@ Success, against the fixed cycle on the same nodes:
 Next step: a 2-hour working session with Cash Ops and IT Security to scope the pilot data feeds.
 
 <span class="small">Repo: https://github.com/nan-databricks/fe-bar-cash-route · Siam Northeast Bank is fictional; all data is synthetic and every result shown comes from a synthetic-data demo.</span>
+
+---
+
+## Appendix · Decisions and trade-offs
+
+| Decision | Why | Trade-off |
+|---|---|---|
+| Declarative pipeline, not notebooks | Expectations, lineage, incremental by default | Less ad-hoc flexibility |
+| One global LightGBM, not 679 models | Shares signal, handles new ATMs, one endpoint | Less per-node tuning |
+| P80 quantile for replenishment | A cash-out costs more than a little extra cash | Some extra float carried |
+| OR-Tools, 25 s per depot | Open source, explainable, fast | Not provably optimal |
+| Lakebase synced tables for the App | Fast reads plus writable overrides | Snapshot freshness, not streaming |
+| Genie agent mode, not a custom agent | Governed, no prompt plumbing, fast to value | Less custom tool control |
+| Serverless everywhere | No cluster ops, scale-to-zero | Cold starts |
+
+Full rationale: `docs/decisions.md`.
+
+---
+
+## Appendix · Path to production
+
+| Phase | Scope | Exit criteria |
+|---|---|---|
+| **Pilot (about 6 weeks: feed setup + 30 CIT days)** | Khon Kaen Central cash centre; real ATM switch, vault and CIT feeds under the same silver contract | Forecast beats current planner; dispatchers accept ≥ 80% of planned stops |
+| **Scale** | All 3 cash centres; nightly plan plus mid-morning re-forecast on payday | Cost per day and cash-out KPIs tracked weekly |
+| **Harden** | IdP groups for row filters, maker-checker on overrides, CI/CD for the bundle, model monitoring, road-network travel times | Risk and Security sign-off; PDPA review |
+| **Extend** | Denomination mix, vault planning, CIT vendor SLAs, other regions | Region-by-region rollout |
+
+Humans confirm every plan; nothing moves cash autonomously. Core banking, CIT vendors and radio stay in place.
+
+---
+
+## Appendix · Demo flow (7–10 minutes)
+
+1. **Outcome first**: App KPI cards for cost per day, vans, km, cash-out risk and SLA
+2. **Map**: toggle BASELINE vs OPTIMIZED for 1 Oct 2026
+3. **Re-forecast** a payday ATM: the serving endpoint returns a 7-day P80
+4. **Override**: skip a healthy stop with a reason; the row lands in Lakebase
+5. **Genie**: *"Which ATMs are at cash-out risk tomorrow, and which van covers them?"*
+6. **Under the hood**: pipeline graph and expectations → UC lineage, mask, row filter → MLflow run and endpoint
+7. **Close**: THB 1.5M a year and the pilot ask
