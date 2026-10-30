@@ -1,0 +1,72 @@
+[
+  {
+    "slide": 1,
+    "title": "Zero empty ATMs. Shorter routes.",
+    "notes": "Good afternoon, Alex. Good afternoon, Shreya. Thanks for making the time. I've got about ten minutes of demo, first the business view, then how it works underneath, and then plenty of time for your questions. Does that work? The headline is simple: zero empty ATMs and shorter routes, by planning cash around demand instead of a calendar. Quick note: Siam Northeast Bank and all the data here are synthetic, so treat the numbers as indicative."
+  },
+  {
+    "slide": 2,
+    "title": "Outcome KPIs",
+    "notes": "Alex, here's where we'll end up. Same machines, same day. CIT cost drops from seventy-five thousand four hundred baht a day to sixty-nine thousand five hundred fifty. That's eight percent, about one and a half million baht a year. Route kilometres fall twenty-three percent. Machines at risk of running dry go from sixty-four to zero, and on-time goes from fifteen percent to a hundred. One honest point: the plan sends thirteen vans, not eleven. Two extra crews hit the time windows, and it's still cheaper because thirty-eight needless stops disappear."
+  },
+  {
+    "slide": 3,
+    "title": "Problem",
+    "notes": "Let me play back what I've heard. Siam Northeast Bank runs 159 branches, 400 ATMs and 120 cash recyclers from three cash centres with thirty armoured vans. Every one of them gets cash every five days, whatever the demand. Alex, that means vans stop at full machines, payday ATMs run dry, and cash sits idle just in case. Shreya, it means planning lives in spreadsheets you can't govern. Does that match what you're seeing?"
+  },
+  {
+    "slide": 4,
+    "title": "Two buyers",
+    "notes": "There are really two owners here. Alex, for you it's cost to serve, idle cash, cash-out incidents and customer trust, and a decision that doesn't put operations at risk. For your Cash Operations team, it's a plan ready every morning, a map against the old cycle, a way to override any stop with a reason, and plain-language answers. Shreya, the point for you is that it's one platform serving all of that, not a stack of point tools."
+  },
+  {
+    "slide": 5,
+    "title": "Architecture flow",
+    "notes": "Shreya, this one's for you. Here's the journey from raw feed to the dispatcher's screen, in six steps. Ingest eight raw feeds with quality rules. Predict cash demand per machine. Turn that into delivery and pickup orders and solve the routes. Serve the plan from a fast operational database. Let people ask questions in plain language. And put it all in one app. The key point: one governance layer runs underneath every step, so you secure the data once."
+  },
+  {
+    "slide": 6,
+    "title": "Lakeflow + Unity Catalog",
+    "notes": "Shreya, this is how the data stays trustworthy. A declarative pipeline loads the eight feeds incrementally, and the quality rules drop records with missing IDs or negative cash before anything downstream sees them. Every update logs what it dropped. On the governance side, custodian names and phone numbers are masked for anyone outside the PII readers group, and a row filter means each cash centre only sees its own trips. Lineage shows the whole path to the app."
+  },
+  {
+    "slide": 7,
+    "title": "Forecast + optimize",
+    "notes": "Two steps here. First, one forecasting model across every machine, using calendar, payday and holiday signals. We plan to a busy day, not an average one, because an empty ATM costs more than an extra cassette. Its error is twenty-five percent against thirty-nine for a same-day-last-week rule. Second, the forecast becomes ninety-seven orders: seventy-five critical deliveries, four normal deliveries and eighteen pickups. The route optimizer then fits them into van capacity and branch time windows."
+  },
+  {
+    "slide": 8,
+    "title": "App screenshot",
+    "notes": "This is the control room your dispatchers would use. The KPI cards up top show cost, kilometres, vans, idle cash and risk against the old cycle. The map toggles between the fixed cycle and the optimized plan. Pick any machine and re-forecast it live for the next seven days, with a busy-day band. Any stop can be skipped, added or resequenced with a reason, and that's saved for audit. And there's a built-in assistant to ask questions in plain words."
+  },
+  {
+    "slide": 9,
+    "title": "Lakebase + Genie",
+    "notes": "Two things make the app feel operational. The plan is served from a fast Postgres database, so the screen responds instantly, and dispatcher overrides are written back there with who made them and why. That's an audit trail, not a chat screenshot. Then the assistant. Ask it which machines run out of cash in the next three days if you do nothing, and it says seventy-nine, all flagged critical for delivery. It shows its query, and it respects the same access rules."
+  },
+  {
+    "slide": 10,
+    "title": "Demo flow",
+    "notes": "Here's how I'll walk you through it. Outcome first: the cost and risk numbers. Then the map, old cycle against the new plan. Then a live re-forecast on a payday machine, a dispatcher override, and a question to the assistant. After that, ninety seconds under the hood for your architect. And I'll close with the business case and a concrete pilot proposal."
+  },
+  {
+    "slide": 11,
+    "title": "Decisions/trade-offs",
+    "notes": "I want to be upfront about the choices we made and what each one costs. A declarative pipeline gives us quality rules and lineage, but it's less ad hoc. One shared forecasting model handles new ATMs well, but it's less tuned per machine. Planning to a busy day carries a little extra cash. The open-source route optimizer is fast and explainable, but not provably optimal. None of these are hidden, and the pilot tests each one on your real data."
+  },
+  {
+    "slide": 12,
+    "title": "Business case",
+    "notes": "Let me bring it back to what you both told me matters. Alex, for you: about one and a half million baht a year in CIT cost, forty-three million baht of idle cash freed, and no machines left to run dry on the plan day. Yes, it's thirteen vans instead of eleven, and that's what buys a hundred percent on-time. Shreya, for you: one governed, secure platform your team can run, on open formats and defined as code. These are synthetic assumptions, so we'd re-check them on your data first."
+  },
+  {
+    "slide": 13,
+    "title": "Path to production",
+    "notes": "Alex, Shreya, if the pilot works, here's the path. Start with thirty CIT days in one cash centre, Khon Kaen Central, on your real ATM, vault and van feeds. Then scale to all three centres, with a mid-morning re-forecast on payday. Then harden it: your identity groups for access rules, maker-checker on overrides, monitoring, real road travel times, and a Risk, Security and PDPA review. Each phase has a clear exit test before we move on."
+  },
+  {
+    "slide": 14,
+    "title": "The ask",
+    "notes": "This is synthetic data, so I don't want you to take it on trust. My proposal is a thirty-day pilot in Khon Kaen Central, measured against today's cycle on the same machines. It's a win if CIT cost or kilometres fall at least twenty percent, cash-outs are no higher, and dispatchers accept at least eighty percent of recommended stops. Alex, could you sponsor a two-hour scoping session next week with your Cash Ops lead? Shreya, could you bring someone from IT Security to agree the feeds and access model? What would you need to see to say yes?"
+  }
+]

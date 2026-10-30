@@ -201,7 +201,7 @@ Cost model: distance cost plus THB 2,500 per van-day; road km = straight-line ×
 
 | Phase | Scope | Exit criteria |
 |---|---|---|
-| **Pilot (6 weeks)** | Khon Kaen Central cash centre; real ATM switch, vault and CIT feeds under the same silver contract | Forecast beats current planner; dispatchers accept ≥ 80% of planned stops |
+| **Pilot (about 6 weeks: feed setup + 30 CIT days)** | Khon Kaen Central cash centre; real ATM switch, vault and CIT feeds under the same silver contract | Forecast beats current planner; dispatchers accept ≥ 80% of planned stops |
 | **Scale** | All 3 cash centres; nightly plan plus mid-morning re-forecast on payday | Cost per day and cash-out KPIs tracked weekly |
 | **Harden** | IdP groups for row filters, maker-checker on overrides, CI/CD for the bundle, model monitoring, road-network travel times | Risk and Security sign-off; PDPA review |
 | **Extend** | Denomination mix, vault planning, CIT vendor SLAs, other regions | Region-by-region rollout |

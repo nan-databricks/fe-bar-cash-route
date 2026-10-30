@@ -1,3 +1,5 @@
+> For the 30-minute AI role-play with Alex Morgan (business) and Shreya (technical), use [`roleplay_personas.md`](roleplay_personas.md): persona profiles, top-10 answers each, bridges, call plan and never-say list.
+
 # Role-play prep: SNB Cash Logistics
 
 Yoodli scores: **demo setup**, **tell-show-tell**, **value communication**, **reading the room**, **professionalism**. You face one business and one technical persona in the same session. Lead with the outcome, quantify in THB, and pitch each answer at the altitude of whoever asked.
@@ -58,7 +60,7 @@ The solver is the cheap part. The value is forecasting demand per machine, gover
 ## Technical objections
 
 **"Cash data is sensitive. Who sees what?"** (security of cash data)
-Everything sits in Unity Catalog. Custodian name and phone are column-masked for anyone outside the PII readers group. Historical trips are row-filtered by depot, so a dispatcher sees only their cash centre. The app's service principal reads gold only; bronze and silver are restricted. Every access is audited in system tables, and lineage shows exactly which tables feed the app. This repo contains only synthetic data.
+Everything sits in Unity Catalog. Custodian name and phone are column-masked for anyone outside the PII readers group. Historical trips are row-filtered by depot, so a dispatcher sees only their cash centre. Consumers are granted gold tables only. The app's service principal has scoped read on the cash-ops schema (not admin), and we'd tighten it to gold-only in the pilot. Every access is audited in system tables, and lineage shows exactly which tables feed the app. This repo contains only synthetic data.
 
 **"This is batch. We need real time."**
 CIT is a morning planning problem: vans load at the cash centre once. Nightly forecast and solve covers that. Intraday exceptions are handled by the **Re-forecast** button (real-time Model Serving) and dispatcher overrides. If you need intraday re-planning on payday, it's a second job trigger on the same tables, and the pipeline can run in continuous mode on streaming ATM events without a redesign.
