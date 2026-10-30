@@ -103,7 +103,7 @@ flowchart LR
   D -->|re-forecast| I
 ```
 
-Each stage writes the next stage's input. One **Databricks Asset Bundle**; one job `snb_cash_ops_e2e` runs raw → app-ready, all **serverless**.
+Each stage writes the next stage's input. Packaged as one **Databricks Asset Bundle** (pipeline, job `snb_cash_ops_e2e`, app), all **serverless**.
 
 ---
 

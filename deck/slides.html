@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SNB Cash Logistics: forecast-driven CIT routing on Databricks</title>
+<style>
+  @page { size: 1280px 720px; margin: 0; }
+  :root {
+    --navy: #0B2A3C; --teal: #0B4F6C; --teal-2: #13698F; --amber: #F2A900; --amber-soft: #FFF4D6;
+    --ink: #0B1F2A; --muted: #5A6B73; --line: #DCE4E8; --bg: #F6F8FA; --green: #1E9E5A; --red: #D64545;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #888; }
+  body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: var(--ink); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .slide { width: 1280px; height: 720px; position: relative; overflow: hidden; background: #fff; page-break-after: always; break-after: page; margin: 0 auto; }
+  @media screen { .slide { margin: 24px auto; box-shadow: 0 8px 30px rgba(0,0,0,.25); } }
+  .pad { position: absolute; inset: 0; padding: 52px 64px 64px; display: flex; flex-direction: column; }
+  .eyebrow { font-size: 14px; letter-spacing: .16em; text-transform: uppercase; color: var(--teal-2); font-weight: 700; margin-bottom: 10px; }
+  h1 { font-size: 40px; line-height: 1.12; margin: 0 0 8px; color: var(--navy); font-weight: 800; letter-spacing: -.01em; }
+  h2 { font-size: 34px; line-height: 1.15; margin: 0 0 22px; color: var(--navy); font-weight: 800; letter-spacing: -.01em; }
+  h2 .hl, h1 .hl { color: var(--amber); }
+  p { margin: 0 0 10px; font-size: 18px; line-height: 1.45; }
+  .lede { font-size: 20px; color: var(--muted); margin-bottom: 22px; max-width: 1040px; }
+  .footer { position: absolute; left: 64px; right: 64px; bottom: 22px; display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); }
+  .footer .brand { display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--teal); }
+  .footer img { width: 18px; height: 18px; }
+  .bar { position: absolute; left: 0; top: 0; bottom: 0; width: 10px; background: linear-gradient(var(--teal), var(--amber)); }
+
+  /* dark slides */
+  .dark { background: radial-gradient(1200px 700px at 85% 10%, #13698F 0%, #0B2A3C 55%, #071A26 100%); color: #fff; }
+  .dark h1, .dark h2 { color: #fff; }
+  .dark .eyebrow { color: var(--amber); }
+  .dark .footer { color: #9FB6C2; }
+  .dark .footer .brand { color: #fff; }
+
+  /* grid + cards */
+  .grid { display: grid; gap: 18px; }
+  .g2 { grid-template-columns: 1fr 1fr; } .g3 { grid-template-columns: repeat(3, 1fr); } .g4 { grid-template-columns: repeat(4, 1fr); }
+  .card { background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; }
+  .card h3 { margin: 0 0 8px; font-size: 19px; color: var(--navy); }
+  .card p, .card li { font-size: 16px; line-height: 1.45; color: #23343D; }
+  .card ul { margin: 0; padding-left: 18px; }
+  .card li { margin-bottom: 6px; }
+  .tag { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 4px 9px; border-radius: 999px; background: #E3F0F6; color: var(--teal); margin-bottom: 10px; }
+  .tag.amber { background: var(--amber-soft); color: #8A5F00; }
+  .tag.red { background: #FCE6E6; color: #A32F2F; }
+  .icon { width: 40px; height: 40px; border-radius: 10px; background: var(--teal); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; margin-bottom: 12px; }
+
+  /* KPI tiles */
+  .kpi { border-radius: 16px; padding: 20px 22px; background: #fff; border: 1px solid var(--line); position: relative; }
+  .kpi::before { content: ""; position: absolute; left: 0; top: 0; right: 0; height: 5px; border-radius: 16px 16px 0 0; background: var(--amber); }
+  .kpi .label { font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+  .kpi .big { font-size: 44px; font-weight: 800; color: var(--navy); margin: 6px 0 2px; letter-spacing: -.02em; }
+  .kpi .big small { font-size: 22px; font-weight: 700; color: var(--muted); }
+  .kpi .delta { font-size: 15px; font-weight: 700; color: var(--green); }
+  .kpi .delta.neutral { color: var(--muted); }
+  .kpi .sub { font-size: 14px; color: var(--muted); margin-top: 4px; }
+
+  /* tables */
+  table { border-collapse: separate; border-spacing: 0; width: 100%; font-size: 16px; }
+  th { text-align: left; background: var(--navy); color: #fff; font-weight: 700; padding: 11px 14px; font-size: 14px; letter-spacing: .04em; text-transform: uppercase; }
+  th:first-child { border-radius: 10px 0 0 0; } th:last-child { border-radius: 0 10px 0 0; }
+  td { padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; line-height: 1.35; }
+  tr:nth-child(even) td { background: #FAFBFC; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td b { color: var(--navy); }
+  .good { color: var(--green); font-weight: 800; }
+
+  /* flow diagram */
+  .flow { display: flex; align-items: stretch; gap: 0; margin-top: 6px; }
+  .node { flex: 1; background: #fff; border: 2px solid var(--teal); border-radius: 14px; padding: 14px 12px; text-align: center; position: relative; min-height: 150px; display: flex; flex-direction: column; }
+  .node .n-step { font-size: 12px; font-weight: 800; color: var(--amber); letter-spacing: .1em; }
+  .node .n-title { font-size: 17px; font-weight: 800; color: var(--navy); margin: 4px 0 8px; }
+  .node .n-body { font-size: 13.5px; line-height: 1.4; color: #34464F; }
+  .node.hot { background: var(--navy); border-color: var(--navy); }
+  .node.hot .n-title { color: #fff; } .node.hot .n-body { color: #C9D9E1; }
+  .arrow { width: 26px; display: flex; align-items: center; justify-content: center; color: var(--amber); font-size: 22px; font-weight: 900; }
+  .uc-band { margin-top: 16px; border: 2px dashed var(--teal-2); border-radius: 14px; padding: 12px 18px; display: flex; gap: 14px; white-space: nowrap; align-items: center; background: #F1F7FA; }
+  .uc-band b { color: var(--teal); font-size: 16px; white-space: nowrap; }
+  .uc-band span { font-size: 14px; color: #23343D; }
+
+  /* screenshot frame */
+  .shot { border-radius: 14px; overflow: hidden; border: 1px solid #1d3442; box-shadow: 0 14px 40px rgba(11,42,60,.28); background: #0B1620; }
+  .shot img { display: block; width: 100%; }
+  .chrome { height: 26px; background: #16232D; display: flex; align-items: center; gap: 6px; padding: 0 12px; }
+  .chrome i { width: 10px; height: 10px; border-radius: 50%; background: #3A4B56; display: block; }
+  .chrome span { margin-left: 10px; font-size: 11px; color: #8DA3AF; }
+
+  /* chevrons */
+  .chev { display: flex; gap: 8px; }
+  .chev > div { flex: 1; background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 18px 18px; position: relative; }
+  .chev .ph { font-size: 13px; font-weight: 800; letter-spacing: .1em; color: var(--amber); text-transform: uppercase; }
+  .chev h3 { margin: 6px 0 8px; font-size: 20px; color: var(--navy); }
+  .chev p { font-size: 14.5px; color: #34464F; line-height: 1.45; margin-bottom: 8px; }
+  .chev .exit { font-size: 13.5px; color: var(--teal); font-weight: 700; border-top: 1px solid var(--line); padding-top: 8px; }
+  .chev > div.now { background: var(--navy); border-color: var(--navy); }
+  .chev > div.now h3 { color: #fff !important; } .chev > div.now p { color: #C9D9E1; } .chev > div.now .exit { color: var(--amber); border-color: #23465A; }
+
+  /* misc */
+  .pill-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .pill { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.22); color: #fff; padding: 8px 14px; border-radius: 999px; font-size: 15px; }
+  .note { font-size: 13px; color: var(--muted); }
+  .quote { border-left: 5px solid var(--amber); padding: 10px 16px; background: var(--amber-soft); border-radius: 0 10px 10px 0; font-size: 17px; color: #4A3A00; }
+  .chat { background: #0F1C25; border-radius: 14px; padding: 18px; color: #E6EEF2; font-size: 15px; }
+  .chat .q { background: var(--teal-2); color: #fff; padding: 10px 14px; border-radius: 12px 12px 2px 12px; margin-left: 60px; margin-bottom: 12px; }
+  .chat .a { background: #1B2C37; padding: 12px 14px; border-radius: 12px 12px 12px 2px; margin-right: 30px; line-height: 1.45; }
+  .chat code, code { font-family: "SF Mono", Menlo, monospace; font-size: .88em; background: rgba(11,79,108,.1); padding: 1px 6px; border-radius: 5px; color: var(--teal); }
+  .chat code { background: #0B1620; color: #7FD3F7; }
+  .bars .row { display: grid; grid-template-columns: 84px 1fr 96px; gap: 10px; align-items: center; margin-bottom: 9px; font-size: 14px; }
+  .bars .track { height: 16px; background: #E8EEF1; border-radius: 8px; position: relative; overflow: hidden; }
+  .bars .fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 8px; }
+  .bars .naive { background: #B7C5CC; } .bars .model { background: var(--teal); }
+  .step { display: grid; grid-template-columns: 46px 1fr; gap: 14px; align-items: start; margin-bottom: 14px; }
+  .step .num { width: 46px; height: 46px; border-radius: 50%; background: var(--navy); color: var(--amber); font-weight: 800; font-size: 20px; display: flex; align-items: center; justify-content: center; }
+  .step h4 { margin: 2px 0 2px; font-size: 18px; color: var(--navy); }
+  .step p { font-size: 15px; color: #34464F; margin: 0; }
+</style>
+</head>
+<body>
+
+<!-- 1. Title -->
+<section class="slide dark">
+  <div class="pad" style="justify-content:center; padding-left:90px;">
+    <div style="display:flex; align-items:center; gap:16px; margin-bottom:34px;">
+      <img src="../brand/snb-logo.svg" style="width:64px;height:64px;" alt="SNB">
+      <div style="font-size:18px; font-weight:700; letter-spacing:.04em;">Siam Northeast Bank · Cash Operations</div>
+    </div>
+    <div class="eyebrow">Forecast-driven cash-in-transit routing on Databricks</div>
+    <h1 style="font-size:64px; max-width:980px;">Zero empty ATMs.<br><span class="hl">Shorter routes.</span></h1>
+    <p style="font-size:22px; color:#C9D9E1; max-width:900px; margin-top:14px;">Replace a fixed 5-day replenishment calendar with a daily, demand-driven plan for 679 cash points across Khon Kaen.</p>
+    <div class="pill-row" style="margin-top:30px;">
+      <div class="pill"><b style="color:var(--amber)">−8%</b> CIT cost per day</div>
+      <div class="pill"><b style="color:var(--amber)">−23%</b> route km</div>
+      <div class="pill">Cash-out risk <b style="color:var(--amber)">64 → 0</b> nodes</div>
+      <div class="pill"><b style="color:var(--amber)">≈ THB 1.5M</b> a year</div>
+    </div>
+  </div>
+  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">Siam Northeast Bank is fictional · all data synthetic · demo results only</span><span>FE Bar build · Oct 2026</span></div>
+</section>
+
+<!-- 2. Outcome -->
+<section class="slide">
+  <div class="bar"></div>
+  <div class="pad">
+    <div class="eyebrow">The outcome, in the buyer's KPIs</div>
+    <h2>Same estate, same day: <span class="hl">lower cost, zero cash-outs</span></h2>
+    <div class="grid g3" style="margin-bottom:18px;">
+      <div class="kpi"><div class="label">CIT cost / day</div><div class="big">฿69.6K <small>vs ฿75.4K</small></div><div class="delta">▼ 8% · ≈ THB 1.5M a year</div></div>
+      <div class="kpi"><div class="label">Route distance</div><div class="big">1,323 <small>km vs 1,711</small></div><div class="delta">▼ 23% · 30 fewer crew-hours</div></div>
+      <div class="kpi"><div class="label">Cash-out risk nodes</div><div class="big">0 <small>vs 64</small></div><div class="delta">Every at-risk machine visited in time</div></div>
+      <div class="kpi"><div class="label">Time-window SLA</div><div class="big">100% <small>vs 14.7%</small></div><div class="delta">Inside bank opening hours</div></div>
+      <div class="kpi"><div class="label">Idle cash released</div><div class="big">฿43M</div><div class="delta">Non-earning float freed</div></div>
+      <div class="kpi"><div class="label">Forecast error (WAPE)</div><div class="big">25% <small>vs 39% naive</small></div><div class="delta">Better signal → smaller safety stock</div></div>
+    </div>
+    <div class="quote"><b>Honest trade-off:</b> the plan dispatches <b>13 vans instead of 11</b>. Two extra crews is what it takes to reach SLA and zero cash-outs; total cost still falls because 38 needless stops disappear.</div>
+  </div>
+  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>Plan day 1 Oct 2026 · fixed 5-day cycle vs forecast + optimizer · synthetic data · 2</span></div>
+</section>
+
+<!-- 3. Problem -->
+<section class="slide">
+  <div class="bar"></div>
+  <div class="pad">
+    <div class="eyebrow">The problem</div>
+    <h2>A calendar, not demand, decides where cash goes</h2>
+    <p class="lede">SNB replenishes 159 branches, 400 ATMs and 120 cash-recycling machines from 3 cash centres with 30 armoured vans, every 5 days, whatever the demand.</p>
+    <div class="grid g4">
+      <div class="card"><div class="icon">1</div><h3>Wasted stops</h3><p>Vans visit machines that are still mostly full because "it's day 5".</p><span class="tag">Fuel · crew hours · wear</span></div>
+      <div class="card"><div class="icon" style="background:var(--red)">2</div><h3>Cash-outs</h3><p>Payday and holiday spikes empty ATMs before the next visit.</p><span class="tag red">Lost fees · complaints · trust</span></div>
+      <div class="card"><div class="icon" style="background:var(--amber); color:var(--navy)">3</div><h3>Idle cash</h3><p>Cassettes and vaults overstocked "just in case".</p><span class="tag amber">Non-earning float</span></div>
+      <div class="card"><div class="icon" style="background:var(--teal-2)">4</div><h3>Static routes</h3><p>Same sequence every cycle; overruns opening windows.</p><span class="tag">Excess km · overtime</span></div>
+    </div>
+    <div class="quote" style="margin-top:22px;">Cash Ops plans from yesterday's spreadsheets and cannot answer: <b>"Which machines run dry by Friday, and which van should go?"</b></div>
+  </div>
+  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>3</span></div>
+</section>
+
+<!-- 4. Stakeholders -->
+<section class="slide">
+  <div class="bar"></div>
+  <div class="pad">
+    <div class="eyebrow">Who owns the decision</div>
+    <h2>Two buyers, one platform</h2>
+    <div class="grid g2" style="gap:24px;">
+      <div class="card" style="padding:26px 28px;">
+        <span class="tag amber">Executive sponsor · CFO / COO</span>
+        <h3 style="font-size:24px;">Cost-to-serve and float</h3>
+        <ul>
+          <li><b>Lower CIT cost</b> per machine: fewer km and stops for the same network</li>
+          <li><b>Less idle float</b>: cash that can be redeployed rather than funded</li>
+          <li><b>Fewer cash-outs</b>: protected fee income and customer trust</li>
+          <li>One governed platform instead of spreadsheets plus point tools</li>
+        </ul>
+      </div>
+      <div class="card" style="padding:26px 28px;">
+        <span class="tag">Domain owner · Head of Cash Operations</span>
+        <h3 style="font-size:24px;">A plan ready every morning</h3>
+        <ul>
+          <li>Who needs cash, how much, which van, in what order</li>
+          <li>A map of every route against the old cycle</li>
+          <li><b>Override</b> any stop with a reason, fully audited</li>
+          <li>Ask in plain language: <i>"Which ATMs in Ban Phai run out before Friday?"</i></li>
+          <li>Re-forecast one machine when an event or holiday is announced</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>4</span></div>
+</section>
+
+<!-- 5. Architecture -->
+<section class="slide">
+  <div class="bar"></div>
+  <div class="pad">
+    <div class="eyebrow">How it works</div>
+    <h2>One integrated data journey: raw feed to dispatcher's screen</h2>
+    <div class="flow">
+      <div class="node"><div class="n-step">01 · INGEST</div><div class="n-title">Lakeflow SDP</div><div class="n-body">Auto Loader on 8 raw feeds in a UC volume · bronze → silver → gold · expectations</div></div>
+      <div class="arrow">›</div>
+      <div class="node"><div class="n-step">02 · PREDICT</div><div class="n-title">LightGBM forecast</div><div class="n-body">Point + P80 · MLflow · UC registry <code>@champion</code> · Serving <code>snb-cash-forecast</code></div></div>
+      <div class="arrow">›</div>
+      <div class="node"><div class="n-step">03 · DECIDE</div><div class="n-title">Orders + OR-Tools</div><div class="n-body">Deliver / pickup, amount, priority, window · CVRP-TW per depot · baseline in same schema</div></div>
+      <div class="arrow">›</div>
+      <div class="node"><div class="n-step">04 · SERVE</div><div class="n-title">Lakebase</div><div class="n-body">Synced route stops + node status (ms reads) · writable <code>dispatch_overrides</code></div></div>
+      <div class="arrow">›</div>
+      <div class="node"><div class="n-step">05 · ASK</div><div class="n-title">Genie agent</div><div class="n-body">"SNB Cash Ops Assistant" over governed gold tables</div></div>
+      <div class="arrow">›</div>
+      <div class="node hot"><div class="n-step">06 · ACT</div><div class="n-title">Databricks App</div><div class="n-body"><code style="background:#13324A;color:#7FD3F7">snb-cash-route</code> · map, KPIs, re-forecast, overrides, Genie chat</div></div>
+    </div>
+    <div class="uc-band">
+      <b>Unity Catalog, end to end</b>
+      <span>Layer, domain and PII tags</span><span>· Custodian name/phone masked</span><span>· Depot row filter</span><span>· Gold-only grants</span><span>· Lineage raw file → app</span>
+    </div>
+    <div class="grid g3" style="margin-top:18px;">
+      <div class="card" style="padding:14px 18px;"><p style="margin:0"><b>Each stage consumes the previous stage's governed output.</b> Nothing is copied out of Unity Catalog.</p></div>
+      <div class="card" style="padding:14px 18px;"><p style="margin:0"><b>Packaged as one Databricks Asset Bundle</b>: pipeline, job and app defined as code in the repo.</p></div>
+      <div class="card" style="padding:14px 18px;"><p style="margin:0"><b>Serverless everywhere</b>: pipeline, jobs, SQL warehouse, model serving (scale to zero), Lakebase Autoscaling.</p></div>
+    </div>
+  </div>
+  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>5</span></div>
+</section>
+
+<!-- 6. Lakeflow + UC -->
+<section class="slide">
+  <div class="bar"></div>
+  <div class="pad">
+    <div class="eyebrow">Lakeflow + Unity Catalog</div>
+    <h2>Trusted cash data, governed once</h2>
+    <div class="grid g2" style="gap:24px;">
+      <div class="card">
+        <span class="tag">Lakeflow Spark Declarative Pipelines · snb_cash_ops_pipeline</span>
+        <ul>
+          <li><b>Bronze:</b> Auto Loader ingests 8 feeds (depots, vans, branches, machines, calendar, daily machine and branch cash, CIT trips) incrementally</li>
+          <li><b>Silver:</b> typed tables with <b>expectations</b>: drop null keys and negative cash; warn on coordinates outside Thailand</li>
+          <li><b>Gold:</b> unified node cash flow, demand features, node status and baseline KPIs as materialized views</li>
+          <li>Event log and data-quality metrics captured for every update</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="tag amber">Unity Catalog governance</span>
+        <ul>
+          <li><b>Column mask</b> on CIT custodian name and phone for anyone outside <code>snb_pii_readers</code></li>
+          <li><b>Row filter</b> by depot: a dispatcher in one cash centre sees only that centre's trips</li>
+          <li><b>Tags</b> for layer, domain and PII; <b>gold-only grants</b> to consumers</li>
+          <li><b>Lineage</b> from raw file to the app, visible in Catalog Explorer</li>
+        </ul>
+      </div>
+    </div>
+    <div class="quote" style="margin-top:22px;"><b>Why Databricks:</b> quality rules, security and lineage are declared once and enforced for SQL, ML, Genie and the App alike. No copies, no second security model.</div>
+  </div>
+  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>6</span></div>
+</section>
+
+<!-- 7. ML + Optimization -->
+<section class="slide">
+  <div class="bar"></div>
+  <div class="pad">
+    <div class="eyebrow">Intelligence</div>
+    <h2>Forecast demand, then solve the routes</h2>
+    <div class="grid" style="grid-template-columns: 1.05fr 1fr; gap:24px;">
+      <div class="card">
+        <span class="tag">Forecast · MLflow · UC registry · Model Serving</span>
+        <ul>
+          <li><b>One global LightGBM</b> across 679 nodes: calendar, payday, holiday, lag and rolling features</li>
+          <li><b>Point forecast plus a P80 quantile</b>: replenish for a busy day, not an average day</li>
+          <li><code>cash_demand_forecast@champion</code> served on <code>snb-cash-forecast</code>; the App's re-forecast calls the same endpoint</li>
+        </ul>
+        <div style="margin-top:14px; font-size:13px; font-weight:700; color:var(--muted); letter-spacing:.08em;">HOLDOUT WAPE (AUG–SEP 2026) · LOWER IS BETTER</div>
+        <div class="bars" style="margin-top:10px;">
+          <div class="row"><span><b>All nodes</b></span><div class="track"><div class="fill naive" style="width:63%"></div><div class="fill model" style="width:40%"></div></div><span><b>25%</b> / 39%</span></div>
+          <div class="row"><span>ATM</span><div class="track"><div class="fill naive" style="width:40%"></div><div class="fill model" style="width:21.5%"></div></div><span><b>13%</b> / 25%</span></div>
+          <div class="row"><span>Recycler</span><div class="track"><div class="fill naive" style="width:66%"></div><div class="fill model" style="width:43.5%"></div></div><span><b>27%</b> / 41%</span></div>
+          <div class="row"><span>Branch</span><div class="track"><div class="fill naive" style="width:100%"></div><div class="fill model" style="width:71%"></div></div><span><b>44%</b> / 62%</span></div>
+          <div class="note" style="margin-top:4px;"><span style="display:inline-block;width:10px;height:10px;background:var(--teal);border-radius:2px"></span> model &nbsp; <span style="display:inline-block;width:10px;height:10px;background:#B7C5CC;border-radius:2px"></span> naive (same day last week)</div>
+        </div>
+      </div>
+      <div class="card">
+        <span class="tag amber">Optimize · OR-Tools CVRP-TW</span>
+        <ul>
+          <li>Forecast → <b>97 replenishment orders</b>: 75 critical deliveries, 4 normal deliveries, 18 pickups of surplus cash</li>
+          <li>Capacitated vehicle routing with time windows <b>per depot</b>: van cash capacity, branch opening hours, 07:00–18:00 shift</li>
+          <li>25-second solve per depot; critical stops carry a very high drop penalty, so they are effectively never skipped</li>
+          <li>Writes the <b>fixed-cycle baseline in the same schema</b>, so every KPI is an apples-to-apples comparison</li>
+        </ul>
+        <div class="quote" style="margin-top:14px; font-size:15px;"><b>Why Databricks:</b> features, model, registry, serving and optimizer share the same governed tables.</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>7</span></div>
+</section>
+
+<!-- 8. App screenshot -->
+<section class="slide" style="background:var(--bg)">
+  <div class="bar"></div>
+  <div class="pad" style="padding-top:42px;">
+    <div class="eyebrow">In the dispatcher's hands</div>
+    <h2 style="margin-bottom:16px;">The control room: Databricks App <span class="hl">snb-cash-route</span></h2>
+    <div class="grid" style="grid-template-columns: 1.75fr 1fr; gap:24px; align-items:start;">
+      <div class="shot">
+        <div class="chrome"><i></i><i></i><i></i><span>snb-cash-route · Route Tracking · Optimized (CVRP-TW) · live from Unity Catalog</span></div>
+        <div style="height:470px; overflow:hidden;"><img src="img/app_routes.png" alt="SNB app route tracking" style="width:100%;"></div>
+      </div>
+      <div>
+        <div class="step"><div class="num">1</div><div><h4>KPI cards vs baseline</h4><p>Cost, km, vans, idle cash, cash-out risk, SLA, crew hours from <code>gold_route_summary</code>.</p></div></div>
+        <div class="step"><div class="num">2</div><div><h4>Route map</h4><p>Toggle fixed cycle vs optimized; click a route to see its stops.</p></div></div>
+        <div class="step"><div class="num">3</div><div><h4>Re-forecast</h4><p>Calls the serving endpoint for a 7-day P80 on any machine.</p></div></div>
+        <div class="step"><div class="num">4</div><div><h4>Override with a reason</h4><p>Skip, add, resequence or emergency; written to Lakebase.</p></div></div>
+        <div class="step"><div class="num">5</div><div><h4>Ask SNB Ops</h4><p>Embedded Genie chat over the same governed tables.</p></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>Screenshot: live app on synthetic data, plan day 1 Oct 2026 · 8</span></div>
+</section>
+
+<!-- 9. Lakebase + Genie -->
+<section class="slide">
+  <div class="bar"></div>
+  <div class="pad">
+    <div class="eyebrow">Lakebase + Genie</div>
+    <h2>Operational reads, audited writes, plain-language answers</h2>
+    <div class="grid g2" style="gap:24px;">
+      <div>
+        <div class="card" style="margin-bottom:16px;">
+          <span class="tag">Lakebase Autoscaling · project snb-cash-ops</span>
+          <ul>
+            <li><b>UC synced tables</b> <code>lb_node_status</code> (679 rows) and <code>lb_route_stops</code> (232 rows) give the App millisecond reads</li>
+            <li>Writable Postgres table <code>dispatch_overrides</code>: SKIP / ADD / RESEQUENCE / EMERGENCY, with reason and author</li>
+            <li>App service principal has least-privilege access to warehouse, endpoint, Lakebase and Genie</li>
+          </ul>
+        </div>
+        <div class="quote">A dispatcher's override lands in Postgres with a reason, <b>not in a chat screenshot</b>.</div>
+      </div>
+      <div>
+        <div class="chat">
+          <div style="font-size:12px; letter-spacing:.1em; color:#8DA3AF; font-weight:700; margin-bottom:10px;">GENIE · SNB CASH OPS ASSISTANT (AGENT MODE)</div>
+          <div class="q">Which nodes run out of cash in the next 3 days if we do nothing?</div>
+          <div class="a">On <b>2026-10-01</b>, <b>79 nodes</b> are flagged to run out of cash within 3 days, all marked <b>CRITICAL</b> for a <b>DELIVER</b> action.<br><span style="color:#8DA3AF; font-size:13px;">Generated SQL over <code>gold_replenishment_orders</code> · masks and row filters still apply</span></div>
+        </div>
+        <p class="note" style="margin-top:12px;">Six benchmark questions with generated SQL and answers are committed in <code>evidence/genie_benchmarks.txt</code>.</p>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>9</span></div>
+</section>
+
+<!-- 10. Demo flow -->
+<section class="slide">
+  <div class="bar"></div>
+  <div class="pad">
+    <div class="eyebrow">Demo flow · 7–10 minutes</div>
+    <h2>Outcome first, then under the hood</h2>
+    <div class="grid" style="grid-template-columns: 1fr 1fr; gap:10px 40px;">
+      <div class="step"><div class="num">1</div><div><h4>Outcome</h4><p>App KPI cards: cost per day, km, vans, cash-out risk, SLA.</p></div></div>
+      <div class="step"><div class="num">5</div><div><h4>Genie</h4><p>"Which ATMs are at cash-out risk tomorrow, and which van covers them?"</p></div></div>
+      <div class="step"><div class="num">2</div><div><h4>Map</h4><p>Toggle BASELINE vs OPTIMIZED for 1 Oct 2026.</p></div></div>
+      <div class="step"><div class="num">6</div><div><h4>Under the hood</h4><p>Pipeline graph and expectations → UC lineage, mask, row filter → MLflow run and endpoint.</p></div></div>
+      <div class="step"><div class="num">3</div><div><h4>Re-forecast</h4><p>A payday ATM: the serving endpoint returns a 7-day P80.</p></div></div>
+      <div class="step"><div class="num">7</div><div><h4>Close</h4><p>THB 1.5M a year and the pilot ask.</p></div></div>
+      <div class="step"><div class="num">4</div><div><h4>Override</h4><p>Skip a healthy stop with a reason; the row lands in Lakebase.</p></div></div>
+    </div>
+  </div>
+  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>10</span></div>
+</section>
+
+<!-- 11. Decisions -->
+<section class="slide">
+  <div class="bar"></div>
+  <div class="pad">
+    <div class="eyebrow">Decisions and trade-offs</div>
+    <h2>What we chose, and what it costs</h2>
+    <table>
+      <tr><th style="width:31%">Decision</th><th style="width:39%">Why</th><th>Trade-off</th></tr>
+      <tr><td><b>Declarative pipeline, not notebooks</b></td><td>Expectations, lineage, incremental by default</td><td>Less ad-hoc flexibility</td></tr>
+      <tr><td><b>One global LightGBM, not 679 models</b></td><td>Shares signal, handles new ATMs, one endpoint</td><td>Less per-node tuning</td></tr>
+      <tr><td><b>P80 quantile for replenishment</b></td><td>A cash-out costs more than a little extra cash</td><td>Some extra float carried</td></tr>
+      <tr><td><b>OR-Tools, 25 s per depot</b></td><td>Open source, explainable, fast</td><td>Not provably optimal</td></tr>
+      <tr><td><b>Lakebase synced tables for the App</b></td><td>Fast reads plus writable overrides</td><td>Snapshot freshness, not streaming</td></tr>
+      <tr><td><b>Genie agent mode, not a custom agent</b></td><td>Governed by UC, no prompt plumbing, fast to value</td><td>Less custom tool control</td></tr>
+      <tr><td><b>Serverless everywhere</b></td><td>No cluster ops, scale to zero for a once-a-day plan</td><td>Cold starts</td></tr>
+    </table>
+    <p class="note" style="margin-top:12px;">Full rationale in <code>docs/decisions.md</code>.</p>
+  </div>
+  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>11</span></div>
+</section>
+
+<!-- 12. Business case -->
+<section class="slide">
+  <div class="bar"></div>
+  <div class="pad">
+    <div class="eyebrow">Business case · synthetic-data demo, indicative</div>
+    <h2>THB 1.5M a year in CIT cost, before the float and cash-out upside</h2>
+    <table>
+      <tr><th style="width:22%">Lever</th><th style="width:44%">Basis</th><th>Value</th></tr>
+      <tr><td><b>CIT operating cost</b></td><td>(baseline − optimized) cost per day × 365</td><td class="good">≈ THB 1.5M a year</td></tr>
+      <tr><td><b>Idle cash</b></td><td>Float reduction across 679 nodes on the plan day</td><td><b>THB 43M released</b>, plus carry cost avoided</td></tr>
+      <tr><td><b>Cash-out risk</b></td><td>Risk nodes per plan day, 64 → 0</td><td><b>Fee income and complaints protected</b></td></tr>
+      <tr><td><b>Fleet</b></td><td>Vans 11 → 13 per day</td><td>Two extra crews take SLA from <b>15% → 100%</b></td></tr>
+    </table>
+    <div class="grid g2" style="margin-top:20px;">
+      <div class="card" style="padding:16px 20px;"><h3>Cost model assumptions</h3><p style="margin:0">Distance cost plus THB 2,500 per van-day; road km = straight-line × 1.3. Synthetic assumptions, re-validated on real SNB data in the pilot before any commitment.</p></div>
+      <div class="card" style="padding:16px 20px;"><h3>Time to value</h3><p style="margin:0">The stack deploys from one bundle; a pilot in one cash centre runs in about 6 weeks.</p></div>
+    </div>
+  </div>
+  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>12</span></div>
+</section>
+
+<!-- 13. Path to production -->
+<section class="slide">
+  <div class="bar"></div>
+  <div class="pad">
+    <div class="eyebrow">Path to production</div>
+    <h2>Pilot one cash centre, then scale and harden</h2>
+    <div class="chev">
+      <div class="now"><div class="ph">Phase 1 · 6 weeks</div><h3>Pilot</h3><p>Khon Kaen Central cash centre; real ATM switch, vault and CIT feeds under the same silver contract.</p><div class="exit">Exit: forecast beats current planner; ≥ 80% of planned stops accepted</div></div>
+      <div><div class="ph">Phase 2</div><h3>Scale</h3><p>All 3 cash centres; nightly plan plus a mid-morning re-forecast on payday.</p><div class="exit">Exit: cost per day and cash-out KPIs tracked weekly</div></div>
+      <div><div class="ph">Phase 3</div><h3>Harden</h3><p>IdP groups for row filters, maker-checker on overrides, CI/CD for the bundle, model monitoring, road-network travel times.</p><div class="exit">Exit: Risk and Security sign-off; PDPA review</div></div>
+      <div><div class="ph">Phase 4</div><h3>Extend</h3><p>Denomination mix, vault planning, CIT vendor SLAs, other regions.</p><div class="exit">Exit: region-by-region rollout</div></div>
+    </div>
+    <div class="quote" style="margin-top:22px;"><b>Humans confirm every plan;</b> nothing moves cash autonomously. Core banking, CIT vendors and radio dispatch stay in place.</div>
+  </div>
+  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">SNB Cash Logistics</span><span>13</span></div>
+</section>
+
+<!-- 14. The ask -->
+<section class="slide dark">
+  <div class="pad" style="justify-content:center; padding-left:90px;">
+    <div class="eyebrow">The ask</div>
+    <h1 style="font-size:52px; max-width:1000px;">Pilot one cash centre for <span class="hl">30 CIT days</span></h1>
+    <p style="font-size:21px; color:#C9D9E1; margin:10px 0 26px;">Khon Kaen Central, measured against the fixed cycle on the same nodes.</p>
+    <div class="grid g3" style="max-width:1050px;">
+      <div style="background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.2); border-radius:16px; padding:22px;"><div style="font-size:40px; font-weight:800; color:var(--amber)">≥ 20%</div><div style="font-size:17px;">lower CIT cost or km</div></div>
+      <div style="background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.2); border-radius:16px; padding:22px;"><div style="font-size:40px; font-weight:800; color:var(--amber)">No more</div><div style="font-size:17px;">cash-out incidents than today</div></div>
+      <div style="background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.2); border-radius:16px; padding:22px;"><div style="font-size:40px; font-weight:800; color:var(--amber)">≥ 80%</div><div style="font-size:17px;">of recommended stops accepted by dispatchers</div></div>
+    </div>
+    <p style="font-size:19px; margin-top:28px;"><b>Next step:</b> a 2-hour working session with Cash Ops and IT Security to scope the pilot data feeds.</p>
+    <p class="note" style="color:#9FB6C2; margin-top:16px;">Repo: https://github.com/nan-databricks/fe-bar-cash-route</p>
+  </div>
+  <div class="footer"><span class="brand"><img src="../brand/snb-logo.svg" alt="">Siam Northeast Bank is fictional · all data synthetic · every result is a synthetic-data demo result</span><span>14</span></div>
+</section>
+
+</body>
+</html>
