@@ -1,0 +1,18 @@
+narrative agent status, 2026-10-29
+
+Files owned: README.md, deck/deck.md, deck/deck.pdf, deck/build_pdf.sh, deck/PLACEHOLDERS.md,
+docs/decisions.md, docs/submission_form_answers.md, docs/roleplay_prep.md, docs/demo_script.md,
+docs/talk_track.md, docs/requirements_traceability.md
+
+Deck PDF build: bash deck/build_pdf.sh
+  mermaid-cli 11 pre-renders the architecture diagram to SVG, then marp-cli 4 renders 13 slides to deck/deck.pdf.
+  Built successfully with {{KPI_*}} placeholders still in place. Rebuild after the integrator fills them.
+
+KPI values: intentionally NOT filled. All {{KPI_*}} tokens must come from gold_route_summary and
+gold_model_metrics via evidence/ml_*.txt. Format examples in deck/PLACEHOLDERS.md are shapes, not results.
+
+Note: a second writer edited deck/ and docs/ concurrently during this session (it hardcoded illustrative KPIs,
+and its build_pdf.sh printed a stale deck.html). Narrative content was merged into the files above, using placeholders,
+and the Marp build was restored. deck/deck.html (a stale derived artefact) was removed.
+
+Open risks: see docs/requirements_traceability.md "Open risks".

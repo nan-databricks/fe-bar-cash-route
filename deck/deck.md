@@ -223,4 +223,4 @@ Success, against the fixed cycle on the same nodes:
 
 Next step: a 2-hour working session with Cash Ops and IT Security to scope the pilot data feeds.
 
-<span class="small">Repo: {{GITHUB_URL}} · Siam Northeast Bank is fictional; all data is synthetic and every result shown comes from a synthetic-data demo.</span>
+<span class="small">Repo: https://github.com/nan-databricks/fe-bar-cash-route · Siam Northeast Bank is fictional; all data is synthetic and every result shown comes from a synthetic-data demo.</span>

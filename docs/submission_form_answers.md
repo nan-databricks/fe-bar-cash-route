@@ -67,7 +67,7 @@ For the executive sponsor, that means lower cost-to-serve, less non-earning floa
 
 ## GitHub repo link *(required)*
 
-{{GITHUB_URL}} (must be public, or connected through the form if the repo is in a private EMU org).
+https://github.com/nan-databricks/fe-bar-cash-route (must be public, or connected through the form if the repo is in a private EMU org).
 
 ## Presentation deck *(required; .pdf/.txt/.md)*
 
