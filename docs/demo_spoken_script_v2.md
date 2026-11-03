@@ -65,13 +65,13 @@ That’s helpful. I’ll keep that priority in view as we go.”
 
 Say:
 
-“Shreya, the challenge today is that the information needed to make the plan lives in different places. Machine balances come from the ATM switch. Branch and vault data comes from other systems. Trip history sits with the cash-transport provider, and holidays may still be tracked in a spreadsheet.
+“Shreya, today the team has to piece the plan together from several systems. ATM balances, branch and vault cash, trip history and holidays all live in different places.
 
-There’s also a lot of knowledge that never makes it into the data. Drivers know which locations open late and which roads cause delays. Dispatchers know the exceptions. But that knowledge stays in phone calls and radio conversations.
+Some of the most useful information isn’t in a system at all. Drivers know which locations open late, and dispatchers know the usual exceptions, but that knowledge is shared verbally.
 
-The planning team then has to bring everything together in Excel, using yesterday’s data and a fixed schedule. So there’s no single trusted view, no forward-looking forecast and no clear record of why the plan changed.
+So the team builds tomorrow’s plan in Excel using yesterday’s information and a fixed schedule. They don’t have one current view, a forecast of what each location will need, or a clear history of why someone changed the plan.
 
-That’s what we need to fix—not just produce a slightly better route.”
+The solution needs to bring those pieces together and turn operational experience into something the wider team can use and audit.”
 
 ## 6. The solution in four steps (03:50–04:30) · Slide 6
 
@@ -79,7 +79,7 @@ Say:
 
 “Shreya, let me show you what sits underneath. It’s four steps. First, unify the feeds with Lakeflow pipelines and govern them in Unity Catalog. Next, predict machine demand through Model Serving. Then decide tomorrow’s stops and routes with the optimizer. Finally, act through a Databricks App, with Lakebase for audited writes and Genie for governed questions.
 
-The important part is the flow. Fragmented feeds become trusted data. Calendar rules become forecasts. Manual routes become explainable plans. And a radio call becomes an override we can audit.”
+The important part is the flow. The separate feeds become one trusted view. The fixed schedule becomes a demand forecast. The planning team gets a route it can explain. And when a dispatcher changes the plan, the reason is captured for review and audit.”
 
 ## 7. What I’ll show you (04:30–05:00) · Slide 7
 
@@ -147,7 +147,7 @@ Say:
 
 Say:
 
-“There’s the confirmation: **Saved override #N → Lakebase**. The dispatcher can act, and we keep the stop, user, reason, and time. Shreya, that’s the control that matters. Local knowledge stays useful, but it no longer disappears into a radio call. It becomes part of the audit trail and the next planning review.”
+“There’s the confirmation: **Saved override #N → Lakebase**. The dispatcher can act, and we keep the stop, user, reason, and time. Shreya, that’s the control that matters. Operational experience still shapes the decision, but the change and its reason are now recorded for audit and the next planning review.”
 
 ### Optional: Ask Cash Ops
 
@@ -189,7 +189,7 @@ If the ATM switch sits behind a firewall, that’s manageable. We can start safe
 
 If the timeline slips, we don’t lower the success bar. We cut scope to one depot and file feeds first, keep the same criteria, and re-plan with Alex.
 
-For PDPA and security sign-off, the data stays in your workspace and region. PII is masked, and system tables provide the audit evidence. I’d bring our security team into that review.
+For PDPA and security sign-off, the data stays in your workspace and region. Personal details, such as the names and phone numbers of cash-handling staff, are masked, and system tables provide the audit evidence. I’d bring our security team into that review.
 
 And on pricing, discounts, or contract terms, I won’t quote those here. Your account executive owns commercials, and I’ll set that up this week. Which of these feels like the first real blocker for your team? (pause) Thanks. That tells us who needs to be in the next working session.”
 
@@ -229,7 +229,7 @@ Say:
 
 Say:
 
-“Shreya, here’s what sits underneath. Pipeline expectations reject bad records before planning. Custodian names and phone numbers are masked. Depot access is row-filtered, and lineage follows the data into the app. The forecast model is registered with a champion alias and served through a managed endpoint. The Asset Bundle keeps the pipeline, job, and app together. In the pilot, we map those controls to your identity groups and release process.”
+“Shreya, here’s what sits underneath. Pipeline expectations reject bad records before planning. Personal details, such as the names and phone numbers of cash-handling staff, are masked. Depot access is row-filtered, and lineage follows the data into the app. The forecast model is registered with a champion alias and served through a managed endpoint. The Asset Bundle keeps the pipeline, job, and app together. In the pilot, we map those controls to your identity groups and release process.”
 
 ## Blocker playbook
 
@@ -243,7 +243,7 @@ Say:
 
 **PDPA or security sign-off**
 
-“I’d expect that review, and we should plan for it. The data stays in your workspace and region. Custodian PII is masked, access is scoped, and system tables provide the audit evidence. I’d bring our security team into the session so your security and privacy owners can test the controls directly.”
+“I’d expect that review, and we should plan for it. The data stays in your workspace and region. Personal details, such as the names and phone numbers of cash-handling staff, are masked. Access is scoped, and system tables provide the audit evidence. I’d bring our security team into the session so your security and privacy owners can test the controls directly.”
 
 **Pricing, discount, or contract terms**
 

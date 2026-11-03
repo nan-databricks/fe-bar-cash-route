@@ -22,12 +22,12 @@
   {
     "slide": 5,
     "title": "Why it happens",
-    "notes": "Shreya, the challenge today is that the information needed to make the plan lives in different places. Machine balances come from the ATM switch, branch and vault data from other systems, trip history from the cash-transport provider, and holidays may still sit in a spreadsheet. There’s also knowledge that never makes it into the data. Drivers know which locations open late, dispatchers know the exceptions, but that stays in phone calls and radio conversations. The planning team then pulls it together in Excel, using yesterday’s data and a fixed schedule. So there’s no single trusted view, no forward-looking forecast and no clear record of why the plan changed. That’s what we need to fix—not just produce a slightly better route."
+    "notes": "Shreya, today the team has to piece the plan together from several systems. ATM balances, branch and vault cash, trip history and holidays all live in different places. Some of the most useful information isn’t in a system at all. Drivers know which locations open late, and dispatchers know the usual exceptions, but that knowledge is shared verbally. So the team builds tomorrow’s plan in Excel using yesterday’s information and a fixed schedule. They don’t have one current view, a forecast of what each location will need, or a clear history of why someone changed the plan. The solution needs to bring those pieces together and turn operational experience into something the wider team can use and audit."
   },
   {
     "slide": 6,
     "title": "The solution in four steps",
-    "notes": "Shreya, let me show you what sits underneath. First, unify the feeds with Lakeflow pipelines and govern them in Unity Catalog. Next, predict machine demand through Model Serving. Then decide tomorrow’s stops and routes with the optimizer. Finally, act through a Databricks App, with Lakebase for audited writes and Genie for governed questions. The important part is the flow: fragmented feeds become trusted data, calendar rules become forecasts, manual routes become explainable plans, and radio knowledge becomes an auditable override."
+    "notes": "Shreya, let me show you what sits underneath. First, unify the feeds with Lakeflow pipelines and govern them in Unity Catalog. Next, predict machine demand through Model Serving. Then decide tomorrow’s stops and routes with the optimizer. Finally, act through a Databricks App, with Lakebase for audited writes and Genie for governed questions. The important part is the flow: the separate feeds become one trusted view, the fixed schedule becomes a demand forecast, the planning team gets a route it can explain, and when a dispatcher changes the plan, the reason is captured for review and audit."
   },
   {
     "slide": 7,
@@ -57,7 +57,7 @@
   {
     "slide": 12,
     "title": "Delivery risks and how we handle them",
-    "notes": "Let’s talk about likely blockers. If the ATM switch sits behind a firewall, we’ll start safely with file drops into a Unity Catalog volume, then move to PrivateLink with both network teams. If timing slips, we’ll cut to one depot and file feeds, keep the success criteria, and re-plan with Alex. For PDPA, data stays in your workspace and region, PII is masked, and system tables provide audit evidence. I won’t quote commercials here; the account executive owns them. Which blocker feels most real? (pause)"
+    "notes": "Let’s talk about likely blockers. If the ATM switch sits behind a firewall, we’ll start safely with file drops into a Unity Catalog volume, then move to PrivateLink with both network teams. If timing slips, we’ll cut to one depot and file feeds, keep the success criteria, and re-plan with Alex. For PDPA, data stays in your workspace and region. Personal details, such as the names and phone numbers of cash-handling staff, are masked, and system tables provide audit evidence. I won’t quote commercials here; the account executive owns them. Which blocker feels most real? (pause)"
   },
   {
     "slide": 13,
@@ -72,6 +72,6 @@
   {
     "slide": 15,
     "title": "Appendix: under the hood",
-    "notes": "Shreya, here’s what sits underneath. Pipeline expectations reject bad records before planning. Custodian names and phone numbers are masked. Depot access is row-filtered, and lineage follows the data into the app. The forecast model is registered with a champion alias and served through a managed endpoint. The Asset Bundle keeps the pipeline, job, and app together. In the pilot, we’ll map those controls to your identity groups, add maker-checker and drift monitoring, and align deployment with your release process."
+    "notes": "Shreya, here’s what sits underneath. Pipeline expectations reject bad records before planning. Personal details, such as the names and phone numbers of cash-handling staff, are masked. Depot access is row-filtered, and lineage follows the data into the app. The forecast model is registered with a champion alias and served through a managed endpoint. The Asset Bundle keeps the pipeline, job, and app together. In the pilot, we’ll map those controls to your identity groups, add maker-checker and drift monitoring, and align deployment with your release process."
   }
 ]
