@@ -53,9 +53,13 @@ There’s a second lens: the cost of idle float. This is an assumption, not a ba
 
 Say:
 
-“Alex, let me test the urgency with you. As PromptPay and QR reduce everyday cash use, a fixed cycle can overstock more each year. But New Year, Songkran, and payday peaks still create sharp local demand. At the same time, CIT and fuel costs are rising. When does the current CIT contract renew? (pause)
+“From what I understand, PromptPay and QR payments are changing how customers use cash. Overall cash use may be declining, but demand is becoming less predictable—especially around payday, New Year and Songkran.
 
-On this scenario, waiting adds about THB 125K a month in CIT cost alone. Which matters most right now: cost, cash-out risk, or the next planning and budget cycle? (pause) Got it. I’ll use that as the business lens for the rest of the discussion.”
+That makes a fixed schedule more expensive. Some locations hold too much cash, while others still run short. At the same time, fuel and cash-transport costs are increasing.
+
+Based on the assumptions in this demo, waiting another month leaves roughly THB 125K in avoidable transport cost on the table. Alex, does that match what you’re seeing? (pause)
+
+That’s helpful. I’ll keep that priority in view as we go.”
 
 ## 5. Why it happens (03:00–03:50) · Slide 5
 
