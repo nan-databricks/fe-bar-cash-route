@@ -137,7 +137,7 @@ export default function ScenarioPage({
                 <div className="sc-result-track">
                   <div
                     className="sc-result-fill"
-                    style={{ width: `${barPct(row)}%`, background: row.unit === "pct" ? "#22c55e" : "#2563eb" }}
+                    style={{ width: `${barPct(row)}%`, background: row.unit === "pct" ? "#00A972" : "#2272B4" }}
                   />
                 </div>
                 <span className="sc-result-value">
@@ -169,7 +169,7 @@ export default function ScenarioPage({
       {result && (
         <div className="panel sc-reco">
           <div className="sc-reco-head">
-            <Lightbulb size={18} color="#f59e0b" />
+            <Lightbulb size={18} color="#FFAB00" />
             <h2>Recommendation</h2>
           </div>
           <div className="sc-reco-body">

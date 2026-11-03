@@ -5,10 +5,10 @@ import { fetchOverrides, postOverride, type DataSource, type DispatchOverride } 
 
 const ACTIONS: DispatchOverride["action"][] = ["SKIP", "ADD", "RESEQUENCE", "EMERGENCY"];
 const ACTION_COLOR: Record<string, string> = {
-  SKIP: "#94a3b8",
-  ADD: "#22c55e",
-  RESEQUENCE: "#38bdf8",
-  EMERGENCY: "#ef4444",
+  SKIP: "#8A9BA2",
+  ADD: "#00A972",
+  RESEQUENCE: "#2272B4",
+  EMERGENCY: "#C82D4C",
 };
 
 /** Dispatcher overrides for a route, persisted to Lakebase public.dispatch_overrides. */

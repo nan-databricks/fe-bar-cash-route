@@ -26,16 +26,16 @@ type SortKey = "machine" | "current" | "eod" | "flow" | "action" | "risk" | "con
 type SortDir = "asc" | "desc";
 
 const RISK_COLOR: Record<RiskLevel, string> = {
-  "Very High": "#ef4444",
-  High: "#f97316",
-  Medium: "#eab308",
-  Low: "#22c55e",
+  "Very High": "var(--t-red)",
+  High: "#E0701A",
+  Medium: "var(--t-amber)",
+  Low: "var(--t-green)",
 };
 
 const ACTION_COLOR: Record<string, string> = {
-  "Swap (Near Empty)": "#f59e0b",
-  "Swap (Near Full)": "#0ea5e9",
-  "No Action": "#64748b",
+  "Swap (Near Empty)": "var(--t-amber)",
+  "Swap (Near Full)": "var(--t-blue)",
+  "No Action": "var(--muted)",
 };
 
 export default function MachineTrackingPage({
@@ -132,11 +132,11 @@ export default function MachineTrackingPage({
       </div>
 
       <div className="kpi-grid track-kpis five">
-        <TrackKpi icon={<Cpu size={20} color="#38bdf8" />} label="Total machines" value={summary.total.toLocaleString()} delta="4.3%" dir="up" good />
-        <TrackKpi icon={<TrendingDown size={20} color="#ef4444" />} label="Cash-out risk" value={String(summary.cashOutRisk)} delta="12.5%" dir="up" tone="red" />
-        <TrackKpi icon={<TrendingUp size={20} color="#f59e0b" />} label="Overflow risk" value={String(summary.overflowRisk)} delta="6.7%" dir="down" good tone="amber" />
-        <TrackKpi icon={<ShieldCheck size={20} color="#22c55e" />} label="Healthy" value={summary.healthy.toLocaleString()} delta="8.2%" dir="up" good tone="green" />
-        <TrackKpi icon={<AlertTriangle size={20} color="#ef4444" />} label="Emergency" value={String(summary.emergency)} delta="14.3%" dir="down" good tone="red" />
+        <TrackKpi icon={<Cpu size={20} color="#2272B4" />} label="Total machines" value={summary.total.toLocaleString()} delta="4.3%" dir="up" good />
+        <TrackKpi icon={<TrendingDown size={20} color="#C82D4C" />} label="Cash-out risk" value={String(summary.cashOutRisk)} delta="12.5%" dir="up" tone="red" />
+        <TrackKpi icon={<TrendingUp size={20} color="#FFAB00" />} label="Overflow risk" value={String(summary.overflowRisk)} delta="6.7%" dir="down" good tone="amber" />
+        <TrackKpi icon={<ShieldCheck size={20} color="#00A972" />} label="Healthy" value={summary.healthy.toLocaleString()} delta="8.2%" dir="up" good tone="green" />
+        <TrackKpi icon={<AlertTriangle size={20} color="#C82D4C" />} label="Emergency" value={String(summary.emergency)} delta="14.3%" dir="down" good tone="red" />
       </div>
 
       <div className="track-split">
@@ -177,16 +177,16 @@ export default function MachineTrackingPage({
                       <div style={{ fontWeight: 600, display: "flex", alignItems: "center", gap: 6 }}>
                         <span className="status-dot" style={{ background: HEALTH_COLOR[m.health] }} />
                         {m.id}
-                        {m.emergency && <AlertTriangle size={12} color="#ef4444" />}
+                        {m.emergency && <AlertTriangle size={12} color="#C82D4C" />}
                       </div>
                       <div style={{ color: "var(--muted)", fontSize: 10 }}>{m.location}</div>
                     </td>
                     <td className="num">{thb(m.currentCash)}</td>
                     <td className="num">{thb(m.predictedEod)}</td>
                     <td className="num">
-                      <span style={{ color: "#22c55e" }}>+{thb(m.depositToday, false)}</span>
+                      <span style={{ color: "#00A972" }}>+{thb(m.depositToday, false)}</span>
                       <span style={{ color: "var(--muted)", margin: "0 4px" }}>/</span>
-                      <span style={{ color: "#ef4444" }}>−{thb(m.withdrawToday, false)}</span>
+                      <span style={{ color: "#C82D4C" }}>−{thb(m.withdrawToday, false)}</span>
                     </td>
                     <td>
                       <span style={{ color: ACTION_COLOR[machineActionLabel(m.action)], fontWeight: 600 }}>

@@ -70,11 +70,11 @@ export function buildAiPerformance(metrics: ExecMetrics): AiPerformance {
   // Annual benefit breakdown (THB, millions) — anchored to optimizer output,
   // topped up with labor/OT, fuel and risk-avoidance estimates.
   const benefitsM: BenefitRow[] = [
-    { label: "Idle Cash Reduction", valueThb: Math.max(120.5, Math.round(idleCarryAnnualM * 10) / 10), color: "#2563eb" },
-    { label: "Transport Cost Saving", valueThb: Math.max(54.3, Math.round(transportAnnualM * 10) / 10), color: "#3b82f6" },
-    { label: "Labor & OT Saving", valueThb: 18.7, color: "#60a5fa" },
-    { label: "Fuel Saving", valueThb: 11.4, color: "#93c5fd" },
-    { label: "Risk / Cash Out Reduction", valueThb: 21.4, color: "#1d4ed8" },
+    { label: "Idle Cash Reduction", valueThb: Math.max(120.5, Math.round(idleCarryAnnualM * 10) / 10), color: "#2272B4" },
+    { label: "Transport Cost Saving", valueThb: Math.max(54.3, Math.round(transportAnnualM * 10) / 10), color: "#4A8FCC" },
+    { label: "Labor & OT Saving", valueThb: 18.7, color: "#7BB0DE" },
+    { label: "Fuel Saving", valueThb: 11.4, color: "#A9CBEA" },
+    { label: "Risk / Cash Out Reduction", valueThb: 21.4, color: "#1B5A8F" },
   ];
   const totalBenefit = Math.round(benefitsM.reduce((s, b) => s + b.valueThb, 0) * 10) / 10;
 
@@ -85,9 +85,9 @@ export function buildAiPerformance(metrics: ExecMetrics): AiPerformance {
       { label: "Route ETA", mape: 9.4 },
     ],
     acceptance: [
-      { name: "Accepted", value: 95, color: "#22c55e" },
-      { name: "Modified", value: 4, color: "#f59e0b" },
-      { name: "Rejected", value: 1, color: "#ef4444" },
+      { name: "Accepted", value: 95, color: "#00A972" },
+      { name: "Modified", value: 4, color: "#FFAB00" },
+      { name: "Rejected", value: 1, color: "#C82D4C" },
     ],
     acceptanceRate: 95,
     forecast: genForecast(),

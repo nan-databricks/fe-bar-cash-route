@@ -25,10 +25,10 @@ function AlertKpi({
   tone: "critical" | "high" | "medium" | "total";
 }) {
   const colors = {
-    critical: { border: "rgba(239,68,68,0.45)", bg: "var(--kpi-danger-bg)", icon: "#ef4444" },
-    high: { border: "rgba(249,115,22,0.45)", bg: "var(--kpi-amber-bg)", icon: "#f97316" },
-    medium: { border: "rgba(234,179,8,0.45)", bg: "var(--kpi-amber-bg)", icon: "#eab308" },
-    total: { border: "var(--border)", bg: "linear-gradient(160deg, var(--panel) 0%, var(--panel-2) 100%)", icon: "#38bdf8" },
+    critical: { border: "rgba(239,68,68,0.45)", bg: "var(--kpi-danger-bg)", icon: "#C82D4C" },
+    high: { border: "rgba(249,115,22,0.45)", bg: "var(--kpi-amber-bg)", icon: "#F58A1F" },
+    medium: { border: "rgba(234,179,8,0.45)", bg: "var(--kpi-amber-bg)", icon: "#FFC940" },
+    total: { border: "var(--border)", bg: "linear-gradient(160deg, var(--panel) 0%, var(--panel-2) 100%)", icon: "#2272B4" },
   };
   const c = colors[tone];
   return (

@@ -9,10 +9,10 @@ import { DenominationGap } from "./DenominationChart";
 import ForecastPanel from "./ForecastPanel";
 
 const ACTION_COLOR: Record<string, string> = {
-  Deliver: "#f59e0b",
-  Pickup: "#0ea5e9",
-  "No Action": "#64748b",
-  Both: "#a855f7",
+  Deliver: "#FFAB00",
+  Pickup: "#2272B4",
+  "No Action": "#5A6F77",
+  Both: "#8D4FD1",
 };
 
 const ALL_BRANCHES = "__all__";
@@ -60,12 +60,12 @@ export default function BranchTrackingPage({
       </div>
 
       <div className="kpi-grid track-kpis six">
-        <TrackKpi icon={<Building2 size={18} color="#38bdf8" />} label="Total branches" value={String(summary.total)} delta="2.1%" dir="up" good />
-        <TrackKpi icon={<Truck size={18} color="#f59e0b" />} label="Delivery" value={String(summary.delivery)} delta="8.3%" dir="up" tone="amber" />
-        <TrackKpi icon={<PackageOpen size={18} color="#0ea5e9" />} label="Pickup" value={String(summary.pickup)} delta="5.6%" dir="up" tone="sky" />
-        <TrackKpi icon={<Repeat size={18} color="#a855f7" />} label="Both (Del + Pick)" value={String(summary.both)} delta="0%" dir="up" />
-        <TrackKpi icon={<MinusCircle size={18} color="#64748b" />} label="No action" value={String(summary.noAction)} delta="12%" dir="down" good />
-        <TrackKpi icon={<AlertTriangle size={18} color="#ef4444" />} label="Emergency" value={String(summary.emergency)} delta="14.3%" dir="down" good tone="red" />
+        <TrackKpi icon={<Building2 size={18} color="#2272B4" />} label="Total branches" value={String(summary.total)} delta="2.1%" dir="up" good />
+        <TrackKpi icon={<Truck size={18} color="#FFAB00" />} label="Delivery" value={String(summary.delivery)} delta="8.3%" dir="up" tone="amber" />
+        <TrackKpi icon={<PackageOpen size={18} color="#2272B4" />} label="Pickup" value={String(summary.pickup)} delta="5.6%" dir="up" tone="sky" />
+        <TrackKpi icon={<Repeat size={18} color="#8D4FD1" />} label="Both (Del + Pick)" value={String(summary.both)} delta="0%" dir="up" />
+        <TrackKpi icon={<MinusCircle size={18} color="#5A6F77" />} label="No action" value={String(summary.noAction)} delta="12%" dir="down" good />
+        <TrackKpi icon={<AlertTriangle size={18} color="#C82D4C" />} label="Emergency" value={String(summary.emergency)} delta="14.3%" dir="down" good tone="red" />
       </div>
 
       <div className="track-split">
@@ -106,17 +106,17 @@ export default function BranchTrackingPage({
                       <div style={{ fontWeight: 600, display: "flex", alignItems: "center", gap: 6 }}>
                         <span className="status-dot" style={{ background: HEALTH_COLOR[t.health] }} />
                         {t.name}
-                        {t.emergency && <AlertTriangle size={12} color="#ef4444" />}
+                        {t.emergency && <AlertTriangle size={12} color="#C82D4C" />}
                       </div>
                       <div style={{ color: "var(--muted)", fontSize: 10 }}>
                         {t.code} · {t.district}
                       </div>
                     </td>
                     <td className="num">{thb(t.currentCash)}</td>
-                    <td className="num" style={{ color: "#22c55e" }}>
+                    <td className="num" style={{ color: "#00A972" }}>
                       {thb(t.deposit)}
                     </td>
-                    <td className="num" style={{ color: "#f59e0b" }}>
+                    <td className="num" style={{ color: "var(--t-amber)" }}>
                       {thb(t.withdraw)}
                     </td>
                     <td className="num">{thb(Math.max(0, t.currentCash + t.forecastNet))}</td>

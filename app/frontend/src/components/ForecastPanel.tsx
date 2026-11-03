@@ -66,7 +66,7 @@ export default function ForecastPanel({ nodeId, title }: { nodeId?: string; titl
         {!data && !error && (
           <div className="empty-hint">
             Click <b>Re-forecast</b> to score the next 7 days for <b>{nodeId ?? "—"}</b> on the{" "}
-            <code>snb-cash-forecast</code> Model Serving endpoint (features from <code>gold_demand_features</code>).
+            cash-forecast Model Serving endpoint (features from <code>gold_demand_features</code>).
           </div>
         )}
         {data && (
@@ -81,9 +81,9 @@ export default function ForecastPanel({ nodeId, title }: { nodeId?: string; titl
                   contentStyle={{ background: "var(--popup-bg)", border: "1px solid var(--border)", borderRadius: 8, fontSize: 12 }}
                 />
                 <Legend wrapperStyle={{ fontSize: 11 }} />
-                <Area dataKey="band" name="P50–P80 band" fill="#f2a900" fillOpacity={0.18} stroke="none" />
-                <Line dataKey="actual" name="Actual net outflow" stroke="#38bdf8" strokeWidth={2} dot={{ r: 2 }} />
-                <Line dataKey="forecast" name="Forecast (P50)" stroke="#f2a900" strokeWidth={2} strokeDasharray="5 4" dot={{ r: 3 }} />
+                <Area dataKey="band" name="P50–P80 band" fill="#FF3621" fillOpacity={0.18} stroke="none" />
+                <Line dataKey="actual" name="Actual net outflow" stroke="var(--baseline)" strokeWidth={2} dot={{ r: 2 }} />
+                <Line dataKey="forecast" name="Forecast (P50)" stroke="#FF3621" strokeWidth={2} strokeDasharray="5 4" dot={{ r: 3 }} />
               </ComposedChart>
             </ResponsiveContainer>
             <div className="forecast-foot">

@@ -24,7 +24,7 @@ function fmt(v: unknown): string {
   return String(v);
 }
 
-/** "Ask SNB Ops" — chat with the Genie space SNB Cash Ops Assistant via POST /api/genie/ask. */
+/** "Ask Cash Ops" — chat with the Genie space via POST /api/genie/ask. */
 export default function GeniePage() {
   const [turns, setTurns] = useState<Turn[]>([]);
   const [input, setInput] = useState("");
@@ -52,7 +52,7 @@ export default function GeniePage() {
     <div className="track-page genie-page">
       <div className="page-toolbar">
         <span className="pt-title">
-          <Sparkles size={16} color="#f2a900" /> Ask SNB Ops · Genie space “SNB Cash Ops Assistant”
+          <Sparkles size={16} color="#FF3621" /> Ask Cash Ops · Genie space
         </span>
         {conversationId && (
           <button className="btn sm ghost" onClick={() => { setConversationId(undefined); setTurns([]); }}>
@@ -65,7 +65,7 @@ export default function GeniePage() {
         <div className="panel-body genie-scroll">
           {turns.length === 0 && (
             <div className="genie-empty">
-              <p>Ask a question about cash positions, forecasts, replenishment orders or CIT routes. Genie writes the SQL over the governed <code>snb_cash_ops</code> gold tables.</p>
+              <p>Ask a question about cash positions, forecasts, replenishment orders or CIT routes. Genie writes the SQL over the governed Unity Catalog gold tables.</p>
               <div className="genie-suggestions">
                 {SUGGESTIONS.map((s) => (
                   <button key={s} className="btn sm ghost" onClick={() => ask(s)}>{s}</button>

@@ -40,7 +40,7 @@ Three things. Two hours next week with your Cash Ops lead and IT Security to sco
 I'd rather not guess a number. The workload is small: one nightly run, a forecast model that scales to zero when idle, and a small database. We'll measure actual run cost from the system billing tables in the pilot's first week, so you'll see a real figure next to the saving.
 
 **10. "Why not stay with our CIT vendor's tool or the spreadsheet?"**
-The routing is the easy part. The value is knowing each machine's demand before payday, keeping custodian data governed, and putting the plan, the overrides and the questions in one place. A routing tool still needs all of that fed to it. And the spreadsheet is what got you the fixed cycle. *Show it: Ask SNB Ops.*
+The routing is the easy part. The value is knowing each machine's demand before payday, keeping custodian data governed, and putting the plan, the overrides and the questions in one place. A routing tool still needs all of that fed to it. And the spreadsheet is what got you the fixed cycle. *Show it: Ask Cash Ops.*
 
 ### Shreya (technical)
 
@@ -106,7 +106,7 @@ Not much. Tables are Delta, readable as Iceberg. The model is an MLflow artefact
 | Time | Segment | What happens |
 |---|---|---|
 | 0–2 | Setup and discovery | 30-second opener (Slides 1–4). One check-in: "Does that match your world?" Repeat back any pain they add, and use it later. |
-| 2–12 | Demo | Slide 4 outcome, then Route Tracking toggle, Machines re-forecast, Truck Detail override, Ask SNB Ops, then 90 seconds backstage for Shreya (pipeline, mask and row filter, model). Close each section with value for a named person. |
+| 2–12 | Demo | Slide 4 outcome, then Route Tracking toggle, Machines re-forecast, Truck Detail override, Ask Cash Ops, then 90 seconds backstage for Shreya (pipeline, mask and row filter, model). Close each section with value for a named person. |
 | 12–25 | Q&A | Answer at the asker's altitude, then bridge. Use discovery questions in natural pauses. |
 | 25–30 | Close | Slide 10 recap in THB, Slide 11 pilot ask, three success criteria, book the two-hour scoping session. Ask: "What would you need to see to say yes?" |
 

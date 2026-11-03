@@ -204,25 +204,25 @@ function htmlShell(title: string, body: string, opts: ReportOptions): string {
   <meta charset="UTF-8" />
   <title>${title}</title>
   <style>
-    body { font-family: 'Segoe UI', system-ui, sans-serif; margin: 40px; color: #0f172a; }
-    h1 { color: #1e3a8a; font-size: 22px; margin-bottom: 4px; }
-    .meta { color: #64748b; font-size: 13px; margin-bottom: 24px; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; margin: 40px; color: #1B3139; }
+    h1 { color: #1B3139; font-size: 22px; margin-bottom: 4px; }
+    .meta { color: #5A6F77; font-size: 13px; margin-bottom: 24px; }
     table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 12px; }
-    th, td { border: 1px solid #e2e8f0; padding: 8px 10px; text-align: left; }
-    th { background: #f1f5f9; font-weight: 600; }
-    tr:nth-child(even) { background: #f8fafc; }
+    th, td { border: 1px solid #EEEDE9; padding: 8px 10px; text-align: left; }
+    th { background: #F9F7F4; font-weight: 600; }
+    tr:nth-child(even) { background: #FBFAF8; }
     .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0; }
-    .kpi { border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; }
-    .kpi label { font-size: 11px; color: #64748b; text-transform: uppercase; }
+    .kpi { border: 1px solid #EEEDE9; border-radius: 8px; padding: 12px; }
+    .kpi label { font-size: 11px; color: #5A6F77; text-transform: uppercase; }
     .kpi strong { display: block; font-size: 18px; margin-top: 4px; }
     @media print { body { margin: 20px; } }
   </style>
 </head>
 <body>
   <h1>${title}</h1>
-  <div class="meta">Siam Northeast Bank · SNB Cash Logistics · ${opts.region} · ${opts.dateFrom} – ${opts.dateTo}</div>
+  <div class="meta">Cash Logistics · ${opts.region} · ${opts.dateFrom} – ${opts.dateTo}</div>
   ${body}
-  <p style="margin-top:32px;font-size:11px;color:#94a3b8">Generated ${new Date().toLocaleString()} · SNB Cash Logistics</p>
+  <p style="margin-top:32px;font-size:11px;color:#8A9BA2">Generated ${new Date().toLocaleString()} · Cash Logistics</p>
 </body>
 </html>`;
 }
@@ -265,7 +265,7 @@ function buildPptHtml(ctx: ReportContext, opts: ReportOptions): string {
   const alerts = buildAlerts(ctx.config, ctx.execs);
 
   const slides: string[] = [
-    `<section class="slide"><h2>${title}</h2><p>${opts.region} · ${opts.dateFrom} – ${opts.dateTo}</p><p>Siam Northeast Bank · SNB Cash Logistics</p></section>`,
+    `<section class="slide"><h2>${title}</h2><p>${opts.region} · ${opts.dateFrom} – ${opts.dateTo}</p><p>Cash Logistics</p></section>`,
   ];
 
   if (opts.reportId === "daily-ops" || opts.reportId === "cash-position") {
@@ -306,12 +306,12 @@ function buildPptHtml(ctx: ReportContext, opts: ReportOptions): string {
   <meta charset="UTF-8" />
   <title>${title} — Slides</title>
   <style>
-    body { margin: 0; font-family: 'Segoe UI', system-ui, sans-serif; background: #0f172a; }
-    .slide { min-height: 100vh; padding: 48px 56px; box-sizing: border-box; background: linear-gradient(160deg,#fff 0%,#f1f5f9 100%); border-bottom: 8px solid #1e40af; page-break-after: always; }
-    .slide h2 { color: #1e3a8a; font-size: 28px; margin: 0 0 12px; }
-    .slide h3 { color: #1e40af; font-size: 22px; }
+    body { margin: 0; font-family: 'Segoe UI', system-ui, sans-serif; background: #1B3139; }
+    .slide { min-height: 100vh; padding: 48px 56px; box-sizing: border-box; background: linear-gradient(160deg,#fff 0%,#F9F7F4 100%); border-bottom: 8px solid #1B3139; page-break-after: always; }
+    .slide h2 { color: #1B3139; font-size: 28px; margin: 0 0 12px; }
+    .slide h3 { color: #1B3139; font-size: 22px; }
     .slide ul { font-size: 18px; line-height: 1.8; }
-    .slide p { color: #64748b; font-size: 16px; }
+    .slide p { color: #5A6F77; font-size: 16px; }
   </style>
 </head>
 <body>${slides.join("\n")}</body>

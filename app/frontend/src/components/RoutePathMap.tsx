@@ -7,17 +7,17 @@ import { fetchRoadGeometry, getCachedGeometry } from "../data/osrm";
 import { TILE_ATTRIBUTION, useTileUrl } from "../hooks/useTheme";
 
 const TYPE_COLOR: Record<string, string> = {
-  Deliver: "#f59e0b",
-  Pickup: "#0ea5e9",
-  Mixed: "#a855f7",
-  Start: "#22c55e",
-  Return: "#22c55e",
+  Deliver: "#FFAB00",
+  Pickup: "#2272B4",
+  Mixed: "#8D4FD1",
+  Start: "#00A972",
+  Return: "#00A972",
 };
 
 const STATUS_RING: Record<string, string> = {
-  Completed: "#22c55e",
-  "In Progress": "#38bdf8",
-  Pending: "#64748b",
+  Completed: "#00A972",
+  "In Progress": "#2272B4",
+  Pending: "#5A6F77",
 };
 
 function depotIcon() {

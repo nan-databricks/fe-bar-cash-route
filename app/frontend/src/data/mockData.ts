@@ -31,7 +31,7 @@ function mulberry32(seed: number) {
   };
 }
 
-const VAN_COLORS = ["#16a34a", "#0ea5e9", "#a855f7", "#f59e0b", "#ec4899", "#14b8a6"];
+const VAN_COLORS = ["#FF3621", "#2272B4", "#00A972", "#FFAB00", "#8D4FD1", "#20A39E", "#E0457B", "#1B3139"];
 
 export const DEFAULT_PARAMS: OptimizerParams = {
   planDate: "2026-10-01",
@@ -318,7 +318,7 @@ export function buildPlanFromConfig(config: AppConfig): PlanBundle {
     originalOrder,
     "VAN-OLD",
     "Current Manual Route",
-    "#ef4444",
+    "#5A6F77",
     8.5 * 60,
     dist,
     p

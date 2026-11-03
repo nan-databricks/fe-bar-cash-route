@@ -59,7 +59,7 @@ export default function FleetMap({
                   key={`${s.seq}-${s.code}`}
                   center={[s.lat, s.lng]}
                   radius={6}
-                  pathOptions={{ color: "#0b1220", weight: 1, fillColor: s.type === "Deliver" ? "#f2a900" : "#0ea5e9", fillOpacity: 0.95 }}
+                  pathOptions={{ color: "#1B3139", weight: 1, fillColor: s.type === "Deliver" ? "#FFAB00" : "#2272B4", fillOpacity: 0.95 }}
                 >
                   <Popup>
                     <div className="popup">
@@ -86,8 +86,8 @@ export default function FleetMap({
         ))}
       </MapContainer>
       <div className="map-legend map-legend-left">
-        <div className="row"><span className="dot" style={{ background: "#f2a900" }} /> Deliver</div>
-        <div className="row"><span className="dot" style={{ background: "#0ea5e9" }} /> Pickup</div>
+        <div className="row"><span className="dot" style={{ background: "#FFAB00" }} /> Deliver</div>
+        <div className="row"><span className="dot" style={{ background: "#2272B4" }} /> Pickup</div>
         <div className="row"><span className="dot depot-legend-dot" /> Depot</div>
       </div>
     </div>

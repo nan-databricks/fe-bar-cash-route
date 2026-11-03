@@ -18,9 +18,9 @@ function fmt(v: number): string {
 }
 
 const SERIES = {
-  deposit: { color: "#22c55e", name: "Deposit" },
-  withdraw: { color: "#f59e0b", name: "Withdrawal" },
-  net: { color: "#38bdf8", name: "Net" },
+  deposit: { color: "#00A972", name: "Deposit" },
+  withdraw: { color: "#FFAB00", name: "Withdrawal" },
+  net: { color: "#2272B4", name: "Net" },
 } as const;
 
 type TrendRow = DayFlow & {
@@ -59,7 +59,7 @@ function DayDot({ cx, cy, stroke }: { cx?: number; cy?: number; stroke?: string 
       cx={cx}
       cy={cy}
       r={4}
-      fill="var(--panel, #151c2c)"
+      fill="var(--panel, #FFFFFF)"
       stroke={stroke}
       strokeWidth={2}
     />
@@ -82,7 +82,7 @@ export default function TrendChart({
   return (
     <ResponsiveContainer width="100%" height={height}>
       <ComposedChart data={chartData} margin={{ top: 10, right: 14, left: 4, bottom: 0 }}>
-        <CartesianGrid stroke="var(--border-soft, #26314a)" vertical={false} />
+        <CartesianGrid stroke="var(--border-soft, #EEEDE9)" vertical={false} />
         <XAxis
           dataKey="day"
           tick={{ fill: "var(--muted)", fontSize: 10 }}
@@ -102,7 +102,7 @@ export default function TrendChart({
         />
         <Tooltip
           contentStyle={{
-            background: "var(--popup-bg, #0f1728)",
+            background: "var(--popup-bg, #FFFFFF)",
             border: "1px solid var(--border)",
             borderRadius: 8,
             fontSize: 12,
@@ -128,7 +128,7 @@ export default function TrendChart({
               stroke={SERIES.deposit.color}
               strokeWidth={2}
               dot={<DayDot stroke={SERIES.deposit.color} />}
-              activeDot={{ r: 5, fill: "#0a0a0a", stroke: SERIES.deposit.color, strokeWidth: 2 }}
+              activeDot={{ r: 5, fill: "var(--panel)", stroke: SERIES.deposit.color, strokeWidth: 2 }}
               connectNulls={false}
             />
             <Line
@@ -138,7 +138,7 @@ export default function TrendChart({
               stroke={SERIES.withdraw.color}
               strokeWidth={2}
               dot={<DayDot stroke={SERIES.withdraw.color} />}
-              activeDot={{ r: 5, fill: "#0a0a0a", stroke: SERIES.withdraw.color, strokeWidth: 2 }}
+              activeDot={{ r: 5, fill: "var(--panel)", stroke: SERIES.withdraw.color, strokeWidth: 2 }}
               connectNulls={false}
             />
             <Line
@@ -148,7 +148,7 @@ export default function TrendChart({
               stroke={SERIES.net.color}
               strokeWidth={2.5}
               dot={<DayDot stroke={SERIES.net.color} />}
-              activeDot={{ r: 5, fill: "#0a0a0a", stroke: SERIES.net.color, strokeWidth: 2 }}
+              activeDot={{ r: 5, fill: "var(--panel)", stroke: SERIES.net.color, strokeWidth: 2 }}
               connectNulls={false}
             />
             <Line
@@ -159,7 +159,7 @@ export default function TrendChart({
               strokeWidth={2}
               strokeDasharray="6 4"
               dot={<DayDot stroke={SERIES.deposit.color} />}
-              activeDot={{ r: 5, fill: "#0a0a0a", stroke: SERIES.deposit.color, strokeWidth: 2 }}
+              activeDot={{ r: 5, fill: "var(--panel)", stroke: SERIES.deposit.color, strokeWidth: 2 }}
               connectNulls={false}
             />
             <Line
@@ -170,7 +170,7 @@ export default function TrendChart({
               strokeWidth={2}
               strokeDasharray="6 4"
               dot={<DayDot stroke={SERIES.withdraw.color} />}
-              activeDot={{ r: 5, fill: "#0a0a0a", stroke: SERIES.withdraw.color, strokeWidth: 2 }}
+              activeDot={{ r: 5, fill: "var(--panel)", stroke: SERIES.withdraw.color, strokeWidth: 2 }}
               connectNulls={false}
             />
             <Line
@@ -181,7 +181,7 @@ export default function TrendChart({
               strokeWidth={2.5}
               strokeDasharray="6 4"
               dot={<DayDot stroke={SERIES.net.color} />}
-              activeDot={{ r: 5, fill: "#0a0a0a", stroke: SERIES.net.color, strokeWidth: 2 }}
+              activeDot={{ r: 5, fill: "var(--panel)", stroke: SERIES.net.color, strokeWidth: 2 }}
               connectNulls={false}
             />
           </>

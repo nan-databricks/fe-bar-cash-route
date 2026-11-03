@@ -3,23 +3,23 @@ import type { RouteExecution, StopStatus, StopType } from "../types";
 import { thb } from "../data/format";
 
 const STATUS_PILL: Record<string, string> = {
-  "On Track": "#22c55e",
-  Delayed: "#f59e0b",
-  "At Risk": "#ef4444",
+  "On Track": "#00A972",
+  Delayed: "#FFAB00",
+  "At Risk": "#C82D4C",
 };
 
 const STOP_STATUS_COLOR: Record<StopStatus, string> = {
-  Completed: "#22c55e",
-  "In Progress": "#38bdf8",
-  Pending: "#94a3b8",
+  Completed: "#00A972",
+  "In Progress": "#2272B4",
+  Pending: "#8A9BA2",
 };
 
 const TYPE_COLOR: Record<StopType, string> = {
-  Deliver: "#f59e0b",
-  Pickup: "#0ea5e9",
-  Mixed: "#a855f7",
-  Start: "#22c55e",
-  Return: "#22c55e",
+  Deliver: "#FFAB00",
+  Pickup: "#2272B4",
+  Mixed: "#8D4FD1",
+  Start: "#00A972",
+  Return: "#00A972",
 };
 
 const TYPE_LABEL: Record<StopType, string> = {
@@ -126,7 +126,7 @@ export default function RouteDetailPage({
                       </span>
                     </td>
                     <td className="num">{s.eta}</td>
-                    <td className="num" style={{ color: s.amount > 0 ? "#f59e0b" : s.amount < 0 ? "#0ea5e9" : "var(--muted)" }}>
+                    <td className="num" style={{ color: s.amount > 0 ? "var(--t-amber)" : s.amount < 0 ? "#2272B4" : "var(--muted)" }}>
                       {s.amount === 0 ? "—" : `${s.amount > 0 ? "+" : "−"}${thb(Math.abs(s.amount))}`}
                     </td>
                   </tr>
@@ -141,7 +141,7 @@ export default function RouteDetailPage({
         <div className="cash-cap">
           <div className="cc-head">
             <span className="k-label">Vehicle Capacity (Cash)</span>
-            <span>{thb(exec.cashOnBoard)} / {thb(exec.vehicleCapacity)} <b style={{ color: "#38bdf8" }}>({utilPct}%)</b></span>
+            <span>{thb(exec.cashOnBoard)} / {thb(exec.vehicleCapacity)} <b style={{ color: "#2272B4" }}>({utilPct}%)</b></span>
           </div>
           <div className="cc-bar"><div className="cc-fill" style={{ width: `${Math.min(100, utilPct)}%` }} /></div>
         </div>
@@ -168,7 +168,7 @@ function Stat({
   tone?: "green" | "amber" | "sky";
   wide?: boolean;
 }) {
-  const color = tone === "green" ? "#22c55e" : tone === "amber" ? "#fbbf24" : tone === "sky" ? "#38bdf8" : undefined;
+  const color = tone === "green" ? "#00A972" : tone === "amber" ? "var(--t-amber)" : tone === "sky" ? "#2272B4" : undefined;
   return (
     <div className={`stat-box ${wide ? "wide" : ""}`}>
       <div className="k-label">{label}</div>

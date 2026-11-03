@@ -8,9 +8,9 @@ import FleetMap from "./FleetMap";
 import { PlanKpis, PlanToggle } from "./PlanBar";
 
 const STATUS_COLOR: Record<string, string> = {
-  "On Track": "#22c55e",
-  Delayed: "#f59e0b",
-  "At Risk": "#ef4444",
+  "On Track": "#00A972",
+  Delayed: "#FFAB00",
+  "At Risk": "#C82D4C",
 };
 
 export default function RouteTrackingPage({
@@ -38,9 +38,9 @@ export default function RouteTrackingPage({
   }, [execs, selectedRouteId]);
 
   const donut = [
-    { name: "On Track", value: summary.onTrack, color: "#22c55e" },
-    { name: "Delayed", value: summary.delayed, color: "#f59e0b" },
-    { name: "At Risk", value: summary.atRisk, color: "#ef4444" },
+    { name: "On Track", value: summary.onTrack, color: "#00A972" },
+    { name: "Delayed", value: summary.delayed, color: "#FFAB00" },
+    { name: "At Risk", value: summary.atRisk, color: "#C82D4C" },
   ].filter((d) => d.value > 0);
 
   const base = summaryRows.find((r) => r.plan_type === "BASELINE");
@@ -93,7 +93,7 @@ export default function RouteTrackingPage({
                       <Cell key={i} fill={d.color} />
                     ))}
                   </Pie>
-                  <Tooltip contentStyle={{ background: "#0f1728", border: "1px solid #26314a", borderRadius: 8, fontSize: 12 }} />
+                  <Tooltip contentStyle={{ background: "var(--popup-bg)", border: "1px solid var(--border)", color: "var(--text)", borderRadius: 8, fontSize: 12 }} />
                   <Legend wrapperStyle={{ fontSize: 11 }} />
                 </PieChart>
               </ResponsiveContainer>
@@ -103,9 +103,9 @@ export default function RouteTrackingPage({
               </div>
             </div>
             <div className="route-status-rows">
-              <StatusRow color="#22c55e" label="On Track" value={summary.onTrack} total={summary.totalRoutes} />
-              <StatusRow color="#f59e0b" label="Delayed" value={summary.delayed} total={summary.totalRoutes} />
-              <StatusRow color="#ef4444" label="At Risk" value={summary.atRisk} total={summary.totalRoutes} />
+              <StatusRow color="#00A972" label="On Track" value={summary.onTrack} total={summary.totalRoutes} />
+              <StatusRow color="#FFAB00" label="Delayed" value={summary.delayed} total={summary.totalRoutes} />
+              <StatusRow color="#C82D4C" label="At Risk" value={summary.atRisk} total={summary.totalRoutes} />
             </div>
           </div>
         </div>
@@ -191,7 +191,7 @@ export default function RouteTrackingPage({
                     <td style={{ fontWeight: 600 }}>{r.metric}</td>
                     <td className="num" style={{ color: "var(--muted)" }}>{r.before}</td>
                     <td className="num">{r.after}</td>
-                    <td className="num" style={{ color: r.imp === "—" ? "var(--muted)" : "#22c55e", fontWeight: 600 }}>
+                    <td className="num" style={{ color: r.imp === "—" ? "var(--muted)" : "#00A972", fontWeight: 600 }}>
                       {r.imp !== "—" && !String(r.imp).startsWith("▲") && !String(r.imp).startsWith("▼") ? `▼ ${r.imp}` : r.imp}
                     </td>
                   </tr>

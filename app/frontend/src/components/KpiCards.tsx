@@ -6,7 +6,7 @@ export default function KpiCards({ m }: { m: ExecMetrics }) {
   return (
     <div className="kpi-grid">
       <div className="kpi hero">
-        <Clock className="icon" size={20} color="#4ade80" />
+        <Clock className="icon" size={20} color="#00A972" />
         <div className="k-label">Man-hours saved / day</div>
         <div className="k-value">{m.manHoursSaved} h</div>
         <div className="k-sub">
@@ -15,7 +15,7 @@ export default function KpiCards({ m }: { m: ExecMetrics }) {
       </div>
 
       <div className="kpi cash">
-        <Banknote className="icon" size={20} color="#38bdf8" />
+        <Banknote className="icon" size={20} color="#2272B4" />
         <div className="k-label">Idle cash reduction</div>
         <div className="k-value">{thb(m.idleCashReductionThb)}</div>
         <div className="k-sub">
@@ -24,7 +24,7 @@ export default function KpiCards({ m }: { m: ExecMetrics }) {
       </div>
 
       <div className="kpi">
-        <Route className="icon" size={20} color="#38bdf8" />
+        <Route className="icon" size={20} color="#2272B4" />
         <div className="k-label">Distance reduced</div>
         <div className="k-value">{m.distanceSavedKm} km</div>
         <div className="k-sub">
@@ -33,14 +33,14 @@ export default function KpiCards({ m }: { m: ExecMetrics }) {
       </div>
 
       <div className="kpi">
-        <Banknote className="icon" size={20} color="#f59e0b" />
+        <Banknote className="icon" size={20} color="#FFAB00" />
         <div className="k-label">Transport cost saved</div>
         <div className="k-value">{thb(m.fuelCostSavedThb)}</div>
         <div className="k-sub">fuel · crew · carrier / day</div>
       </div>
 
       <div className="kpi">
-        <Truck className="icon" size={20} color="#a78bfa" />
+        <Truck className="icon" size={20} color="#A77BE0" />
         <div className="k-label">Fleet utilization</div>
         <div className="k-value">
           {m.branchesServed}/{m.branchesTotal}
@@ -49,21 +49,21 @@ export default function KpiCards({ m }: { m: ExecMetrics }) {
       </div>
 
       <div className="kpi">
-        <TrendingDown className="icon" size={20} color="#4ade80" />
+        <TrendingDown className="icon" size={20} color="#00A972" />
         <div className="k-label">On-time SLA</div>
         <div className="k-value">{m.onTimePct}%</div>
         <div className="k-sub">within branch time windows</div>
       </div>
 
       <div className="kpi">
-        <Banknote className="icon" size={20} color="#38bdf8" />
+        <Banknote className="icon" size={20} color="#2272B4" />
         <div className="k-label">Idle cash before → after</div>
         <div className="k-value">{thb(m.idleCashAfterThb)}</div>
         <div className="k-sub">from {thb(m.idleCashBeforeThb)} idle</div>
       </div>
 
       <div className="kpi">
-        <Leaf className="icon" size={20} color="#4ade80" />
+        <Leaf className="icon" size={20} color="#00A972" />
         <div className="k-label">CO₂ avoided</div>
         <div className="k-value">{m.co2SavedKg} kg</div>
         <div className="k-sub">lower armored-fleet mileage</div>

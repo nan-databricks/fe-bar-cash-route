@@ -72,7 +72,7 @@ const NAV_ITEMS: { id: View; label: string; icon: typeof Cpu }[] = [
   { id: "alerts", label: "Alerts", icon: AlertTriangle },
   { id: "scenario", label: "Scenario", icon: FlaskConical },
   { id: "reports", label: "Reports", icon: FileDown },
-  { id: "genie", label: "Ask SNB Ops", icon: Sparkles },
+  { id: "genie", label: "Ask Cash Ops", icon: Sparkles },
 ];
 
 type Theme = "dark" | "light";
@@ -86,7 +86,7 @@ export default function App() {
   const [showOptimized, setShowOptimized] = useState(true);
   const [showOriginal, setShowOriginal] = useState(true);
   const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem("snb-theme") as Theme) || "dark"
+    () => (localStorage.getItem("cash-theme") as Theme) || "light"
   );
   const [navCollapsed, setNavCollapsed] = useState<boolean>(
     () => localStorage.getItem("snb-nav-collapsed") === "1"
@@ -103,7 +103,7 @@ export default function App() {
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("snb-theme", theme);
+    localStorage.setItem("cash-theme", theme);
   }, [theme]);
 
   useEffect(() => {
@@ -168,8 +168,8 @@ export default function App() {
       });
 
       if (!h) setDataSourceLabel("Offline · browser mock");
-      else if (h.unity_catalog) setDataSourceLabel(`UC · ${h.schema ?? "snb_cash_ops"}`);
-      else setDataSourceLabel("Mock · SNB fixtures");
+      else if (h.unity_catalog) setDataSourceLabel("Unity Catalog · live");
+      else setDataSourceLabel("Mock · demo fixtures");
     })();
     return () => {
       cancelled = true;
@@ -182,11 +182,11 @@ export default function App() {
         <div className="sidebar-top">
           <div className="brand">
             <div className="logo">
-              <img src="/snb-logo.svg" alt="Siam Northeast Bank" />
+              <img src="/cash-logistics-logo.svg" alt="Cash Logistics" />
             </div>
             <div className="brand-text">
-              <h1>SNB Cash Logistics</h1>
-              <div className="sub">Khon Kaen · CVRP-TW</div>
+              <h1>Cash Logistics</h1>
+              <div className="sub">Khon Kaen · Route optimization</div>
             </div>
           </div>
           <button
@@ -336,25 +336,25 @@ export default function App() {
                   label="Man-hours saved"
                   value={`${metrics.manHoursSaved} h`}
                   sub={`▼ ${metrics.manHoursSavedPct}%`}
-                  accent="#4ade80"
+                  accent="#00A972"
                 />
                 <RibbonStat
                   label="Idle cash freed"
                   value={thb(metrics.idleCashReductionThb)}
                   sub={`▼ ${metrics.idleCashReductionPct}%`}
-                  accent="#38bdf8"
+                  accent="#2272B4"
                 />
                 <RibbonStat
                   label="Distance reduced"
                   value={`${metrics.distanceSavedKm} km`}
                   sub={`▼ ${metrics.distanceSavedPct}%`}
-                  accent="#38bdf8"
+                  accent="#2272B4"
                 />
                 <RibbonStat
                   label="Cost saved / day"
                   value={thb(metrics.fuelCostSavedThb)}
                   sub={`${metrics.branchesServed}/${metrics.branchesTotal} branches`}
-                  accent="#f59e0b"
+                  accent="#FFAB00"
                 />
               </div>
 
@@ -387,17 +387,17 @@ export default function App() {
                     <SummaryStat
                       label="Actual plan"
                       value={`${original.totalDistanceKm} km · ${original.vehiclesUsed} van`}
-                      color="#ef4444"
+                      color="#5A6F77"
                     />
                     <SummaryStat
                       label="Optimized plan"
                       value={`${optimized.totalDistanceKm} km · ${optimized.vehiclesUsed} vans`}
-                      color="#22c55e"
+                      color="#FF3621"
                     />
                     <SummaryStat
                       label="Idle cash freed"
                       value={thb(metrics.idleCashReductionThb)}
-                      color="#38bdf8"
+                      color="#2272B4"
                     />
                   </div>
                 </div>

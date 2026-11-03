@@ -106,7 +106,7 @@ Alex, that's what makes this a low-risk decision. Your people still make the cal
 
 Say: Your team shouldn't need to raise a ticket just to ask a question. So let me ask the one that keeps Cash Ops up at night.
 
-**Click:** Ask SNB Ops, then type: *Which nodes run out of cash in the next 3 days if we do nothing?*
+**Click:** Ask Cash Ops, then type: *Which nodes run out of cash in the next 3 days if we do nothing?*
 
 *It usually answers in about 12 seconds. If it goes past about 20: "While that's thinking, here's the answer from our test run," then read it from Slide 6 or `evidence/genie_benchmarks.txt`. Read the headline answer and open the SQL. Don't walk through the table's days-to-cashout column, and ignore any stray \*\* symbols in the text.*
 

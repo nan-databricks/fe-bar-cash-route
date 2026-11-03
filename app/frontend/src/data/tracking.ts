@@ -305,9 +305,9 @@ export function summarizeBranchTracks(tracks: BranchTrack[]): BranchTrackSummary
 }
 
 export const HEALTH_COLOR: Record<Health, string> = {
-  Healthy: "#22c55e",
-  Watch: "#eab308",
-  "Action Needed": "#f97316",
-  Critical: "#ef4444",
-  "No Data": "#64748b",
+  Healthy: "#00A972",
+  Watch: "#FFC940",
+  "Action Needed": "#F58A1F",
+  Critical: "#C82D4C",
+  "No Data": "#5A6F77",
 };

@@ -20,9 +20,9 @@ import {
 } from "../data/configStore";
 
 const STATUS_COLOR: Record<string, string> = {
-  REPLENISH: "#f59e0b",
-  PICKUP: "#0ea5e9",
-  OK: "#64748b",
+  REPLENISH: "#FFAB00",
+  PICKUP: "#2272B4",
+  OK: "#5A6F77",
 };
 
 interface Props {
@@ -122,13 +122,13 @@ export default function InputPage({ config, onChange, onApply }: Props) {
               {config.params.numVans} vans
             </span>
             <div style={{ flex: 1 }} />
-            <button className="btn sm" onClick={() => download("snb-config.json", exportConfigJson(config), "application/json")}>
+            <button className="btn sm" onClick={() => download("cash-route-config.json", exportConfigJson(config), "application/json")}>
               <Download size={14} /> JSON
             </button>
             <button className="btn sm" onClick={() => jsonInputRef.current?.click()}>
               <Upload size={14} /> JSON
             </button>
-            <button className="btn sm" onClick={() => download("snb-branches.csv", branchesToCsv(config.branches), "text/csv")}>
+            <button className="btn sm" onClick={() => download("cash-route-branches.csv", branchesToCsv(config.branches), "text/csv")}>
               <Download size={14} /> CSV
             </button>
             <button className="btn sm" onClick={() => csvInputRef.current?.click()}>

@@ -8,7 +8,7 @@ from typing import Any
 
 from server import mock
 
-PALETTE = ["#22c55e", "#38bdf8", "#a855f7", "#f2a900", "#ec4899", "#14b8a6", "#f97316", "#84cc16"]
+PALETTE = ["#FF3621", "#2272B4", "#00A972", "#FFAB00", "#8D4FD1", "#20A39E", "#E0457B", "#1B3139"]
 NOW_MIN = 13 * 60 + 20  # demo "current time" for live progress simulation
 
 

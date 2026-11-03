@@ -37,10 +37,10 @@ export default function RoutePanel({ plan, branches }: Props) {
             const isRep = b.demand > 0;
             const tag = isBoth ? "BOTH" : isRep ? "DELIVERY" : "PICKUP";
             const tagClass = isBoth ? "both" : isRep ? "rep" : "pick";
-            const amtColor = isBoth ? "#a855f7" : isRep ? "#fbbf24" : "#38bdf8";
+            const amtColor = isBoth ? "var(--t-purple)" : isRep ? "var(--t-amber)" : "var(--t-blue)";
             return (
               <div className="stop" key={s.branchId}>
-                <div className="seq" style={{ border: `2px solid ${isBoth ? "#a855f7" : v.color}` }}>{s.seq}</div>
+                <div className="seq" style={{ border: `2px solid ${isBoth ? "#8D4FD1" : v.color}` }}>{s.seq}</div>
                 <div className="s-name">
                   <div className="n">{b.name}{isEmergency ? " ⚠" : ""}</div>
                   <div className="d">

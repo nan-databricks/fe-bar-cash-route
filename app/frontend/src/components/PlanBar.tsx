@@ -36,13 +36,13 @@ export function PlanKpis({ rows, plan, source }: { rows: RouteSummaryRow[]; plan
   if (!cur) return null;
   const vs = plan === "OPTIMIZED" ? "vs baseline" : "vs optimized";
   const items = [
-    { icon: <Banknote size={18} color="#f2a900" />, label: "CIT cost / day", value: thb(cur.cost_thb), d: delta(cur.cost_thb, other?.cost_thb, true) },
-    { icon: <Ruler size={18} color="#38bdf8" />, label: "Distance", value: `${cur.km.toLocaleString("en-US", { maximumFractionDigits: 0 })} km`, d: delta(cur.km, other?.km, true) },
-    { icon: <Truck size={18} color="#a855f7" />, label: "Vans used", value: `${cur.vehicles_used} / 30`, d: delta(cur.vehicles_used, other?.vehicles_used, true) },
-    { icon: <Wallet size={18} color="#22c55e" />, label: "Idle cash", value: thb(cur.idle_cash_thb), d: delta(cur.idle_cash_thb, other?.idle_cash_thb, true) },
-    { icon: <ShieldAlert size={18} color="#ef4444" />, label: "Cash-out risk nodes", value: String(cur.cashout_risk_nodes), d: delta(cur.cashout_risk_nodes, other?.cashout_risk_nodes, true) },
-    { icon: <Gauge size={18} color="#22c55e" />, label: "SLA", value: `${cur.sla_pct.toFixed(1)}%`, d: delta(cur.sla_pct, other?.sla_pct, false) },
-    { icon: <Timer size={18} color="#38bdf8" />, label: "Crew hours", value: `${cur.duration_hr.toLocaleString("en-US", { maximumFractionDigits: 0 })} h`, d: delta(cur.duration_hr, other?.duration_hr, true) },
+    { icon: <Banknote size={18} color="#FF3621" />, label: "CIT cost / day", value: thb(cur.cost_thb), d: delta(cur.cost_thb, other?.cost_thb, true) },
+    { icon: <Ruler size={18} color="#2272B4" />, label: "Distance", value: `${cur.km.toLocaleString("en-US", { maximumFractionDigits: 0 })} km`, d: delta(cur.km, other?.km, true) },
+    { icon: <Truck size={18} color="#8D4FD1" />, label: "Vans used", value: `${cur.vehicles_used} / 30`, d: delta(cur.vehicles_used, other?.vehicles_used, true) },
+    { icon: <Wallet size={18} color="#00A972" />, label: "Idle cash", value: thb(cur.idle_cash_thb), d: delta(cur.idle_cash_thb, other?.idle_cash_thb, true) },
+    { icon: <ShieldAlert size={18} color="#C82D4C" />, label: "Cash-out risk nodes", value: String(cur.cashout_risk_nodes), d: delta(cur.cashout_risk_nodes, other?.cashout_risk_nodes, true) },
+    { icon: <Gauge size={18} color="#00A972" />, label: "SLA", value: `${cur.sla_pct.toFixed(1)}%`, d: delta(cur.sla_pct, other?.sla_pct, false) },
+    { icon: <Timer size={18} color="#2272B4" />, label: "Crew hours", value: `${cur.duration_hr.toLocaleString("en-US", { maximumFractionDigits: 0 })} h`, d: delta(cur.duration_hr, other?.duration_hr, true) },
   ];
   return (
     <div className="plan-kpis">

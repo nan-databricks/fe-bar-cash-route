@@ -16,9 +16,9 @@ import type { ExecMetrics } from "../types";
 import { buildAiPerformance, type AccuracyRing } from "../data/aiPerformance";
 
 function mapeColor(mape: number): string {
-  if (mape <= 10) return "#22c55e";
-  if (mape <= 15) return "#f59e0b";
-  return "#ef4444";
+  if (mape <= 10) return "#00A972";
+  if (mape <= 15) return "#FFAB00";
+  return "#C82D4C";
 }
 
 function AccuracyGauge({ ring }: { ring: AccuracyRing }) {
@@ -136,8 +136,8 @@ export default function AiPerformancePage({ metrics }: { metrics: ExecMetrics })
                   contentStyle={{ background: "var(--panel)", border: "1px solid var(--border)", borderRadius: 8, fontSize: 12 }}
                 />
                 <Legend wrapperStyle={{ fontSize: 11 }} />
-                <Line type="monotone" dataKey="actual" name="Actual" stroke="#1d4ed8" strokeWidth={2.5} dot={{ r: 3, fill: "#1d4ed8" }} activeDot={{ r: 5 }} />
-                <Line type="monotone" dataKey="predicted" name="Predicted" stroke="#60a5fa" strokeWidth={2.5} strokeDasharray="6 4" dot={{ r: 3, fill: "#60a5fa" }} activeDot={{ r: 5 }} />
+                <Line type="monotone" dataKey="actual" name="Actual" stroke="#1B5A8F" strokeWidth={2.5} dot={{ r: 3, fill: "#1B5A8F" }} activeDot={{ r: 5 }} />
+                <Line type="monotone" dataKey="predicted" name="Predicted" stroke="#7BB0DE" strokeWidth={2.5} strokeDasharray="6 4" dot={{ r: 3, fill: "#7BB0DE" }} activeDot={{ r: 5 }} />
               </LineChart>
             </ResponsiveContainer>
           </div>

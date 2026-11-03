@@ -10,7 +10,7 @@ import type {
 } from "../types";
 import { driveMinutes, makeRoadKm, minutesToClock } from "./routing";
 
-const PALETTE = ["#22c55e", "#38bdf8", "#a855f7", "#f59e0b", "#ef4444", "#14b8a6"];
+const PALETTE = ["#FF3621", "#2272B4", "#00A972", "#FFAB00", "#8D4FD1", "#20A39E", "#E0457B", "#1B3139"];
 
 /** Demo "current time" used to simulate live progress along the routes. */
 export const NOW_MIN = 13 * 60 + 20; // 13:20

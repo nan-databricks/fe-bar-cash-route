@@ -15,10 +15,10 @@ import { fetchRoadGeometry, getCachedGeometry } from "../data/osrm";
 import { TILE_ATTRIBUTION, useTileUrl } from "../hooks/useTheme";
 
 const STATUS_COLOR: Record<string, string> = {
-  REPLENISH: "#f59e0b",
-  PICKUP: "#0ea5e9",
-  OK: "#64748b",
-  BOTH: "#a855f7",
+  REPLENISH: "#FFAB00",
+  PICKUP: "#2272B4",
+  OK: "#5A6F77",
+  BOTH: "#8D4FD1",
 };
 
 function isBothStop(b: Branch, seq?: number): boolean {
@@ -49,7 +49,7 @@ function depotIcon() {
 
 function branchIcon(color: string, seq?: number, emergency = false) {
   const size = seq ? 26 : 20;
-  const ring = emergency ? "box-shadow:0 0 0 3px #fff,0 0 0 5px #ef4444;" : "";
+  const ring = emergency ? "box-shadow:0 0 0 3px #fff,0 0 0 5px #C82D4C;" : "";
   return L.divIcon({
     className: "",
     html: `<div class="marker-badge" style="width:${size}px;height:${size}px;background:${color};${ring}">${
@@ -211,7 +211,7 @@ export default function MapView({
             key={b.id}
             center={[b.lat, b.lng]}
             radius={5}
-            pathOptions={{ color: "#475569", fillColor: "#334155", fillOpacity: 0.7, weight: 1 }}
+            pathOptions={{ color: "#4A5D64", fillColor: "#3A4C53", fillOpacity: 0.7, weight: 1 }}
           >
             <Popup>
               <div className="popup">
@@ -243,14 +243,14 @@ export default function MapView({
                   <div className="p-row"><span className="lab">District</span><span>{b.district}</span></div>
                   {cash && <div className="p-row"><span className="lab">Van</span><span>{cash.vanLabel}</span></div>}
                   {both ? (
-                    <div className="p-row"><span className="lab">Both (Delivery + Pickup)</span><span style={{ color: "#a855f7", fontWeight: 700 }}>{b.demand >= 0 ? "+" : "−"}{thb(Math.abs(b.demand))}</span></div>
+                    <div className="p-row"><span className="lab">Both (Delivery + Pickup)</span><span style={{ color: "#8D4FD1", fontWeight: 700 }}>{b.demand >= 0 ? "+" : "−"}{thb(Math.abs(b.demand))}</span></div>
                   ) : b.status === "REPLENISH" ? (
-                    <div className="p-row"><span className="lab">Delivery</span><span style={{ color: "#f59e0b", fontWeight: 700 }}>+{thb(Math.abs(b.demand))}</span></div>
+                    <div className="p-row"><span className="lab">Delivery</span><span style={{ color: "var(--t-amber)", fontWeight: 700 }}>+{thb(Math.abs(b.demand))}</span></div>
                   ) : (
-                    <div className="p-row"><span className="lab">Pickup</span><span style={{ color: "#0ea5e9", fontWeight: 700 }}>−{thb(Math.abs(b.demand))}</span></div>
+                    <div className="p-row"><span className="lab">Pickup</span><span style={{ color: "#2272B4", fontWeight: 700 }}>−{thb(Math.abs(b.demand))}</span></div>
                   )}
                   {emergency && (
-                    <div className="p-row"><span className="lab">Emergency</span><span style={{ color: "#ef4444", fontWeight: 700 }}>YES</span></div>
+                    <div className="p-row"><span className="lab">Emergency</span><span style={{ color: "#C82D4C", fontWeight: 700 }}>YES</span></div>
                   )}
                   {cash && (
                     <div className="p-row"><span className="lab">Cash in transit</span><span style={{ fontWeight: 700 }}>{thb(cash.onboard)}</span></div>
@@ -270,8 +270,8 @@ export default function MapView({
             <div className="popup">
               <div className="p-title">{depot.name}</div>
               <div className="p-row"><span className="lab">Role</span><span>Depot / Cash Center</span></div>
-              <div className="p-row"><span className="lab">Delivery dispatched</span><span style={{ color: "#f59e0b", fontWeight: 700 }}>{thb(optimized.vehicles.reduce((s, v) => s + v.cashDelivered, 0))}</span></div>
-              <div className="p-row"><span className="lab">Cash returning</span><span style={{ color: "#0ea5e9", fontWeight: 700 }}>{thb(optimized.vehicles.reduce((s, v) => s + v.cashPickedUp, 0))}</span></div>
+              <div className="p-row"><span className="lab">Delivery dispatched</span><span style={{ color: "var(--t-amber)", fontWeight: 700 }}>{thb(optimized.vehicles.reduce((s, v) => s + v.cashDelivered, 0))}</span></div>
+              <div className="p-row"><span className="lab">Cash returning</span><span style={{ color: "#2272B4", fontWeight: 700 }}>{thb(optimized.vehicles.reduce((s, v) => s + v.cashPickedUp, 0))}</span></div>
             </div>
           </Popup>
         </Marker>
@@ -282,35 +282,35 @@ export default function MapView({
           className={`toggle-btn ${showOptimized ? "" : "off"}`}
           onClick={onToggleOptimized}
         >
-          <span className="swatch" style={{ background: "#16a34a" }} /> Optimized
+          <span className="swatch" style={{ background: "#FF3621" }} /> Optimized
         </button>
         <button
           className={`toggle-btn ${showOriginal ? "" : "off"}`}
           onClick={onToggleOriginal}
         >
-          <span className="swatch" style={{ background: "#ef4444", height: 0, borderTop: "3px dashed #ef4444" }} /> {compareRouteLabel}
+          <span className="swatch" style={{ background: "#5A6F77", height: 0, borderTop: "3px dashed #5A6F77" }} /> {compareRouteLabel}
         </button>
       </div>
 
       <div className="map-legend map-legend-left">
         {isTracking ? (
           <>
-            <div className="row"><span className="dot" style={{ background: "#f59e0b" }} /> Delivery</div>
-            <div className="row"><span className="dot" style={{ background: "#0ea5e9" }} /> Pickup</div>
-            <div className="row"><span className="dot" style={{ background: "#a855f7" }} /> Both (Delivery + Pickup)</div>
+            <div className="row"><span className="dot" style={{ background: "#FFAB00" }} /> Delivery</div>
+            <div className="row"><span className="dot" style={{ background: "#2272B4" }} /> Pickup</div>
+            <div className="row"><span className="dot" style={{ background: "#8D4FD1" }} /> Both (Delivery + Pickup)</div>
             <div className="row"><span className="dot emergency-dot" /> Emergency Stop</div>
-            <div className="row"><span className="dot" style={{ background: "#334155" }} /> No stop (skipped)</div>
-            <div className="row"><span className="line" style={{ borderColor: "#16a34a" }} /> Route in service</div>
+            <div className="row"><span className="dot" style={{ background: "#3A4C53" }} /> No stop (skipped)</div>
+            <div className="row"><span className="line" style={{ borderColor: "#FF3621" }} /> Route in service</div>
           </>
         ) : (
           <>
-            <div className="row"><span className="dot" style={{ background: "#f59e0b" }} /> Delivery</div>
-            <div className="row"><span className="dot" style={{ background: "#0ea5e9" }} /> Pickup</div>
-            <div className="row"><span className="dot" style={{ background: "#a855f7" }} /> Both (Delivery + Pickup)</div>
+            <div className="row"><span className="dot" style={{ background: "#FFAB00" }} /> Delivery</div>
+            <div className="row"><span className="dot" style={{ background: "#2272B4" }} /> Pickup</div>
+            <div className="row"><span className="dot" style={{ background: "#8D4FD1" }} /> Both (Delivery + Pickup)</div>
             <div className="row"><span className="dot emergency-dot" /> Emergency Stop</div>
-            <div className="row"><span className="dot" style={{ background: "#334155" }} /> No stop (skipped)</div>
-            <div className="row"><span className="line" style={{ borderColor: "#16a34a" }} /> Optimized route</div>
-            <div className="row"><span className="line" style={{ borderColor: "#ef4444", borderTopStyle: "dashed" }} /> {compareRouteLabel} route</div>
+            <div className="row"><span className="dot" style={{ background: "#3A4C53" }} /> No stop (skipped)</div>
+            <div className="row"><span className="line" style={{ borderColor: "#FF3621" }} /> Optimized route</div>
+            <div className="row"><span className="line" style={{ borderColor: "#5A6F77", borderTopStyle: "dashed" }} /> {compareRouteLabel} route</div>
           </>
         )}
       </div>

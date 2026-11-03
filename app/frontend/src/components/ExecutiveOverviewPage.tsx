@@ -76,7 +76,7 @@ function EoKpi({
     <div className={`eo-kpi ${tone ?? ""}`}>
       <div className="eo-kpi-top">
         <span className="eo-kpi-icon">{icon}</span>
-        {spark && <Sparkline data={spark} color={tone === "danger" ? "#ef4444" : tone === "green" ? "#22c55e" : "#38bdf8"} />}
+        {spark && <Sparkline data={spark} color={tone === "danger" ? "#C82D4C" : tone === "green" ? "#00A972" : "#FF3621"} />}
       </div>
       <div className="eo-kpi-label">{label}</div>
       <div className="eo-kpi-value">{value}</div>
@@ -93,16 +93,16 @@ function EoKpi({
 }
 
 const RISK_COLOR: Record<string, string> = {
-  "Very High": "#ef4444",
-  High: "#f97316",
-  Medium: "#eab308",
-  Low: "#22c55e",
+  "Very High": "#C82D4C",
+  High: "#F58A1F",
+  Medium: "#FFC940",
+  Low: "#00A972",
 };
 
 const STATUS_COLOR: Record<string, string> = {
-  "On Track": "#22c55e",
-  Delayed: "#f59e0b",
-  "At Risk": "#ef4444",
+  "On Track": "#00A972",
+  Delayed: "#FFAB00",
+  "At Risk": "#C82D4C",
 };
 
 export default function ExecutiveOverviewPage({
@@ -241,28 +241,28 @@ export default function ExecutiveOverviewPage({
 
       <div className="eo-kpi-row">
         <EoKpi
-          icon={<Banknote size={18} color="#38bdf8" />}
+          icon={<Banknote size={18} color="#2272B4" />}
           label="Total Cash Managed"
           value={thbB(em.totalCashManaged)}
           delta={{ text: "8%", dir: "up", good: true }}
           spark={[82, 85, 88, 90, 92, 95, 100]}
         />
         <EoKpi
-          icon={<PiggyBank size={18} color="#f59e0b" />}
+          icon={<PiggyBank size={18} color="#FFAB00" />}
           label="Idle Cash"
           value={thbB(em.idleCash)}
           delta={{ text: "15%", dir: "down", good: true }}
           tone="amber"
         />
         <EoKpi
-          icon={<Truck size={18} color="#38bdf8" />}
+          icon={<Truck size={18} color="#2272B4" />}
           label="CIT Cost (MTD)"
           value={thbB(em.citCostMtd)}
           delta={{ text: "10%", dir: "down", good: true }}
           compareLabel="vs last month"
         />
         <EoKpi
-          icon={<TrendingDown size={18} color="#ef4444" />}
+          icon={<TrendingDown size={18} color="#C82D4C" />}
           label="Cash Out Risk"
           value={`${em.cashOutRiskMachines} Machines`}
           delta={{ text: "42%", dir: "up", good: false }}
@@ -270,7 +270,7 @@ export default function ExecutiveOverviewPage({
           spark={[4, 6, 7, 9, 10, 11, em.cashOutRiskMachines]}
         />
         <EoKpi
-          icon={<Building2 size={18} color="#ef4444" />}
+          icon={<Building2 size={18} color="#C82D4C" />}
           label="Branch Risk"
           value={`${em.branchRisk} Branches`}
           delta={{ text: "22%", dir: "up", good: false }}
@@ -278,7 +278,7 @@ export default function ExecutiveOverviewPage({
           spark={[3, 4, 5, 6, 7, 8, em.branchRisk]}
         />
         <EoKpi
-          icon={<CheckCircle2 size={18} color="#22c55e" />}
+          icon={<CheckCircle2 size={18} color="#00A972" />}
           label="Route SLA"
           value={`${em.routeSla}%`}
           delta={{ text: "2.1pp", dir: "up", good: true }}
@@ -286,7 +286,7 @@ export default function ExecutiveOverviewPage({
           spark={[94.2, 95.1, 95.8, 96.4, 97.2, 97.9, em.routeSla]}
         />
         <EoKpi
-          icon={<Gauge size={18} color="#38bdf8" />}
+          icon={<Gauge size={18} color="#2272B4" />}
           label="Vehicle Utilization"
           value={`${em.vehicleUtilization}%`}
           delta={{ text: "5.4pp", dir: "up", good: true }}
@@ -448,7 +448,7 @@ export default function ExecutiveOverviewPage({
                   contentStyle={{ background: "var(--panel)", border: "1px solid var(--border)", borderRadius: 8, fontSize: 12 }}
                   formatter={(v: number) => [`${v}%`, "Utilization"]}
                 />
-                <Line type="monotone" dataKey="pct" stroke="#38bdf8" strokeWidth={2.5} dot={{ r: 3, fill: "#38bdf8" }} activeDot={{ r: 5 }} />
+                <Line type="monotone" dataKey="pct" stroke="#FF3621" strokeWidth={2.5} dot={{ r: 3, fill: "#FF3621" }} activeDot={{ r: 5 }} />
               </LineChart>
             </ResponsiveContainer>
           </div>

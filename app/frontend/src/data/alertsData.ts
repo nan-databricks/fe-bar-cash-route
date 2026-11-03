@@ -27,17 +27,17 @@ export interface AlertSummary {
 }
 
 const TYPE_COLOR: Record<AlertType, string> = {
-  Machine: "#38bdf8",
-  Branch: "#2563eb",
-  Route: "#f59e0b",
-  Other: "#22c55e",
+  Machine: "#2272B4",
+  Branch: "#2272B4",
+  Route: "#FFAB00",
+  Other: "#00A972",
 };
 
 const IMPACT_COLOR: Record<string, string> = {
-  Critical: "#ef4444",
-  High: "#f97316",
-  Medium: "#f59e0b",
-  Low: "#22c55e",
+  Critical: "#C82D4C",
+  High: "#F58A1F",
+  Medium: "#FFAB00",
+  Low: "#00A972",
 };
 
 function mulberry32(seed: number) {
@@ -212,14 +212,14 @@ export function buildAlerts(config: AppConfig, execs: RouteExecution[]): AlertSu
 }
 
 export const IMPACT_STYLE: Record<AlertImpact, string> = {
-  Critical: "#ef4444",
-  High: "#f97316",
-  Medium: "#eab308",
-  Low: "#22c55e",
+  Critical: "#C82D4C",
+  High: "#F58A1F",
+  Medium: "#FFC940",
+  Low: "#00A972",
 };
 
 export const STATUS_STYLE: Record<AlertStatus, string> = {
-  New: "#ef4444",
-  "In Progress": "#f59e0b",
-  Acknowledged: "#22c55e",
+  New: "#C82D4C",
+  "In Progress": "#FFAB00",
+  Acknowledged: "#00A972",
 };

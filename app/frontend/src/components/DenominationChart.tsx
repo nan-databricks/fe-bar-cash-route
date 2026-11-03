@@ -15,7 +15,7 @@ import {
 } from "recharts";
 import type { Denomination } from "../types";
 
-const DENOM_COLORS = ["#38bdf8", "#22c55e", "#f59e0b", "#a855f7"];
+const DENOM_COLORS = ["#2272B4", "#00A972", "#FFAB00", "#8D4FD1"];
 
 function toRows(d: Denomination) {
   return [
@@ -51,8 +51,8 @@ function ActiveDonutSlice({
       outerRadius={(outerRadius ?? 0) + 6}
       startAngle={startAngle}
       endAngle={endAngle}
-      fill="#0a0a0a"
-      stroke="#e2e8f0"
+      fill="var(--panel)"
+      stroke="var(--text)"
       strokeWidth={1.5}
     />
   );
@@ -161,7 +161,7 @@ function GapLabel(props: { x?: number; y?: number; width?: number; height?: numb
       textAnchor={negative ? "end" : "start"}
       fontSize={10}
       fontWeight={600}
-      fill={negative ? "#ef4444" : "#22c55e"}
+      fill={negative ? "#C82D4C" : "#00A972"}
     >
       {gapAmount(value)}
     </text>
@@ -190,7 +190,7 @@ function GapTooltip({
 }
 
 export function DenominationGap({ data, height = 180 }: { data: Denomination; height?: number }) {
-  const rows = toRows(data).map((r) => ({ ...r, fill: r.value >= 0 ? "#22c55e" : "#ef4444" }));
+  const rows = toRows(data).map((r) => ({ ...r, fill: r.value >= 0 ? "#00A972" : "#C82D4C" }));
   // Symmetric domain with headroom keeps 0 centred and leaves space for labels.
   const bound = Math.max(...rows.map((r) => Math.abs(r.value)), 1) * 1.35;
 

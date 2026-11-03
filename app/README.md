@@ -13,7 +13,7 @@ Deployed URL: https://snb-cash-route-7474652587886975.aws.databricksapps.com (pr
 | Nodes, trends, orders, routes, summary, model metrics | UC gold tables in `stable_classic_nan_fe_vm_catalog.snb_cash_ops` via SQL warehouse `23189fee7d892fb8` (Statement Execution API) | `GET /api/nodes`, `/api/orders`, `/api/routes?plan_type=OPTIMIZED\|BASELINE`, `/api/summary`, `/api/model-metrics` |
 | 7-day re-forecast | Model Serving `snb-cash-forecast` (features from `gold_demand_features`) → else `gold_demand_forecast` → else mock | `POST /api/forecast {node_id}` |
 | Dispatch overrides | Lakebase `snb-cash-ops` → `public.dispatch_overrides` (psycopg, OAuth token) | `GET/POST /api/overrides` |
-| Ask SNB Ops | Genie space "SNB Cash Ops Assistant" (Conversation API) | `POST /api/genie/ask {question, conversation_id?}` |
+| Ask Cash Ops | Genie space "SNB Cash Ops Assistant" (Conversation API) | `POST /api/genie/ask {question, conversation_id?}` |
 | Health | reports which sources are live + last errors | `GET /api/health` |
 
 UI-shaped adapters for the existing pages: `/api/machines`, `/api/branches`, `/api/branch-inputs`,
