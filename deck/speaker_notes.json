@@ -22,7 +22,7 @@
   {
     "slide": 5,
     "title": "Why it happens",
-    "notes": "Shreya, the root cause isn’t one bad route. The ATM switch, cash-centre systems, CIT logs, core banking, and holiday spreadsheets all sit apart. Local knowledge, like a mall ATM opening late, stays in radio calls. Planning happens in Excel with day-old data and a calendar rule. There’s no forecast, feedback loop, clean override audit, or shared security model for custodian PII and depot access. The data, forecast, and people’s know-how never meet in one place."
+    "notes": "Shreya, the challenge today is that the information needed to make the plan lives in different places. Machine balances come from the ATM switch, branch and vault data from other systems, trip history from the cash-transport provider, and holidays may still sit in a spreadsheet. There’s also knowledge that never makes it into the data. Drivers know which locations open late, dispatchers know the exceptions, but that stays in phone calls and radio conversations. The planning team then pulls it together in Excel, using yesterday’s data and a fixed schedule. So there’s no single trusted view, no forward-looking forecast and no clear record of why the plan changed. That’s what we need to fix—not just produce a slightly better route."
   },
   {
     "slide": 6,

@@ -65,11 +65,13 @@ That’s helpful. I’ll keep that priority in view as we go.”
 
 Say:
 
-“Shreya, the root cause isn’t one bad route. The data is split across the ATM switch, vault and cash-centre systems, CIT trip logs, core banking, and holiday spreadsheets.
+“Shreya, the challenge today is that the information needed to make the plan lives in different places. Machine balances come from the ATM switch. Branch and vault data comes from other systems. Trip history sits with the cash-transport provider, and holidays may still be tracked in a spreadsheet.
 
-Then there’s the know-how. A driver may know a mall ATM opens late, but that stays in a radio call. Planning happens in Excel with day-old data and a calendar rule. There’s no forecast, no feedback loop, and no clean audit of overrides. Custodian PII and depot access don’t share one security model either.
+There’s also a lot of knowledge that never makes it into the data. Drivers know which locations open late and which roads cause delays. Dispatchers know the exceptions. But that knowledge stays in phone calls and radio conversations.
 
-So here’s the real issue: the data, the forecast, and people’s know-how never meet in one place.”
+The planning team then has to bring everything together in Excel, using yesterday’s data and a fixed schedule. So there’s no single trusted view, no forward-looking forecast and no clear record of why the plan changed.
+
+That’s what we need to fix—not just produce a slightly better route.”
 
 ## 6. The solution in four steps (03:50–04:30) · Slide 6
 
