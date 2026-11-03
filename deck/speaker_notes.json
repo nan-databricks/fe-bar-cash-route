@@ -7,17 +7,17 @@
   {
     "slide": 2,
     "title": "Where we are today",
-    "notes": "Let me start with the scope we agreed. Your cash operations cover 159 branches and 520 machines — 400 ATMs and 120 cash recyclers. They’re served by three cash centres and thirty armoured vans on a fixed five-day cycle. We’ve kept the MVP tighter: one region, Khon Kaen, and one daily decision — where should cash go tomorrow? The goal is less idle cash and fewer cash-outs without transforming the whole network at once."
+    "notes": "Let me start with the scope we agreed. Your cash operations cover 159 branches and 520 machines — 400 ATMs and 120 cash recyclers. They’re served by 3 cash centres and 30 armoured vans. Today, each branch and cash machine is scheduled for replenishment once every five days, whether it needs cash or not. For this first phase, we’re starting with Khon Kaen. Each morning, the team needs a clear answer to one question: which locations need cash tomorrow, and how much? The goal is less idle cash and fewer cash-outs without transforming the whole network at once."
   },
   {
     "slide": 3,
     "title": "What it costs today",
-    "notes": "Here’s what the synthetic plan day looks like. About 1.56 billion baht is sitting in machines and vaults. Only fourteen point seven percent of stops land inside opening hours. Sixty-four machines are at cash-out risk. The fixed cycle drives 135 stops and 1,711 kilometres, when demand needs 97 stops. One assumption: at a two-percent cost of funds, releasing 43 million baht is worth roughly 0.9 million baht a year. The operating case doesn’t depend on that assumption."
+    "notes": "Here’s what the synthetic plan day looks like. About THB 1.6B is tied up in machines and vaults. Only about 15% of scheduled stops arrive within the required time window. And on this plan day, 64 locations are still at risk of running out of cash. The fixed cycle drives 135 stops and about 1,700 km, when demand needs 97 stops. One assumption: at a 2% cost of funds, releasing THB 43M is worth roughly THB 0.9M a year. The operating case doesn’t depend on that assumption."
   },
   {
     "slide": 4,
     "title": "Why now",
-    "notes": "Alex, let me test the urgency with you. PromptPay and QR can make a fixed cycle overstock more each year, while New Year, Songkran, and payday still create sharp local demand. CIT and fuel costs are rising too. When does the current CIT contract renew? (pause) In this scenario, waiting adds about 125,000 baht a month in CIT cost. Which matters most right now: cost, cash-out risk, or the planning cycle? (pause) Got it. I’ll use that lens as we go."
+    "notes": "Alex, let me test the urgency with you. PromptPay and QR can make a fixed cycle overstock more each year, while New Year, Songkran, and payday still create sharp local demand. CIT and fuel costs are rising too. When does the current CIT contract renew? (pause) In this scenario, waiting adds about THB 125K a month in CIT cost. Which matters most right now: cost, cash-out risk, or the planning cycle? (pause) Got it. I’ll use that lens as we go."
   },
   {
     "slide": 5,
@@ -37,22 +37,22 @@
   {
     "slide": 8,
     "title": "Backup: plan vs today",
-    "notes": "The live app isn’t responding, so I’ll switch to the captured view and keep us moving. The fixed cycle shows 135 stops, 1,711 kilometres, sixty-four machines at risk, and fourteen point seven percent inside opening hours. The optimized plan shows 97 stops, 1,323 kilometres, zero at risk, and 100 percent inside opening hours. CIT cost moves from 75,400 to 69,550 baht a day. The result is still synthetic, so the pilot tests whether it holds on your feeds."
+    "notes": "The live app isn’t responding, so I’ll switch to the captured view and keep us moving. The fixed cycle shows 135 stops, about 1,700 km, 64 machines at risk, and about 15% inside opening hours. The optimized plan shows 97 stops, about 1,300 km, 0 at risk, and 100% inside opening hours. CIT cost moves from about THB 75K to about THB 70K a day. The result is still synthetic, so the pilot tests whether it holds on your feeds."
   },
   {
     "slide": 9,
     "title": "Backup: forecast, override, ask",
-    "notes": "This capture shows the three controls I wanted you to see. The forecast gives us a P50 to P80 range from live Model Serving, with about 81 percent P80 coverage. The override saves a skipped stop and its reason in Lakebase, so we know who changed what and why. Ask Cash Ops finds 79 critical nodes over the next three days. The app is the decision surface; the governed data and audit trail still sit underneath."
+    "notes": "This capture shows the three controls I wanted you to see. The forecast gives us a P50 to P80 range from live Model Serving, with about 81% P80 coverage. The override saves a skipped stop and its reason in Lakebase, so we know who changed what and why. Ask Cash Ops finds 79 critical nodes over the next 3 days. The app is the decision surface; the governed data and audit trail still sit underneath."
   },
   {
     "slide": 10,
     "title": "The outcome",
-    "notes": "Let me bring that together. On this synthetic day, CIT cost falls eight percent, from 75,400 to 69,550 baht a day — about 1.5 million baht a year. Distance falls 23 percent, from 1,711 to 1,323 kilometres. Cash-out risk goes from 64 to zero. SLA moves from fourteen point seven percent to 100 percent, and 43 million baht of idle cash is released. Alex, that’s lower cost and risk. Shreya, it’s one governed path from feed to action."
+    "notes": "Let me bring that together. On this synthetic day, CIT cost falls 8%, from about THB 75K to about THB 70K a day — about THB 1.5M a year. Distance falls 23%, from about 1,700 to about 1,300 km. Cash-out risk goes from 64 to 0. SLA moves from about 15% to 100%, and THB 43M of idle cash is released. Alex, that’s lower cost and risk. Shreya, it’s one governed path from feed to action."
   },
   {
     "slide": 11,
     "title": "Production readiness",
-    "notes": "Let’s separate what’s ready from what needs work. The pipeline, job, and app are code in one Databricks Asset Bundle. It’s serverless, the app uses a scoped service principal, quality expectations are defined, the model has a champion alias in Unity Catalog, and Lakebase audits writes. Pilot gaps are IdP group mapping, maker-checker, dev and prod CI/CD, drift monitoring, and road-network travel times. The full job hasn’t run end to end on real feeds. The path is Khon Kaen Central, all three centres, then harden and extend."
+    "notes": "Let’s separate what’s ready from what needs work. The pipeline, job, and app are code in one Databricks Asset Bundle. It’s serverless, the app uses a scoped service principal, quality expectations are defined, the model has a champion alias in Unity Catalog, and Lakebase audits writes. Pilot gaps are IdP group mapping, maker-checker, dev and prod CI/CD, drift monitoring, and road-network travel times. The full job hasn’t run end to end on real feeds. The path is Khon Kaen Central, all 3 centres, then harden and extend."
   },
   {
     "slide": 12,
@@ -62,12 +62,12 @@
   {
     "slide": 13,
     "title": "The ask and next steps",
-    "notes": "Let me close with a clear ask. Alex, this is a low-risk way to reduce CIT movement and idle cash without trading away customer trust. Shreya, it’s a governed design with honest gaps. I’m asking for a 30-day Khon Kaen Central pilot: at least 20 percent lower CIT cost or kilometres, cash-outs no higher, and at least 80 percent dispatcher acceptance. Alex sponsors the scoping session. Shreya brings Security and networking. I’ll bring the account team and our specialist. What would you need to see to sponsor that next step? (pause)"
+    "notes": "Let me close with a clear ask. Alex, this is a low-risk way to reduce CIT movement and idle cash without trading away customer trust. Shreya, it’s a governed design with honest gaps. I’m asking for a 30-day Khon Kaen Central pilot: at least 20% lower CIT cost or kilometres, cash-outs no higher, and at least 80% dispatcher acceptance. Alex sponsors the scoping session. Shreya brings Security and networking. I’ll bring the account team and our specialist. What would you need to see to sponsor that next step? (pause)"
   },
   {
     "slide": 14,
     "title": "Appendix: decisions and trade-offs",
-    "notes": "Here are the trade-offs we made. P80 lowers cash-out risk, but it can carry more cash. Thirteen vans meet every opening window, while thirty-eight unnecessary stops disappear and total cost still falls. A shared model is easier to govern, but we still need to test local payday behaviour. The optimizer is explainable and constrained, but road-network travel times must replace today’s straight-line-times-1.3 assumption. These are questions for the pilot, not hidden production claims."
+    "notes": "Here are the trade-offs we made. P80 lowers cash-out risk, but it can carry more cash. 13 vans meet every opening window, while 38 unnecessary stops disappear and total cost still falls. A shared model is easier to govern, but we still need to test local payday behaviour. The optimizer is explainable and constrained, but road-network travel times must replace today’s straight-line-times-1.3 assumption. These are questions for the pilot, not hidden production claims."
   },
   {
     "slide": 15,

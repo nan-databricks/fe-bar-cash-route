@@ -23,7 +23,7 @@
 
 Say:
 
-“Good morning, Alex. Good morning, Shreya. Thanks for making the time. Let me start with the plan. I’ll spend about thirteen minutes on the problem and the live app. Then we’ll look at readiness, risks, and next steps, with eight minutes for questions. Does that work for both of you? (pause)
+“Good morning, Alex. Good morning, Shreya. Thanks for making the time. Let me start with the plan. I’ll spend about 13 minutes on the problem and the live app. Then we’ll look at readiness, risks, and next steps, with 8 minutes for questions. Does that work for both of you? (pause)
 
 From our last conversation, we agreed on one business outcome: reduce the cash sitting idle and lower the cost of moving it, without increasing cash-outs. Alex, is that still the right outcome to anchor on today? (pause)
 
@@ -37,17 +37,17 @@ Great. I’ll use those two outcomes as the lens for the demo. One quick note: e
 
 Say:
 
-“Let me start with the scope we agreed. Your cash operations cover 159 branches and 520 machines — 400 ATMs and 120 cash recyclers. They’re served by three cash centres and thirty armoured vans. Today, replenishment follows a fixed five-day cycle.
+“Let me start with the scope we agreed. Your cash operations cover 159 branches and 520 machines — 400 ATMs and 120 cash recyclers. They’re served by 3 cash centres and 30 armoured vans. Today, each branch and cash machine is scheduled for replenishment once every five days, whether it needs cash or not.
 
-We’ve kept the MVP much tighter: one region, Khon Kaen, and one daily decision — where should cash go tomorrow? The outcome we agreed is less idle cash and fewer cash-outs, without trying to transform the whole network at once.”
+For this first phase, we’re starting with Khon Kaen. Each morning, the team needs a clear answer to one question: which locations need cash tomorrow, and how much? The outcome we agreed is less idle cash and fewer cash-outs, without trying to transform the whole network at once.”
 
 ## 3. What it costs today (01:20–02:05) · Slide 3
 
 Say:
 
-“Here’s what that looks like on the synthetic plan day. About 1.56 billion baht is sitting in machines and vaults. Only fourteen point seven percent of stops land inside opening hours. Sixty-four machines are at risk of cash-out. And the fixed cycle drives 135 stops and 1,711 kilometres, when the demand only needs 97 stops.
+“Here’s what that looks like on the synthetic plan day. About THB 1.6B is tied up in machines and vaults. Only about 15% of scheduled stops arrive within the required time window. And on this plan day, 64 locations are still at risk of running out of cash. And the fixed cycle drives 135 stops and about 1,700 km, when the demand only needs 97 stops.
 
-There’s a second lens: the cost of idle float. This is an assumption, not a bank figure. At an assumed two-percent cost of funds, releasing 43 million baht is worth roughly 0.9 million baht a year. The operating case doesn’t depend on that assumption.”
+There’s a second lens: the cost of idle float. This is an assumption, not a bank figure. At an assumed 2% cost of funds, releasing THB 43M is worth roughly THB 0.9M a year. The operating case doesn’t depend on that assumption.”
 
 ## 4. Why now (02:05–03:00) · Slide 4
 
@@ -55,7 +55,7 @@ Say:
 
 “Alex, let me test the urgency with you. As PromptPay and QR reduce everyday cash use, a fixed cycle can overstock more each year. But New Year, Songkran, and payday peaks still create sharp local demand. At the same time, CIT and fuel costs are rising. When does the current CIT contract renew? (pause)
 
-On this scenario, waiting adds about 125,000 baht a month in CIT cost alone. Which matters most right now: cost, cash-out risk, or the next planning and budget cycle? (pause) Got it. I’ll use that as the business lens for the rest of the discussion.”
+On this scenario, waiting adds about THB 125K a month in CIT cost alone. Which matters most right now: cost, cash-out risk, or the next planning and budget cycle? (pause) Got it. I’ll use that as the business lens for the rest of the discussion.”
 
 ## 5. Why it happens (03:00–03:50) · Slide 5
 
@@ -107,9 +107,9 @@ Say:
 
 Say:
 
-“The stop count falls from 135 to 97. Distance drops from 1,711 to 1,323 kilometres. And the opening-hour SLA moves from fifteen percent to a hundred.
+“The stop count falls from 135 to 97. Distance drops from about 1,700 to about 1,300 km. And the opening-hour SLA moves from about 15% to 100%.
 
-Here’s the important trade-off. Vans rise from eleven to thirteen because two extra crews cover real demand inside the time windows. Even so, CIT cost falls from 75,400 to 69,550 baht a day because thirty-eight needless stops disappear. Alex, the plan uses more crews, but it moves less cash more effectively and costs less.”
+Here’s the important trade-off. Vans rise from 11 to 13 because 2 extra crews cover real demand inside the time windows. Even so, CIT cost falls from about THB 75K to about THB 70K a day because 38 needless stops disappear. Alex, the plan uses more crews, but it moves less cash more effectively and costs less.”
 
 *Do not point to the Route Summary donut or card percentage deltas.*
 
@@ -123,13 +123,13 @@ Say:
 
 Say while waiting:
 
-“This can take five to eight seconds if the endpoint has scaled to zero. While it warms, the production setting would match the morning planning window.”
+“This can take 5 to 8 seconds if the endpoint has scaled to zero. While it warms, the production setting would match the morning planning window.”
 
 Say:
 
-“What you’re seeing is the P50 to P80 range, with **Model Serving · live** right here. On busy days, we plan near P80. That gives about 81 percent coverage, and a person still confirms the plan.
+“What you’re seeing is the P50 to P80 range, with **Model Serving · live** right here. On busy days, we plan near P80. That gives about 81% coverage, and a person still confirms the plan.
 
-The overall forecast WAPE is 25 percent, compared with 39 percent for the naive rule. For ATMs, it’s 13 percent versus 25 percent. So we’re not just drawing a better route. We’re reducing the demand uncertainty that created those sixty-four cash-out risks.”
+The overall forecast WAPE is 25%, compared with 39% for the naive rule. For ATMs, it’s 13% versus 25%. So we’re not just drawing a better route. We’re reducing the demand uncertainty that created those 64 cash-out risks.”
 
 ### Truck Detail and override
 
@@ -147,7 +147,7 @@ Say:
 
 Say:
 
-“If we have one minute, I’ll show one self-service question: which nodes run out of cash in the next three days if we do nothing?”
+“If we have one minute, I’ll show one self-service question: which nodes run out of cash in the next 3 days if we do nothing?”
 
 **Click:** Open **Ask Cash Ops** and ask: **Which nodes run out of cash in the next 3 days if we do nothing?** Keep SQL collapsed.
 
@@ -159,7 +159,7 @@ Say:
 
 Say:
 
-“Let me bring that together. On this synthetic day, CIT cost falls eight percent, from 75,400 to 69,550 baht a day — about 1.5 million baht a year. Distance falls 23 percent, from 1,711 to 1,323 kilometres. Cash-out risk goes from 64 to zero. The SLA moves from fourteen point seven percent to 100 percent. And the plan releases 43 million baht of idle cash.
+“Let me bring that together. On this synthetic day, CIT cost falls 8%, from about THB 75K to about THB 70K a day — about THB 1.5M a year. Distance falls 23%, from about 1,700 to about 1,300 km. Cash-out risk goes from 64 to 0. The SLA moves from about 15% to 100%. And the plan releases THB 43M of idle cash.
 
 Alex, that’s a lower-cost, lower-risk decision. Shreya, it’s one governed path from feed to forecast, plan, action, and audit. We’ve shown the operating outcome, not just the architecture.”
 
@@ -171,7 +171,7 @@ Say:
 
 The gaps are just as important. In the pilot, we need to map row filters to your IdP groups and add maker-checker for overrides. We need dev and prod CI/CD targets, model-drift monitoring, and road-network travel times. Today, travel time is straight-line distance times 1.3. And we haven’t yet run the full job end to end on real feeds.
 
-So the path is clear: Khon Kaen Central for thirty days, then all three cash centres, then harden and extend. The foundation is deployable. The pilot is where we prove the full operating path.”
+So the path is clear: Khon Kaen Central for 30 days, then all 3 cash centres, then harden and extend. The foundation is deployable. The pilot is where we prove the full operating path.”
 
 ## 11. Delivery risks and how we handle them (18:00–26:00) · Slide 12
 
@@ -193,9 +193,9 @@ Say:
 
 “Let me close with the value and a clear ask. Alex, this is a low-risk way to reduce CIT movement and idle cash without trading away customer trust. Shreya, it’s a governed design with honest gaps and a measurable path to production.
 
-I’m asking for a 30-day pilot in Khon Kaen Central. We’ll call it successful if CIT cost or kilometres fall by at least 20 percent, cash-outs are no higher than today, and dispatchers accept at least 80 percent of the recommendations.
+I’m asking for a 30-day pilot in Khon Kaen Central. We’ll call it successful if CIT cost or kilometres fall by at least 20%, cash-outs are no higher than today, and dispatchers accept at least 80% of the recommendations.
 
-The owners are clear. Alex, you sponsor a two-hour scoping session next week with the Cash Ops lead. Shreya, you bring IT Security and networking to agree the feeds and access. I’ll bring the account team for commercials and a Databricks networking and security specialist.
+The owners are clear. Alex, you sponsor a 2-hour scoping session next week with the Cash Ops lead. Shreya, you bring IT Security and networking to agree the feeds and access. I’ll bring the account team for commercials and a Databricks networking and security specialist.
 
 The numbers today are synthetic, so the pilot has to earn the decision on your data. What would you need to see to sponsor that next step? (pause)”
 
@@ -205,19 +205,19 @@ The numbers today are synthetic, so the pilot has to earn the decision on your d
 
 Say:
 
-“The live app isn’t responding, so I’ll switch to the captured view and keep us moving. The fixed cycle shows 135 stops, 1,711 kilometres, sixty-four machines at risk, and fourteen point seven percent inside opening hours. The optimized plan shows 97 stops, 1,323 kilometres, zero at risk, and 100 percent inside opening hours. The result is still synthetic, so the pilot tests whether it holds on your feeds.”
+“The live app isn’t responding, so I’ll switch to the captured view and keep us moving. The fixed cycle shows 135 stops, about 1,700 km, 64 machines at risk, and about 15% inside opening hours. The optimized plan shows 97 stops, about 1,300 km, 0 at risk, and 100% inside opening hours. The result is still synthetic, so the pilot tests whether it holds on your feeds.”
 
 ## 14. Backup: forecast, override, ask (recovery only) · Slide 9
 
 Say:
 
-“This capture shows the three controls I wanted you to see. The forecast gives us a P50 to P80 range from live Model Serving. The override saves a skipped stop and its reason in Lakebase, so we know who changed what and why. Ask Cash Ops finds 79 critical nodes over the next three days. The app is the decision surface; the governed data and audit trail still sit underneath.”
+“This capture shows the three controls I wanted you to see. The forecast gives us a P50 to P80 range from live Model Serving. The override saves a skipped stop and its reason in Lakebase, so we know who changed what and why. Ask Cash Ops finds 79 critical nodes over the next 3 days. The app is the decision surface; the governed data and audit trail still sit underneath.”
 
 ## 15. Appendix: decisions and trade-offs (Q&A only) · Slide 14
 
 Say:
 
-“Here are the trade-offs we made. P80 lowers cash-out risk, but it can carry more cash. Thirteen vans meet every opening window, while thirty-eight unnecessary stops disappear and total cost still falls. A shared model is easier to govern, but we still need to test local payday behaviour. And the optimizer is explainable, but road-network travel times must replace today’s straight-line assumption.”
+“Here are the trade-offs we made. P80 lowers cash-out risk, but it can carry more cash. 13 vans meet every opening window, while 38 unnecessary stops disappear and total cost still falls. A shared model is easier to govern, but we still need to test local payday behaviour. And the optimizer is explainable, but road-network travel times must replace today’s straight-line assumption.”
 
 ## 16. Appendix: under the hood (Q&A only) · Slide 15
 
@@ -249,7 +249,7 @@ Say:
 
 **Why are there more vans?**
 
-“That’s the right trade-off to question. The old cycle skipped real demand and still made needless visits. The new plan adds two crews, from eleven to thirteen, to meet every opening window. At the same time, thirty-eight unnecessary stops disappear, so distance, stop count, and total cost still fall.”
+“That’s the right trade-off to question. The old cycle skipped real demand and still made needless visits. The new plan adds 2 crews, from 11 to 13, to meet every opening window. At the same time, 38 unnecessary stops disappear, so distance, stop count, and total cost still fall.”
 
 **What if the model is wrong on payday?**
 
@@ -258,7 +258,7 @@ Say:
 ## Reading the room
 
 - If Alex leans into cost, stay on stops, kilometres, CIT cost, idle cash, and the measured pilot. Do not lead with platform terms.
-- If Alex challenges thirteen vans, acknowledge the trade-off immediately and explain the thirty-eight needless stops removed.
+- If Alex challenges 13 vans, acknowledge the trade-off immediately and explain the 38 needless stops removed.
 - If Shreya asks about controls, move to slide 11 or 15. Distinguish what exists from what the pilot must add.
 - If either person questions the synthetic results, agree and use that as the reason to run the pilot.
 - At minute 18, stop presenting and invite objections. At minute 26, move to the ask even if every appendix question is not covered.
@@ -267,15 +267,15 @@ Say:
 
 **App fails**
 
-“The live app isn’t responding, so I’ll switch to the captured screens on slides eight and nine and keep us moving. I’ll show the same decisions, and we’ll treat live reliability as a pilot test item.”
+“The live app isn’t responding, so I’ll switch to the captured screens on slides 8 and 9 and keep us moving. I’ll show the same decisions, and we’ll treat live reliability as a pilot test item.”
 
 **Forecast endpoint is cold**
 
-“The endpoint scales to zero, so the first call can take five to eight seconds. While it warms, here’s the important part: we plan with the P50 to P80 band, then a dispatcher confirms the result.”
+“The endpoint scales to zero, so the first call can take 5 to 8 seconds. While it warms, here’s the important part: we plan with the P50 to P80 band, then a dispatcher confirms the result.”
 
 **Genie is slow**
 
-“I won’t use your time waiting on an optional step. The benchmark answer is 79 critical nodes in the next three days. The pilot question is whether governed self-service speeds up the investigation without creating a second definition of risk.”
+“I won’t use your time waiting on an optional step. The benchmark answer is 79 critical nodes in the next 3 days. The pilot question is whether governed self-service speeds up the investigation without creating a second definition of risk.”
 
 ## Cut list if running long
 
